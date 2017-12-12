@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Jacques van Helden" />
+
+<meta name="date" content="2017-12-12" />
+
+<title>Install organisms from NCBI</title>
+
+<script src="install_organisms_from_ncbi_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="install_organisms_from_ncbi_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="install_organisms_from_ncbi_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="install_organisms_from_ncbi_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="install_organisms_from_ncbi_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="install_organisms_from_ncbi_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="install_organisms_from_ncbi_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="install_organisms_from_ncbi_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="install_organisms_from_ncbi_files/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceLine, a.sourceLine { display: inline-block; min-height: 1.25em; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; }
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+div.sourceLine, a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource div.sourceLine, .numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource div.sourceLine::before, .numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+pre, code { color: #cccccc; background-color: #303030; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; color: initial; }
+}
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.fl { color: #c0bed1; } /* Float */
+code span.ch { color: #dca3a3; } /* Char */
+code span.st { color: #cc9393; } /* String */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.ot { color: #efef8f; } /* Other */
+code span.al { color: #ffcfaf; } /* Alert */
+code span.fu { color: #efef8f; } /* Function */
+code span.er { color: #c3bf9f; } /* Error */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.im { } /* Import */
+code span.va { } /* Variable */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.op { color: #f0efd0; } /* Operator */
+code span.bu { } /* BuiltIn */
+code span.ex { } /* Extension */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.at { } /* Attribute */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Install organisms from NCBI</h1>
+<h4 class="author"><em>Jacques van Helden</em></h4>
+<h4 class="date"><em>2017-12-12</em></h4>
+
+</div>
+
+
+<section id="introduction" class="level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The goal of this tutorial is to explain how to install genomes from NCBI in your RSAT server.</p>
+</section>
+<section id="prerequisite" class="level1">
+<h1><span class="header-section-number">2</span> Prerequisite</h1>
+<p>This protocol assumes that you have a working instance of the RSAT server, and that you are familar with the Unix terminal.</p>
+</section>
+<section id="protocol" class="level1">
+<h1><span class="header-section-number">3</span> Protocol</h1>
+<p>We illustrate the installation procedure with a bacterial genome, since NCBI is the main source of prokaryote genomes for RSAT (<a href="http://prokaryotes.rsat.eu/" class="uri">http://prokaryotes.rsat.eu/</a>). The same procedure can however apply to other taxa, as far as they are available on the NCBI FTP server (<a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/" class="uri">ftp://ftp.ncbi.nlm.nih.gov/genomes/</a>).</p>
+<section id="data-source" class="level2">
+<h2><span class="header-section-number">3.1</span> Data source</h2>
+<p>Genomes are downloaded from the refseq repository: <a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq" class="uri">ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq</a></p>
+</section>
+<section id="getting-the-list-of-available-species" class="level2">
+<h2><span class="header-section-number">3.2</span> Getting the list of available species</h2>
+<p>The first step to perform with the command <code>ìnstall-organisms</code> is to get the list of organisms available for a given taxonomic group.</p>
+<p>The NCBI FTP genome site is organised by “main” <strong>taxonomic groups</strong>:</p>
+<ul>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/archaea/">archaea</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/">bacteria</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/fungi/">fungi</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/invertebrate/">invertebrate</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/plant/">plant</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/mitochondrion/">mitochondrion</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/plasmid">plasmid</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/plastid">plastid</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/protozoa/">protozoa</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/">vertebrate_mammalian</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_other/">vertebrate_other</a></li>
+<li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/viral/">viral</a></li>
+</ul>
+<p>The option <code>-task available</code> returns the complete list of available species for the specified group.</p>
+<p>The command below gets the list of all available bacteria and stores them in a text file.</p>
+<pre class="sourceCode bash" id="cb1"><code class="sourceCode bash"><div class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Get curret date to use as suffix for output files</span></div>
+<div class="sourceLine" id="cb1-2" data-line-number="2"><span class="bu">export</span> <span class="va">TODAY=</span><span class="kw">`</span><span class="fu">date</span> +%Y-%m-%d<span class="kw">`</span></div>
+<div class="sourceLine" id="cb1-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">## Get the list of bacterial species available on the NCBI FTP site</span></div>
+<div class="sourceLine" id="cb1-5" data-line-number="5"><span class="ex">install-organism</span> -v 1 -group bacteria -task available \</div>
+<div class="sourceLine" id="cb1-6" data-line-number="6">  -o available_bacteria_<span class="va">${TODAY}</span>.txt</div>
+<div class="sourceLine" id="cb1-7" data-line-number="7">  </div>
+<div class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">## Count the number of species.</span></div>
+<div class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">## Note: grep is used to filter out the comment lines.</span></div>
+<div class="sourceLine" id="cb1-10" data-line-number="10"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_bacteria_<span class="va">${TODAY}</span>.txt <span class="kw">|</span> <span class="fu">wc</span> -l</div></code></pre>
+<p>We can of course do the same for other taxa, for example Archaea, Fungi or Mammalian.</p>
+<pre class="sourceCode bash" id="cb2"><code class="sourceCode bash"><div class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">export</span> <span class="va">TAXA=</span><span class="st">&#39;archaea bacteria fungi invertebrate</span></div>
+<div class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">plant mitochondrion plasmid plastid protozoa</span></div>
+<div class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">vertebrate_mammalian vertebrate_other viral&#39;</span></div>
+<div class="sourceLine" id="cb2-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">for</span> <span class="ex">taxon</span> in <span class="va">$TAXA</span><span class="kw">;</span> <span class="kw">do</span> <span class="kw">\</span></div>
+<div class="sourceLine" id="cb2-6" data-line-number="6">  <span class="bu">echo</span> <span class="st">&quot;Getting list of NCBI species for </span><span class="va">${taxon}</span><span class="st">&quot;</span> <span class="kw">;</span> <span class="kw">\</span></div>
+<div class="sourceLine" id="cb2-7" data-line-number="7">  <span class="ex">install-organism</span> -v 1 -group <span class="va">${taxon}</span> -task available \</div>
+<div class="sourceLine" id="cb2-8" data-line-number="8">  -o available_<span class="va">${taxon}</span>_<span class="va">${TODAY}</span>.txt <span class="kw">;</span> <span class="kw">\</span></div>
+<div class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">done</span></div>
+<div class="sourceLine" id="cb2-10" data-line-number="10"></div>
+<div class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">## Approx count of species per taxa</span></div>
+<div class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">## (the number of comment lines should be substracted from each count)</span></div>
+<div class="sourceLine" id="cb2-13" data-line-number="13"><span class="fu">wc</span> -l available_*_<span class="va">${TODAY}</span>.txt <span class="kw">|</span> <span class="fu">sort</span> -nr</div></code></pre>
+<p>Here is the result on Dec 12, 2017.</p>
+<div class="line-block">25641 | total |
+16750 | available_bacteria_2017-12-12.txt |
+7399 | available_viral_2017-12-12.txt |
+546 | available_archaea_2017-12-12.txt |
+260 | available_fungi_2017-12-12.txt |
+170 | available_invertebrate_2017-12-12.txt |
+139 | available_vertebrate_other_2017-12-12.txt |
+124 | available_vertebrate_mammalian_2017-12-12.txt |
+114 | available_plant_2017-12-12.txt |
+94 | available_protozoa_2017-12-12.txt |
+15 | available_plastid_2017-12-12.txt |
+15 | available_plasmid_2017-12-12.txt |
+15 | available_mitochondrion_2017-12-12.txt |</div>
+<p><strong>Notes</strong></p>
+<ul>
+<li><p>The <strong>number of available genomes</strong> exceeds by far the number of species, because some species are represented by different strains, in particular for bacteria (for some bacterial species of interest for health, several thousands of strains have been sequenced).</p></li>
+<li><p>Some of these genomes are only partly sequenced, or poorly assembled, and the level of annotation is quite variable. NCBI subdivided these available genomes in 4 categories depending on the level of completion of the sequencing project.</p></li>
+</ul>
+</section>
+<section id="installing-the-genome-for-a-given-species" class="level2">
+<h2><span class="header-section-number">3.3</span> Installing the genome for a given species</h2>
+<section id="download-the-genomes" class="level3">
+<h3><span class="header-section-number">3.3.1</span> Download the genome(s)</h3>
+<pre class="sourceCode bash" id="cb3"><code class="sourceCode bash"><div class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">## Download the genome(s) for a given species </span></div>
+<div class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">## (e.g. Rhodospirillum_centenum)  </span></div>
+<div class="sourceLine" id="cb3-3" data-line-number="3"><span class="ex">install-organism</span> -v 1 -group bacteria \</div>
+<div class="sourceLine" id="cb3-4" data-line-number="4">  -species Rhodospirillum_centenum \</div>
+<div class="sourceLine" id="cb3-5" data-line-number="5">  -task download</div></code></pre>
+<p><strong>Notes</strong></p>
+<ol type="1">
+<li><p>The option <code>-species</code> requires to specify the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore (_), with exactly the same spelling and cases as on the NCBI FTP refseq site.</p></li>
+<li><p>Downloaded genomes will be installed in a folder <code>$RSAT/downloads/refseq</code> on your computer.</p></li>
+<li><p><strong>Beware:</strong> for some bacterial species of particular interest (e.g. important human pathogens), tens of thousands of strains have been sequenced. It might cost a lot of time and disk space to download all of them. TO avoid that, you can specify the full strain name (more precisely the subfolder corresponding to the strain of interest in the species folder on the NCBI FTP site).</p></li>
+</ol>
+</section>
+<section id="listing-the-available-strains-for-the-species-of-interest" class="level3">
+<h3><span class="header-section-number">3.3.2</span> Listing the available strains for the species of interest</h3>
+<pre class="sourceCode bash" id="cb4"><code class="sourceCode bash"><div class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">## List the available strains for a given species (e.g. Rhodospirillum centenum).</span></div>
+<div class="sourceLine" id="cb4-2" data-line-number="2"><span class="ex">install-organism</span> -v 1 -group bacteria \</div>
+<div class="sourceLine" id="cb4-3" data-line-number="3">  -species Rhodospirillum_centenum \</div>
+<div class="sourceLine" id="cb4-4" data-line-number="4">  -task list</div></code></pre>
+<p>This command actually lists the folders.</p>
+</section>
+<section id="parsing-the-genomes" class="level3">
+<h3><span class="header-section-number">3.3.3</span> Parsing the genomes</h3>
+<p>Parsing consists in extracting the information from a text-formatted file, in order to organise it in a computable structure.</p>
+<pre class="sourceCode bash" id="cb5"><code class="sourceCode bash"><div class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">## Parse one genome (e.g. Rhodospirillum centenum)</span></div>
+<div class="sourceLine" id="cb5-2" data-line-number="2"><span class="ex">install-organism</span> -v 1 -group bacteria -species Rhodospirillum_centenum -strain Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task parse</div></code></pre>
+<p>This creates a folder whose name is the concatenation of the genus, species and strain names: <code>$RSAT/public_html/data/[Genus_species_strain]</code></p>
+<p>From now on we will directly refer to this concatenated name as the “Organism name” (generally denoted by the option <code>-org</code> in RSAT commands.</p>
+<pre class="sourceCode bash" id="cb6"><code class="sourceCode bash"><div class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Check the parsing result</span></div>
+<div class="sourceLine" id="cb6-2" data-line-number="2"><span class="fu">ls</span> -l /workspace/rsat/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/</div>
+<div class="sourceLine" id="cb6-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)</span></div>
+<div class="sourceLine" id="cb6-5" data-line-number="5"><span class="fu">du</span> -sm /workspace/rsat/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/</div></code></pre>
+<p>This gives the number of megabases occupied by the genome folder.</p>
+</section>
+<section id="adding-the-parsed-genome-to-the-list-of-supported-genomes" class="level3">
+<h3><span class="header-section-number">3.3.4</span> Adding the parsed genome to the list of supported genomes</h3>
+<p>In order to make the parsed genome available for RSAT, you need to run the configuration task.</p>
+<pre class="sourceCode bash" id="cb7"><code class="sourceCode bash"><div class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">## Configure the organism for RSAT</span></div>
+<div class="sourceLine" id="cb7-2" data-line-number="2"><span class="ex">install-organism</span> -v 1 -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task config</div>
+<div class="sourceLine" id="cb7-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb7-4" data-line-number="4"></div>
+<div class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">## Check that the organism has weel been declared</span></div>
+<div class="sourceLine" id="cb7-6" data-line-number="6"><span class="ex">supported-organisms</span> -taxon Rhodospirillum</div></code></pre>
+</section>
+<section id="finalizing-the-installation" class="level3">
+<h3><span class="header-section-number">3.3.5</span> Finalizing the installation</h3>
+<p>Several more tasks need to be performed before we can consider this organism as “installed”.</p>
+<p>The simplest way to run it is to select the “default” tasks.</p>
+<pre class="sourceCode bash" id="cb8"><code class="sourceCode bash"><div class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)</span></div>
+<div class="sourceLine" id="cb8-2" data-line-number="2"></div>
+<div class="sourceLine" id="cb8-3" data-line-number="3"><span class="ex">install-organism</span> -v 1 -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task default</div></code></pre>
+<section id="detailed-list-of-supported-installation-tasks-default-and-others" class="level4">
+<h4><span class="header-section-number">3.3.5.1</span> Detailed list of supported installation tasks (default and others)</h4>
+<table style="width:89%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>default</td>
+<td>run all the default tasks useful for the installation of a genome (this is a subset of the tasks specified below)</td>
+</tr>
+<tr class="even">
+<td>start_stop</td>
+<td>compute trinucleotide frequencies in all the start and stop codons (validation of the correspondance between genome sequences and gene coordinates)</td>
+</tr>
+<tr class="odd">
+<td>allup</td>
+<td>Retrieve all upstream sequences in order to compute the background models (oligonucleotide and dyad frequencies)</td>
+</tr>
+<tr class="even">
+<td>seq_len_distrib</td>
+<td>Compute the distribution of upstream sequences</td>
+</tr>
+<tr class="odd">
+<td>genome_segments</td>
+<td>SPlit the genome into segments corresponding to different genomic region types: genic, intergenic, …</td>
+</tr>
+<tr class="even">
+<td>upstream_freq</td>
+<td>Compute oligonucleotide or/and dyad frequencies in upstream sequences (must be combined with tasks oligos and/or dyads)</td>
+</tr>
+<tr class="odd">
+<td>genome_freq</td>
+<td>Compute oligonucleotide or/and dyad frequencies in the whole genome (must be combined with tasks oligos and/or dyads)</td>
+</tr>
+<tr class="even">
+<td>protein_freq</td>
+<td>Compute amino acid, di- and tri-peptide frequencies in all protein sequences</td>
+</tr>
+<tr class="odd">
+<td>protein_len</td>
+<td>Compute distribution of protein lengths</td>
+</tr>
+<tr class="even">
+<td>oligos</td>
+<td>Compute oligonucleotide frequencies (size 1 to 8) in a given type of sequences. Must be combined with stasks upstream or genomic</td>
+</tr>
+<tr class="odd">
+<td>dyads</td>
+<td>Idem for dyads, i.e. spaced pairs of trinucleotides</td>
+</tr>
+<tr class="even">
+<td>fasta_genome</td>
+<td>convert genome sequence in fasta in order to make it usable by bedtools</td>
+</tr>
+<tr class="odd">
+<td>chrom_sizes</td>
+<td>compute chromosome sizes from genomic sequences</td>
+</tr>
+<tr class="even">
+<td>index_bedtools</td>
+<td>index genome to enable its ultra-fast processing by bedtools</td>
+</tr>
+<tr class="odd">
+<td>uninstall</td>
+<td>uninstall a genome, i.e. stop displaying it as available. Beware, this does not erase the genome folder, for this you can use the option <code>-task erase</code></td>
+</tr>
+<tr class="even">
+<td>erase</td>
+<td>Erase the whole folder of your organism in <code>$RSAT/public_html/data</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="checking-that-the-organism-is-well-supported" class="level3">
+<h3><span class="header-section-number">3.3.6</span> Checking that the organism is well supported</h3>
+<pre class="sourceCode bash" id="cb9"><code class="sourceCode bash"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">## Get all the organisms of the Genus Rhodospirillum</span></div>
+<div class="sourceLine" id="cb9-2" data-line-number="2"><span class="ex">supported-organisms</span> -taxon Rhodospirillum</div></code></pre>
+</section>
+<section id="checking-the-correctness-of-gene-annotations-by-computing-startstop-codon-frequencies" class="level3">
+<h3><span class="header-section-number">3.3.7</span> Checking the correctness of gene annotations by computing start/stop codon frequencies</h3>
+<pre class="sourceCode bash" id="cb10"><code class="sourceCode bash"><div class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">## Retrieve all the start codon sequences</span></div>
+<div class="sourceLine" id="cb10-2" data-line-number="2"><span class="ex">retrieve-seq</span> -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -from 0 -to 2 -o start_seq.fasta</div>
+<div class="sourceLine" id="cb10-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb10-4" data-line-number="4"><span class="fu">more</span> start_seq.fasta</div>
+<div class="sourceLine" id="cb10-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">## Check that most genes have ATG as start codon</span></div>
+<div class="sourceLine" id="cb10-7" data-line-number="7"><span class="ex">oligo-analysis</span> -v 1 -i start_seq.fasta  -l 3 -1str -return occ,freq -sort <span class="kw">|</span> <span class="fu">more</span></div></code></pre>
+<p>You can do the similar test with the stop codon frequencies. Note that nothing forces you to store the stop codong sequences in a local file, you can use the pipe symbol <code>|</code> to concatenate two commands.</p>
+<pre class="sourceCode bash" id="cb11"><code class="sourceCode bash"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="co">## Compute all trinucleotide frequencies in the stop codons</span></div>
+<div class="sourceLine" id="cb11-2" data-line-number="2"><span class="ex">retrieve-seq</span> -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1  -type downstream -from -1 -to -3</div>
+<div class="sourceLine" id="cb11-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb11-4" data-line-number="4"><span class="fu">more</span> start_seq.fasta</div>
+<div class="sourceLine" id="cb11-5" data-line-number="5"></div>
+<div class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">## Check that most genes have ATG as start codon</span></div>
+<div class="sourceLine" id="cb11-7" data-line-number="7"><span class="ex">oligo-analysis</span> -v 1 -i start_seq.fasta  -l 3 -1str -return occ,freq -sort <span class="kw">|</span> <span class="fu">more</span></div></code></pre>
+<hr />
+</section>
+</section>
+<section id="installing-many-genomes" class="level2">
+<h2><span class="header-section-number">3.4</span> Installing many genomes</h2>
+</section>
+<section id="selecting-bacterial-organisms-with-complete-genomes-or-chromosomes" class="level2">
+<h2><span class="header-section-number">3.5</span> Selecting bacterial organisms with Complete genomes or Chromosomes</h2>
+<p>The NCBI file <a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt" class="uri">ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt</a> contains annotations referring to the status of the genome projects.</p>
+<p>NCBI Assembly classifies genome assemblies in four levels:</p>
+<ol type="1">
+<li>Contig: Assemblies that include only contigs.</li>
+<li>Scaffold: Includes both scaffolds and contigs.</li>
+<li>Chromosome: Includes chromosome or linkage groups, plus scaffolds and contigs.</li>
+<li>Complete genome: Assemblies for which all molecules are fully sequenced.</li>
+</ol>
+<p>Reference: PMCID: PMC4702866</p>
+<p>In this case in order to work with fully sequenced bacterial genomes and chromosomes we will select genomes with “Chromosome” and “Complete Genome” annotation in this field.</p>
+<pre class="sourceCode bash" id="cb12"><code class="sourceCode bash"><div class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">## Dowload the ftp file</span></div>
+<div class="sourceLine" id="cb12-2" data-line-number="2"><span class="fu">wget</span> ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt</div>
+<div class="sourceLine" id="cb12-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">## Select only the genomes with a Complete or Chromosome annotation in the field assembly_level</span></div>
+<div class="sourceLine" id="cb12-5" data-line-number="5"><span class="fu">mv</span> assembly_summary_refseq.txt ncbi_organisms_assembly_summary_bacteria_refseq.txt</div>
+<div class="sourceLine" id="cb12-6" data-line-number="6"></div>
+<div class="sourceLine" id="cb12-7" data-line-number="7"><span class="fu">awk</span> -F <span class="st">&quot;\t&quot;</span> <span class="st">&#39;($12==&quot;Chromosome&quot; || $12==&quot;Complete Genome&quot;) &amp;&amp; $11==&quot;latest&quot;{print $0}&#39;</span> ncbi_organisms_assembly_summary_bacteria_refseq.txt <span class="op">&gt;</span> chromosome_and_complete_bacterial_genomes.txt</div></code></pre>
+<p>Using the list of available bacterial genomes we can select only those with the amount of annotation we consider appropriate.</p>
+</section>
+</section>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -87,25 +87,31 @@ for taxon in $TAXA; do \
 done
 
 ## Approx count of species per taxa
-## (the number of comment lines should be substracted from each count)
-wc -l available_*_${TODAY}.txt | sort -nr
+## (each file starts with 15 comment lines, which are be substracted from each count)
+wc -l available_*_${TODAY}.txt |  sort -nr  | awk '{print "|\t"$1-15"\t| "$2"\t|"}' 
 ```
+
+
+### Number of species per group
 
 Here is the result on Dec 12, 2017. 
 
-| 25641 | total |
-| 16750 | available_bacteria_2017-12-12.txt |
-| 7399 | available_viral_2017-12-12.txt |
-| 546 | available_archaea_2017-12-12.txt |
-| 260 | available_fungi_2017-12-12.txt |
-| 170 | available_invertebrate_2017-12-12.txt |
-| 139 | available_vertebrate_other_2017-12-12.txt |
-| 124 | available_vertebrate_mammalian_2017-12-12.txt |
-| 114 | available_plant_2017-12-12.txt |
-| 94 | available_protozoa_2017-12-12.txt |
-| 15 | available_plastid_2017-12-12.txt |
-| 15 | available_plasmid_2017-12-12.txt |
-| 15 | available_mitochondrion_2017-12-12.txt |
+| Number of species | Taxonomic group |
+|---------|--------------------------|
+|       25626   | total |
+|       16735   | available_bacteria_2017-12-12.txt     |
+|       7384    | available_viral_2017-12-12.txt        |
+|       531     | available_archaea_2017-12-12.txt      |
+|       245     | available_fungi_2017-12-12.txt        |
+|       155     | available_invertebrate_2017-12-12.txt |
+|       124     | available_vertebrate_other_2017-12-12.txt     |
+|       109     | available_vertebrate_mammalian_2017-12-12.txt |
+|       99      | available_plant_2017-12-12.txt        |
+|       79      | available_protozoa_2017-12-12.txt     |
+|       0       | available_plastid_2017-12-12.txt      |
+|       0       | available_plasmid_2017-12-12.txt      |
+|       0       | available_mitochondrion_2017-12-12.txt        |
+
 
 
 **Notes** 
@@ -113,8 +119,6 @@ Here is the result on Dec 12, 2017.
 - The **number of available genomes** exceeds by far the number of species, because some species are represented by different strains, in particular for bacteria (for some bacterial species of interest for health, several thousands of strains have been sequenced). 
 
 - Some of these genomes are only partly sequenced, or poorly assembled, and the level of annotation is quite variable. NCBI subdivided these available genomes in 4 categories depending on the level of completion of the sequencing project. 
-
-
 
 
 ## Installing the genome for a given species
@@ -127,16 +131,21 @@ Here is the result on Dec 12, 2017.
 ## (e.g. Rhodospirillum_centenum)  
 install-organism -v 1 -group bacteria \
   -species Rhodospirillum_centenum \
-  -task download
+  -task download,list
 ```
 
 **Notes**
 
-1. The option `-species` requires to specify the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore (_), with exactly the same spelling and cases as on the NCBI FTP refseq site. 
+1. The option `-species` requires to specify the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore character (`_`), with exactly the same spelling and cases as on the NCBI FTP refseq site. 
 
-2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. 
+2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a separate folder, with the same organistion as on the NCBI FTP site. 
 
-3. **Beware:** for some bacterial species of particular interest (e.g. important human pathogens), tens of thousands of strains have been sequenced. It might cost a lot of time and disk space to download all of them. TO avoid that, you can specify the full strain name (more precisely the subfolder corresponding to the strain of interest in the species folder on the NCBI FTP site). 
+```{r list_downloaded_genomes, eval=FALSE}
+ls -1 $RSAT/downloads/refseq/bacteria/Rhodospirillum_centenum/latest_assembly_versions
+```
+
+
+3. **Beware:** for some bacterial species of particular interest (e.g. important human pathogens), severak thousands of strains have been sequenced. It might cost a lot of time and disk space to download all of them. TO avoid that, the option `-strain` enables to specify the full strain name (more precisely the subfolder corresponding to the strain of interest in the species folder on the NCBI FTP site). 
 
 ### Listing the available strains for the species of interest
 
@@ -154,20 +163,28 @@ This command actually lists the folders.
 Parsing consists in extracting the information from a text-formatted file, in order to organise it in a computable structure. 
 
 ```{bash eval=FALSE}
-## Parse one genome (e.g. Rhodospirillum centenum)
-install-organism -v 1 -group bacteria -species Rhodospirillum_centenum -strain Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task parse
+## Parse a given strain of a given genome 
+## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) 
+install-organism -v 2 -group bacteria \
+  -species Rhodospirillum_centenum \
+  -strain GCF_000016185.1_ASM1618v1 \
+  -task parse
 ```
 
-This creates a folder whose name is the concatenation of the genus, species and strain names:  `$RSAT/public_html/data/[Genus_species_strain]`
+**Note:** if the option `-strain` is omitted, `install-organisms` parses all the strains found in the download folder of the selected organism. 
+
+
+For each parsed genome, the program creates a folder whose name is the concatenation of the genus, species and strain names:  `$RSAT/public_html/data/[Genus_species_strain]`
+
 
 From now on we will directly refer to this concatenated name as the "Organism name" (generally denoted by the option `-org` in RSAT commands. 
 
 ```{bash eval=FALSE}
 ## Check the parsing result
-ls -l /workspace/rsat/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
+ls -l ${RSAT}/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
 
 ## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)
-du -sm /workspace/rsat/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
+du -sm ${RSAT}/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
 ```
 
 This gives the number of megabases occupied by the genome folder. 
@@ -175,6 +192,8 @@ This gives the number of megabases occupied by the genome folder.
 ### Adding the parsed genome to the list of supported genomes
 
 In order to make the parsed genome available for RSAT, you need to run the configuration task.
+
+Note that for the subsequent tasks, the options `-species` and `-strains` are not used anymore, we will instead specify "organisms" installed on RSAT, identified by the concatenation of Genus, species and strain. 
 
 ```{bash eval=FALSE}
 ## Configure the organism for RSAT
@@ -244,49 +263,106 @@ You can do the similar test with the stop codon frequencies. Note that nothing f
 
 ```{bash eval=FALSE}
 ## Compute all trinucleotide frequencies in the stop codons
-retrieve-seq -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1  -type downstream -from -1 -to -3
+retrieve-seq -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1  -type downstream -from -1 -to -3 -o stop_seq.fasta
 
-more start_seq.fasta
+more stop_seq.fasta
 
 ## Check that most genes have ATG as start codon
-oligo-analysis -v 1 -i start_seq.fasta  -l 3 -1str -return occ,freq -sort | more
+oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str -return occ,freq -sort | more
 
 ```
+
+
+****
+## Selecting bacterial organisms with Complete genomes or Chromosomes
+
+NCBI provides a summary file with indications of the sequencing status for each genome project: 
+
+- <ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt> 
+
+This table contains many columns with valuable information for genome management. The column contain is indicated in a separate file. 
+
+- <ftp://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt>
+
+Genome assemblies are classigied in four levels ([PMCID: PMC4702866](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4702866/)).
+
+1. **Contig:** Assemblies that include only contigs.
+2. **Scaffold:** Includes both scaffolds and contigs.
+3. **Chromosome:** Includes chromosome or linkage groups, plus scaffolds and contigs.
+4. **Complete genome:** Assemblies for which all molecules are fully sequenced.
+
+We can use this assembly summary  to select only those genomes with the a completion level that we consider appropriate. 
+
+
+For example, for the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the installation to genomes with at least one fully sequenced chromosome (categories "Chromosome" and "Complete Genome").
+
+```{bash eval=FALSE}
+## Set a file name for the assembly file
+ASSEMBLY_URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
+ASSEMBLY=ncbi_organisms_assembly_summary_bacteria_refseq_${TODAY}.txt
+COMPLETE=ncbi_organisms_assembly_summary_bacteria_complete_${TODAY}.txt
+ONECHROM=ncbi_organisms_assembly_summary_bacteria_chromosome_${TODAY}.txt
+ONECHROM_AND_COMPLETE=chromosome_and_complete_bacterial_genomes_${TODAY}.txt
+
+## Dowload the assembly summary from NCBI FTP site
+wget -nc ${ASSEMBLY_URL} --output-document ${ASSEMBLY} 
+
+## Select only the genomes with a Complete or Chromosome annotation in the field assembly_level
+awk -F "\t" '$12=="Chromosome" && $11=="latest"{print $0}' \
+      ${ASSEMBLY} \
+      > ${ONECHROM}
+      
+awk -F "\t" '$12=="Complete Genome" && $11=="latest"{print $0}' \
+      ${ASSEMBLY} \
+      > ${COMPLETE}
+
+## Merge summary tables for bacterial species with
+## at least one sequenced chromosome
+cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_AND_COMPLETE}
+
+## Count the number of selected species
+wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE}
+
+```
+
+The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: *reference genome*, *representative genome*, or *na* (non attributed).
+
+```{bash reference_genomes, eval=FALSE}
+## Number of reference or representative genomes
+
+## For all genomes
+grep -v '^#' ${ASSEMBLY} | cut -f 5 | sort | uniq -c | sort -n
+
+## For those with at least one complete chromosome
+grep -v '^#' ${ONECHROM_AND_COMPLETE} | cut -f 5 | sort | uniq -c | sort -n
+```
+
 
 
 *****
 ## Installing many genomes
 
+We can install multiple species in a single command by specifying a file containing a list of species names (one species name per row). 
 
-## Selecting bacterial organisms with Complete genomes or Chromosomes
 
-The NCBI file ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt contains annotations referring to the status of the genome projects.
+**Beware**: 
 
-NCBI Assembly classifies genome assemblies in four levels:
+- This tan take a considerable time dependingon the number of selected species and bandwidth of your computer. 
+- This command will download thousands of genomes  on your hard drive, which will undoubtedly occupy some disj space.
 
-1. Contig: Assemblies that include only contigs.
-2. Scaffold: Includes both scaffolds and contigs.
-3. Chromosome: Includes chromosome or linkage groups, plus scaffolds and contigs.
-4. Complete genome: Assemblies for which all molecules are fully sequenced.
 
-Reference: PMCID: PMC4702866
+```{bash installing_many_genomes, eval=FALSE}
+## File with the list of species to install
+SPECIES_TO_INSTALL=bacteria_to_install.txt
 
-In this case in order to work with fully sequenced bacterial genomes and chromosomes we will select genomes with "Chromosome" and "Complete Genome" annotation in this field.
+## Get the two first words of the 8th column as Genus and species names
+cut -f 8 ${ONECHROM_AND_COMPLETE} \
+  | awk '{print $1"_"$2}' \
+   > ${SPECIES_TO_INSTALL}
+wc -l ${SPECIES_TO_INSTALL}
 
-```{bash eval=FALSE}
-## Dowload the ftp file
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
-
-## Select only the genomes with a Complete or Chromosome annotation in the field assembly_level
-mv assembly_summary_refseq.txt ncbi_organisms_assembly_summary_bacteria_refseq.txt
-
-awk -F "\t" '($12=="Chromosome" || $12=="Complete Genome") && $11=="latest"{print $0}' ncbi_organisms_assembly_summary_bacteria_refseq.txt > chromosome_and_complete_bacterial_genomes.txt
-
+## Download all the selected species
+install-organism -v 2 -group bacteria \
+   -species_file ${SPECIES_TO_INSTALL} -task download
 ```
-Using the list of available bacterial genomes we can select only those with the amount of annotation we consider appropriate. 
-
-
-
-
-
 

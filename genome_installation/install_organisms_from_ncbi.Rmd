@@ -58,19 +58,22 @@ The NCBI FTP genome site is organised by "main" **taxonomic groups**:
 
 The option `-task available` returns the complete list of available species for the specified group. 
 
-The command below gets the list of all available bacteria and stores them in a text file. 
+The command below gets the list of all available bacteria and stores them in a text file. It can easily be adapted to another group by changing the environment variable `GROUP`. 
 
 ```{bash available_bacteria, eval=FALSE}
 ## Get curret date to use as suffix for output files
 export TODAY=`date +%Y-%m-%d`
 
+## Choose a taxonomic group of interest
+export GROUP=bacteria
+
 ## Get the list of bacterial species available on the NCBI FTP site
-install-organism -v 1 -group bacteria -task available \
-  -o available_bacteria_${TODAY}.txt
+install-organism -v 1 -group ${GROUP} -task available \
+  -o available_${GROUP}_${TODAY}.txt
   
 ## Count the number of species.
 ## Note: grep is used to filter out the comment lines.
-grep -v '^;' available_bacteria_${TODAY}.txt | wc -l
+grep -v '^;' available_${GROUP}_${TODAY}.txt | wc -l
 ```
 
 We can of course do the same for other taxa, for example Archaea, Fungi or Mammalian. 
@@ -274,9 +277,9 @@ oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str -return occ,freq -sort | more
 
 
 ****
-## Selecting bacterial organisms with Complete genomes or Chromosomes
+## Selecting organisms with Complete genomes or Chromosomes
 
-NCBI provides a summary file with indications of the sequencing status for each genome project: 
+For each taxonomic group, NCBI provides a summary file with indications of the sequencing status for each genome project. Here is the link for Bacteria (you can easily adapt it for other groups). 
 
 - <ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt> 
 
@@ -297,15 +300,24 @@ We can use this assembly summary  to select only those genomes with the a comple
 For example, for the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the installation to genomes with at least one fully sequenced chromosome (categories "Chromosome" and "Complete Genome").
 
 ```{bash eval=FALSE}
+## Get curret date to use as suffix for output files
+export TODAY=`date +%Y-%m-%d`
+
+## Choose a taxonomic group of interest
+export GROUP=bacteria
+
 ## Set a file name for the assembly file
-ASSEMBLY_URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt
-ASSEMBLY=ncbi_organisms_assembly_summary_bacteria_refseq_${TODAY}.txt
-COMPLETE=ncbi_organisms_assembly_summary_bacteria_complete_${TODAY}.txt
-ONECHROM=ncbi_organisms_assembly_summary_bacteria_chromosome_${TODAY}.txt
-ONECHROM_AND_COMPLETE=chromosome_and_complete_bacterial_genomes_${TODAY}.txt
+ASSEMBLY_URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/${GROUP}/assembly_summary.txt
+ASSEMBLY=ncbi_organisms_assembly_summary_${GROUP}_refseq_${TODAY}.txt
+COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_complete_${TODAY}.txt
+ONECHROM=ncbi_organisms_assembly_summary_${GROUP}_chromosome_${TODAY}.txt
+ONECHROM_AND_COMPLETE=chromosome_and_complete_${GROUP}l_genomes_${TODAY}.txt
 
 ## Dowload the assembly summary from NCBI FTP site
 wget -nc ${ASSEMBLY_URL} --output-document ${ASSEMBLY} 
+
+## Count the number of organisms (remove comments first) 
+grep -v '^#' ${ASSEMBLY} | wc -l
 
 ## Select only the genomes with a Complete or Chromosome annotation in the field assembly_level
 awk -F "\t" '$12=="Chromosome" && $11=="latest"{print $0}' \
@@ -316,12 +328,11 @@ awk -F "\t" '$12=="Complete Genome" && $11=="latest"{print $0}' \
       ${ASSEMBLY} \
       > ${COMPLETE}
 
-## Merge summary tables for bacterial species with
-## at least one sequenced chromosome
+## Merge summary tables of species with at least one sequenced chromosome
 cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_AND_COMPLETE}
 
 ## Count the number of selected species
-wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE}
+wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY}
 
 ```
 
@@ -353,7 +364,7 @@ We can install multiple species in a single command by specifying a file contain
 
 ```{bash installing_many_genomes, eval=FALSE}
 ## File with the list of species to install
-SPECIES_TO_INSTALL=bacteria_to_install.txt
+SPECIES_TO_INSTALL=${GROUP}_to_install.txt
 
 ## Get the two first words of the 8th column as Genus and species names
 cut -f 8 ${ONECHROM_AND_COMPLETE} \
@@ -362,7 +373,7 @@ cut -f 8 ${ONECHROM_AND_COMPLETE} \
 wc -l ${SPECIES_TO_INSTALL}
 
 ## Download all the selected species
-install-organism -v 2 -group bacteria \
+install-organism -v 2 -group ${GROUP} \
    -species_file ${SPECIES_TO_INSTALL} -task download
 ```
 

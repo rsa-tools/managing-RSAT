@@ -130,10 +130,21 @@ Here is the result on Dec 12, 2017.
 
 
 ```{bash eval=FALSE}
+## Select a species and straint of interest 
+## (can be adapted to your needs)
+export SPECIES=Rhodospirillum_centenum
+export STRAIN=GCF_000016185.1_ASM1618v1
+export TAXON=Rhodospirillum
+
+## An example of altrnative set of parameters
+# export SPECIES=Rhizobium_etli
+# export STRAIN=GCF_000092045.1_ASM9204v1
+# export TAXON=Rhizobiales
+
 ## Download the genome(s) for a given species 
 ## (e.g. Rhodospirillum_centenum)  
 install-organism -v 1 -group bacteria \
-  -species Rhodospirillum_centenum \
+  -species ${SPECIES} \
   -task download,list
 ```
 
@@ -144,7 +155,7 @@ install-organism -v 1 -group bacteria \
 2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a separate folder, with the same organistion as on the NCBI FTP site. 
 
 ```{r list_downloaded_genomes, eval=FALSE}
-ls -1 $RSAT/downloads/refseq/bacteria/Rhodospirillum_centenum/latest_assembly_versions
+ls -1 $RSAT/downloads/refseq/bacteria/${SPECIES}/latest_assembly_versions
 ```
 
 
@@ -155,7 +166,7 @@ ls -1 $RSAT/downloads/refseq/bacteria/Rhodospirillum_centenum/latest_assembly_ve
 ```{bash eval=FALSE}
 ## List the available strains for a given species (e.g. Rhodospirillum centenum).
 install-organism -v 1 -group bacteria \
-  -species Rhodospirillum_centenum \
+  -species ${SPECIES} \
   -task list
 ```
 
@@ -169,8 +180,8 @@ Parsing consists in extracting the information from a text-formatted file, in or
 ## Parse a given strain of a given genome 
 ## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) 
 install-organism -v 2 -group bacteria \
-  -species Rhodospirillum_centenum \
-  -strain GCF_000016185.1_ASM1618v1 \
+  -species ${SPECIES} \
+  -strain ${STRAIN} \
   -task parse
 ```
 
@@ -184,10 +195,10 @@ From now on we will directly refer to this concatenated name as the "Organism na
 
 ```{bash eval=FALSE}
 ## Check the parsing result
-ls -l ${RSAT}/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
+ls -l ${RSAT}/public_html/data/genomes/${SPECIES}_${STRAIN}/genome/
 
 ## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)
-du -sm ${RSAT}/public_html/data/genomes/Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1/genome/
+du -sm ${RSAT}/public_html/data/genomes/${SPECIES}_${STRAIN}/genome/
 ```
 
 This gives the number of megabases occupied by the genome folder. 
@@ -200,11 +211,11 @@ Note that for the subsequent tasks, the options `-species` and `-strains` are no
 
 ```{bash eval=FALSE}
 ## Configure the organism for RSAT
-install-organism -v 1 -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task config
+install-organism -v 1 -org ${SPECIES}_${STRAIN} -task config
 
 
 ## Check that the organism has weel been declared
-supported-organisms -taxon Rhodospirillum
+supported-organisms -taxon ${TAXON}
 
 ```
 
@@ -217,7 +228,7 @@ The simplest way to run it is to select the "default" tasks.
 ```{bash eval=FALSE}
 ## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)
 
-install-organism -v 1 -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -task default
+install-organism -v 1 -org ${SPECIES}_${STRAIN} -task default
 
 ```
 
@@ -246,14 +257,14 @@ install-organism -v 1 -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -ta
 
 ```{bash eval=FALSE}
 ## Get all the organisms of the Genus Rhodospirillum
-supported-organisms -taxon Rhodospirillum
+supported-organisms -taxon ${TAXON}
 ```
 
 ### Checking the correctness of gene annotations by computing start/stop codon frequencies
 
 ```{bash eval=FALSE}
 ## Retrieve all the start codon sequences
-retrieve-seq -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1 -from 0 -to 2 -o start_seq.fasta
+retrieve-seq -all -org ${SPECIES}_${STRAIN} -from 0 -to 2 -o start_seq.fasta
 
 more start_seq.fasta
 
@@ -266,12 +277,14 @@ You can do the similar test with the stop codon frequencies. Note that nothing f
 
 ```{bash eval=FALSE}
 ## Compute all trinucleotide frequencies in the stop codons
-retrieve-seq -all -org Rhodospirillum_centenum_GCF_000016185.1_ASM1618v1  -type downstream -from -1 -to -3 -o stop_seq.fasta
+retrieve-seq -all -org ${SPECIES}_${STRAIN} \
+   -type downstream -from -1 -to -3 -o stop_seq.fasta
 
 more stop_seq.fasta
 
 ## Check that most genes have ATG as start codon
-oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str -return occ,freq -sort | more
+oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str \
+   -return occ,freq -sort | more
 
 ```
 
@@ -328,24 +341,41 @@ awk -F "\t" '$12=="Complete Genome" && $11=="latest"{print $0}' \
       ${ASSEMBLY} \
       > ${COMPLETE}
 
+
 ## Merge summary tables of species with at least one sequenced chromosome
 cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_AND_COMPLETE}
 
 ## Count the number of selected species
-wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY}
+wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY} 
 
 ```
 
 The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: *reference genome*, *representative genome*, or *na* (non attributed).
 
 ```{bash reference_genomes, eval=FALSE}
-## Number of reference or representative genomes
+REFERENCE=ncbi_organisms_assembly_summary_${GROUP}_reference_${TODAY}.txt
+REPRESENTATIVE=ncbi_organisms_assembly_summary_${GROUP}_representative_${TODAY}.txt
+REPRESENTATIVE_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_representative_complete_${TODAY}.txt
 
-## For all genomes
-grep -v '^#' ${ASSEMBLY} | cut -f 5 | sort | uniq -c | sort -n
 
-## For those with at least one complete chromosome
-grep -v '^#' ${ONECHROM_AND_COMPLETE} | cut -f 5 | sort | uniq -c | sort -n
+## Select reference genomes
+awk -F "\t" '$5=="reference genome" && $11=="latest"{print $0}' \
+      ${ASSEMBLY} \
+      > ${REFERENCE}
+
+## Select representative genomes
+awk -F "\t" '$5=="representative genome" && $11=="latest"{print $0}' \
+      ${ASSEMBLY} \
+      > ${REPRESENTATIVE}
+
+## Select representative and complete genomes
+awk -F "\t" '$5=="representative genome" && $12=="Complete Genome"  && $11=="latest"{print $0}' \
+      ${ASSEMBLY} \
+      > ${REPRESENTATIVE_COMPLETE}
+
+## Print the umbers of reference or representative genomes
+wc -l ${REFERENCE} ${REPRESENTATIVE_COMPLETE} ${REPRESENTATIVE} ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY} 
+
 ```
 
 
@@ -362,12 +392,14 @@ We can install multiple species in a single command by specifying a file contain
 - This command will download thousands of genomes  on your hard drive, which will undoubtedly occupy some disj space.
 
 
+### Downloading genome files from NCBI
+
 ```{bash installing_many_genomes, eval=FALSE}
 ## File with the list of species to install
 SPECIES_TO_INSTALL=${GROUP}_to_install.txt
 
 ## Get the two first words of the 8th column as Genus and species names
-cut -f 8 ${ONECHROM_AND_COMPLETE} \
+cut -f 8 ${COMPLETE} \
   | awk '{print $1"_"$2}' \
    > ${SPECIES_TO_INSTALL}
 wc -l ${SPECIES_TO_INSTALL}
@@ -376,4 +408,20 @@ wc -l ${SPECIES_TO_INSTALL}
 install-organism -v 2 -group ${GROUP} \
    -species_file ${SPECIES_TO_INSTALL} -task download
 ```
+
+### Parsing genomes from NCBI files
+
+Since the number of genomes to install can be important, we will run `install-organism` with the option `-batch`, in order to parallelise the installation steps via a job scheduler. This job scheduler must have been previously defined in RSAT configuration files. 
+
+```{bash eval=FALSE}
+install-organism -v 2 -group ${GROUP} \
+   -species_file ${SPECIES_TO_INSTALL} -task parse -batch
+
+make -f ${RSAT}/makefiles/server.mk  watch_jobs
+```
+
+
+
+### RSAT installation
+
 

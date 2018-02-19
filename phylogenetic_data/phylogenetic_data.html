@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2018-01-30" />
+<meta name="date" content="2018-02-19" />
 
 <title>Phylogenetic data management</title>
 
@@ -29,42 +29,68 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
-td.sourceCode { padding-left: 5px; }
-pre, code { color: #cccccc; background-color: #303030; }
-code > span.kw { color: #f0dfaf; } /* Keyword */
-code > span.dt { color: #dfdfbf; } /* DataType */
-code > span.dv { color: #dcdccc; } /* DecVal */
-code > span.bn { color: #dca3a3; } /* BaseN */
-code > span.fl { color: #c0bed1; } /* Float */
-code > span.ch { color: #dca3a3; } /* Char */
-code > span.st { color: #cc9393; } /* String */
-code > span.co { color: #7f9f7f; } /* Comment */
-code > span.ot { color: #efef8f; } /* Other */
-code > span.al { color: #ffcfaf; } /* Alert */
-code > span.fu { color: #efef8f; } /* Function */
-code > span.er { color: #c3bf9f; } /* Error */
-code > span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
-code > span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code > span.sc { color: #dca3a3; } /* SpecialChar */
-code > span.vs { color: #cc9393; } /* VerbatimString */
-code > span.ss { color: #cc9393; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #f0dfaf; } /* ControlFlow */
-code > span.op { color: #f0efd0; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code > span.at { } /* Attribute */
-code > span.do { color: #7f9f7f; } /* Documentation */
-code > span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code > span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code > span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  { color: #cccccc; background-color: #303030; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ffcfaf; } /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #dca3a3; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #f0dfaf; } /* ControlFlow */
+code span.ch { color: #dca3a3; } /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+code span.co { color: #7f9f7f; } /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+code span.do { color: #7f9f7f; } /* Documentation */
+code span.dt { color: #dfdfbf; } /* DataType */
+code span.dv { color: #dcdccc; } /* DecVal */
+code span.er { color: #c3bf9f; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #c0bed1; } /* Float */
+code span.fu { color: #efef8f; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+code span.kw { color: #f0dfaf; } /* Keyword */
+code span.op { color: #f0efd0; } /* Operator */
+code span.ot { color: #efef8f; } /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+code span.sc { color: #dca3a3; } /* SpecialChar */
+code span.ss { color: #cc9393; } /* SpecialString */
+code span.st { color: #cc9393; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #cc9393; } /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
 </style>
 <style type="text/css">
   pre:not([class]) {
@@ -246,7 +272,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Phylogenetic data management</h1>
 <h4 class="author"><em>Jacques van Helden</em></h4>
-<h4 class="date"><em>2018-01-30</em></h4>
+<h4 class="date"><em>2018-02-19</em></h4>
 
 </div>
 
@@ -258,34 +284,34 @@ div.tocify {
 <h1><span class="header-section-number">2</span> Typical usages of the command <em>taxon-frequencies</em></h1>
 <div id="installing-dyad-frequencies-for-a-single-taxon" class="section level2">
 <h2><span class="header-section-number">2.1</span> Installing dyad frequencies for a single taxon</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Adapt the variable depending on your taxon of interest</span>
-<span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales
-
-<span class="co">## Compute and install strand-insensitive dyad frequencies</span>
-<span class="ex">taxon-frequencies</span> -v 1 -taxon <span class="va">${TAXON}</span> -type dyad -ml 3 -2str -install
-
-<span class="co">## Compute and install strand-sensitive dyad frequencies</span>
-<span class="ex">taxon-frequencies</span> -v 1 -taxon <span class="va">${TAXON}</span> -type dyad -ml 3 -1str -install
-
-<span class="co">## Check the resulting taxonomic frequency file</span>
-<span class="fu">zless</span> <span class="va">${RSAT}</span>/public_html/data/taxon_frequencies/<span class="va">${TAXON}</span>/dyads_3nt_sp0-20_upstream-noorf_<span class="va">${TAXON}</span>-noov-1str.freq.gz</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Adapt the variable depending on your taxon of interest</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">## Compute and install strand-insensitive dyad frequencies</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="ex">taxon-frequencies</span> -v 1 -taxon <span class="va">${TAXON}</span> -type dyad -ml 3 -2str -install</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">## Compute and install strand-sensitive dyad frequencies</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="ex">taxon-frequencies</span> -v 1 -taxon <span class="va">${TAXON}</span> -type dyad -ml 3 -1str -install</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">## Check the resulting taxonomic frequency file</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="fu">zless</span> <span class="va">${RSAT}</span>/public_html/data/taxon_frequencies/<span class="va">${TAXON}</span>/dyads_3nt_sp0-20_upstream-noorf_<span class="va">${TAXON}</span>-noov-1str.freq.gz</a></code></pre></div>
 </div>
 <div id="installing-dyad-frequencies-for-all-sub-taxa-of-a-given-taxon" class="section level2">
 <h2><span class="header-section-number">2.2</span> Installing dyad frequencies for all sub-taxa of a given taxon</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Adapt the variable depending on your taxon of interest</span>
-<span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales
-
-<span class="co">## Install dyad frequencies for all sub-taxa of a given taxon</span>
-<span class="ex">taxon-frequencies</span> -v 2 -type dyad -ml 3 -2str -install -sub_taxa \
-  -taxon <span class="va">${TAXON}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Adapt the variable depending on your taxon of interest</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">## Install dyad frequencies for all sub-taxa of a given taxon</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="ex">taxon-frequencies</span> -v 2 -type dyad -ml 3 -2str -install -sub_taxa \</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  -taxon <span class="va">${TAXON}</span></a></code></pre></div>
 </div>
 <div id="install-all-the-background-models-for-a-given-taxon" class="section level2">
 <h2><span class="header-section-number">2.3</span> Install all the background models for a given taxon</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## Adapt the variable depending on your taxon of interest</span>
-<span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales
-
-<span class="co">## Install background models for oligonucleotides and dyads</span>
-<span class="ex">taxon-frequencies</span> -v 1 -all_models -install -taxon <span class="va">${TAXON}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">## Adapt the variable depending on your taxon of interest</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="bu">export</span> <span class="va">TAXON=</span>Pseudomonadales</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">## Install background models for oligonucleotides and dyads</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="ex">taxon-frequencies</span> -v 1 -all_models -install -taxon <span class="va">${TAXON}</span></a></code></pre></div>
 </div>
 </div>
 

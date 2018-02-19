@@ -6,7 +6,7 @@ output:
   html_document:
     self_contained: false
     fig_caption: true
-    highlight: zenburn
+    highlight: kate
     theme: cerulean
     toc: true
     toc_depth: 3
@@ -79,41 +79,40 @@ grep -v '^;' available_${GROUP}_${TODAY}.txt | wc -l
 We can of course do the same for other taxa, for example Archaea, Fungi or Mammalian. 
 
 ```{bash available_genomes, eval=FALSE}
-export TAXA='archaea bacteria fungi invertebrate
-plant mitochondrion plasmid plastid protozoa
-vertebrate_mammalian vertebrate_other viral'
+export NCBI_GROUPS='archaea bacteria fungi invertebrate plant protozoa vertebrate_mammalian vertebrate_other viral'
 
-for taxon in $TAXA; do \
-  echo "Getting list of NCBI species for ${taxon}" ; \
-  install-organism -v 1 -group ${taxon} -task available \
-  -o available_${taxon}_${TODAY}.txt ; \
+echo "NCBI_GROUPS ${NCBI_GROUPS}"
+for ncbi_group in $NCBI_GROUPS; do \
+  echo "Getting list of NCBI species for ${ncbi_group}" ; \
+  install-organism -v 1 -group ${ncbi_group} -task available \
+    -o available_${ncbi_group}_${TODAY}.txt ; \
 done
+
 
 ## Approx count of species per taxa
 ## (each file starts with 15 comment lines, which are be substracted from each count)
 wc -l available_*_${TODAY}.txt |  sort -nr  | awk '{print "|\t"$1-15"\t| "$2"\t|"}' 
+
 ```
 
 
 ### Number of species per group
 
-Here is the result on Dec 12, 2017. 
+Here is the result on Feb 1, 2018 
+
 
 | Number of species | Taxonomic group |
 |---------|--------------------------|
-|       25626   | total |
-|       16735   | available_bacteria_2017-12-12.txt     |
-|       7384    | available_viral_2017-12-12.txt        |
-|       531     | available_archaea_2017-12-12.txt      |
-|       245     | available_fungi_2017-12-12.txt        |
-|       155     | available_invertebrate_2017-12-12.txt |
-|       124     | available_vertebrate_other_2017-12-12.txt     |
-|       109     | available_vertebrate_mammalian_2017-12-12.txt |
-|       99      | available_plant_2017-12-12.txt        |
-|       79      | available_protozoa_2017-12-12.txt     |
-|       0       | available_plastid_2017-12-12.txt      |
-|       0       | available_plasmid_2017-12-12.txt      |
-|       0       | available_mitochondrion_2017-12-12.txt        |
+|       26335   | total |
+|       17443   | available_bacteria_2018-02-01.txt     |
+|       7408    | available_viral_2018-02-01.txt        |
+|       540     | available_archaea_2018-02-01.txt      |
+|       249     | available_fungi_2018-02-01.txt        |
+|       160     | available_invertebrate_2018-02-01.txt |
+|       126     | available_vertebrate_other_2018-02-01.txt     |
+|       110     | available_vertebrate_mammalian_2018-02-01.txt |
+|       100     | available_plant_2018-02-01.txt        |
+|       79      | available_protozoa_2018-02-01.txt     |
 
 
 
@@ -172,7 +171,7 @@ install-organism -v 1 -group bacteria \
 
 This command actually lists the folders. 
 
-### Parsing the genomes
+### Parsing a selected genome from NCBI
 
 Parsing consists in extracting the information from a text-formatted file, in order to organise it in a computable structure. 
 
@@ -321,10 +320,10 @@ export GROUP=bacteria
 
 ## Set a file name for the assembly file
 ASSEMBLY_URL=ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/${GROUP}/assembly_summary.txt
-ASSEMBLY=ncbi_organisms_assembly_summary_${GROUP}_refseq_${TODAY}.txt
-COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_complete_${TODAY}.txt
-ONECHROM=ncbi_organisms_assembly_summary_${GROUP}_chromosome_${TODAY}.txt
-ONECHROM_AND_COMPLETE=chromosome_and_complete_${GROUP}l_genomes_${TODAY}.txt
+ASSEMBLY=ncbi_organisms_assembly_summary_${GROUP}_refseq_${TODAY}.tsv
+COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_complete_${TODAY}.tsv
+ONECHROM=ncbi_organisms_assembly_summary_${GROUP}_chromosome_${TODAY}.tsv
+ONECHROM_OR_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_chromosome_or_complete_${TODAY}.tsv
 
 ## Dowload the assembly summary from NCBI FTP site
 wget -nc ${ASSEMBLY_URL} --output-document ${ASSEMBLY} 
@@ -343,19 +342,19 @@ awk -F "\t" '$12=="Complete Genome" && $11=="latest"{print $0}' \
 
 
 ## Merge summary tables of species with at least one sequenced chromosome
-cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_AND_COMPLETE}
+cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_OR_COMPLETE}
 
 ## Count the number of selected species
-wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY} 
+wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_OR_COMPLETE} ${ASSEMBLY} 
 
 ```
 
 The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: *reference genome*, *representative genome*, or *na* (non attributed).
 
 ```{bash reference_genomes, eval=FALSE}
-REFERENCE=ncbi_organisms_assembly_summary_${GROUP}_reference_${TODAY}.txt
-REPRESENTATIVE=ncbi_organisms_assembly_summary_${GROUP}_representative_${TODAY}.txt
-REPRESENTATIVE_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_representative_complete_${TODAY}.txt
+REFERENCE=ncbi_organisms_assembly_summary_${GROUP}_reference_${TODAY}.tsv
+REPRESENTATIVE=ncbi_organisms_assembly_summary_${GROUP}_representative_${TODAY}.tsv
+REPRESENTATIVE_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_representative_complete_${TODAY}.tsv
 
 
 ## Select reference genomes
@@ -374,7 +373,7 @@ awk -F "\t" '$5=="representative genome" && $12=="Complete Genome"  && $11=="lat
       > ${REPRESENTATIVE_COMPLETE}
 
 ## Print the umbers of reference or representative genomes
-wc -l ${REFERENCE} ${REPRESENTATIVE_COMPLETE} ${REPRESENTATIVE} ${COMPLETE} ${ONECHROM} ${ONECHROM_AND_COMPLETE} ${ASSEMBLY} 
+wc -l ${REFERENCE} ${REPRESENTATIVE_COMPLETE} ${REPRESENTATIVE} ${COMPLETE} ${ONECHROM} ${ONECHROM_OR_COMPLETE} ${ASSEMBLY} 
 
 ```
 
@@ -386,27 +385,49 @@ wc -l ${REFERENCE} ${REPRESENTATIVE_COMPLETE} ${REPRESENTATIVE} ${COMPLETE} ${ON
 We can install multiple species in a single command by specifying a file containing a list of species names (one species name per row). 
 
 
+### Download
+
 **Beware**: 
 
-- This tan take a considerable time dependingon the number of selected species and bandwidth of your computer. 
 - This command will download thousands of genomes  on your hard drive, which will undoubtedly occupy some disj space.
 
+- The download can take a considerable time depending on the number of selected species and bandwidth of your computer. 
 
 ### Downloading genome files from NCBI
 
-```{bash installing_many_genomes, eval=FALSE}
+```{bash downloading_many_genomes, eval=FALSE}
 ## File with the list of species to install
-SPECIES_TO_INSTALL=${GROUP}_to_install.txt
+SPECIES_TO_INSTALL=${GROUP}_species_to_install.txt
 
 ## Get the two first words of the 8th column as Genus and species names
 cut -f 8 ${COMPLETE} \
   | awk '{print $1"_"$2}' \
    > ${SPECIES_TO_INSTALL}
+
+## Count the number of species to instal
 wc -l ${SPECIES_TO_INSTALL}
 
 ## Download all the selected species
 install-organism -v 2 -group ${GROUP} \
    -species_file ${SPECIES_TO_INSTALL} -task download
+   
+
+## Check the list of downloaded organisms 
+## Note: organism = Genus + species + strain
+install-organism -v 2 -group ${GROUP} \
+   -species_file ${SPECIES_TO_INSTALL} -task list
+
+```
+
+### Parsing
+
+```{bash parsing_many_genomes, eval=FALSE}
+
+## Parse all organisms
+install-organism -v 2 -group ${GROUP} \
+   -species_file ${SPECIES_TO_INSTALL} -task list,parse
+
+
 ```
 
 ### Parsing genomes from NCBI files
@@ -423,5 +444,54 @@ make -f ${RSAT}/makefiles/server.mk  watch_jobs
 
 
 ### RSAT installation
+
+
+### Default installation tasks
+
+```{bash installing_many_genomes, eval=FALSE}
+
+## Run default installation tasks
+## NOTE: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)
+install-organism -v 2 -group ${GROUP} \
+   -species_file ${SPECIES_TO_INSTALL} -task config,list,default
+
+```
+
+### Managing installation tasks with a job scheduler
+
+If your RSAT server has been configured adequately, you can add the option `-batch` to the commands above in order to send the installation tasks to a job scheduler. 
+
+```{bash installing_many_geonmes_batch, eval=FALSE}
+ORG_TO_INSTALL=${GROUP}_organisms_to_install.txt
+
+## Parse all organisms
+install-organism -v 2 -group ${GROUP} \
+   -species_file ${SPECIES_TO_INSTALL} -task list,parse \
+  -batch
+
+
+## Get the list of organisms from the list of parsed species
+install-organism -v 2 -group ${GROUP} \
+  -species_file ${SPECIES_TO_INSTALL} -task list \
+  > ${ORG_TO_INSTALL}
+
+## Count the number of species and organisms to install
+SPECIES_DO_INSTALL_NB=`grep -v '^;' ${SPECIES_TO_INSTALL} | wc -l  | awk '{print $1}'`
+ORG_DO_INSTALL_NB=`grep -v '^;' ${ORG_TO_INSTALL} | wc -l | awk '{print $1}'`
+echo "To install: ${ORG_DO_INSTALL_NB} organisms,  ${SPECIES_DO_INSTALL_NB} distinct species"
+
+## First retrieve all upstream sequences (cannot be done in batch mode)
+install-organism -v 2  \
+   -org_file ${ORG_TO_INSTALL} -task config,allup; 
+   
+## Send the other installation tasks to the job scheduler
+install-organism -v 2 -org_file ${ORG_TO_INSTALL}  -task  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools -batch
+
+```
+
+## Check the installation
+
+TO BE WRITTEN
+
 
 

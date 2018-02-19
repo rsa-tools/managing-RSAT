@@ -55,42 +55,46 @@ pre.numberSource a.sourceLine::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
   }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
 div.sourceCode
-  { color: #cccccc; background-color: #303030; }
+  { color: #1f1c1b; background-color: #ffffff; }
 @media screen {
 a.sourceLine::before { text-decoration: underline; }
 }
-code span.al { color: #ffcfaf; } /* Alert */
-code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
-code span.at { } /* Attribute */
-code span.bn { color: #dca3a3; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #f0dfaf; } /* ControlFlow */
-code span.ch { color: #dca3a3; } /* Char */
-code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
-code span.co { color: #7f9f7f; } /* Comment */
-code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
-code span.do { color: #7f9f7f; } /* Documentation */
-code span.dt { color: #dfdfbf; } /* DataType */
-code span.dv { color: #dcdccc; } /* DecVal */
-code span.er { color: #c3bf9f; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #c0bed1; } /* Float */
-code span.fu { color: #efef8f; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
-code span.kw { color: #f0dfaf; } /* Keyword */
-code span.op { color: #f0efd0; } /* Operator */
-code span.ot { color: #efef8f; } /* Other */
-code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
-code span.sc { color: #dca3a3; } /* SpecialChar */
-code span.ss { color: #cc9393; } /* SpecialString */
-code span.st { color: #cc9393; } /* String */
-code span.va { } /* Variable */
-code span.vs { color: #cc9393; } /* VerbatimString */
-code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+code span. { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
 </style>
 <style type="text/css">
   pre:not([class]) {
@@ -326,22 +330,22 @@ div.tocify {
 <a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">## Note: grep is used to filter out the comment lines.</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_<span class="va">${GROUP}</span>_<span class="va">${TODAY}</span>.txt <span class="kw">|</span> <span class="fu">wc</span> -l</a></code></pre></div>
 <p>We can of course do the same for other taxa, for example Archaea, Fungi or Mammalian.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">export</span> <span class="va">TAXA=</span><span class="st">&#39;archaea bacteria fungi invertebrate</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">plant mitochondrion plasmid plastid protozoa</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">vertebrate_mammalian vertebrate_other viral&#39;</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">for</span> <span class="ex">taxon</span> in <span class="va">$TAXA</span><span class="kw">;</span> <span class="kw">do</span> <span class="kw">\</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="bu">echo</span> <span class="st">&quot;Getting list of NCBI species for </span><span class="va">${taxon}</span><span class="st">&quot;</span> <span class="kw">;</span> <span class="kw">\</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="ex">install-organism</span> -v 1 -group <span class="va">${taxon}</span> -task available \</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  -o available_<span class="va">${taxon}</span>_<span class="va">${TODAY}</span>.txt <span class="kw">;</span> <span class="kw">\</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">done</span></a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">export</span> <span class="va">NCBI_GROUPS=</span><span class="st">&#39;archaea bacteria fungi invertebrate plant protozoa vertebrate_mammalian vertebrate_other viral&#39;</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="bu">echo</span> <span class="st">&quot;NCBI_GROUPS </span><span class="va">${NCBI_GROUPS}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">for</span> <span class="ex">ncbi_group</span> in <span class="va">$NCBI_GROUPS</span><span class="kw">;</span> <span class="kw">do</span> <span class="kw">\</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="bu">echo</span> <span class="st">&quot;Getting list of NCBI species for </span><span class="va">${ncbi_group}</span><span class="st">&quot;</span> <span class="kw">;</span> <span class="kw">\</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="ex">install-organism</span> -v 1 -group <span class="va">${ncbi_group}</span> -task available \</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    -o available_<span class="va">${ncbi_group}</span>_<span class="va">${TODAY}</span>.txt <span class="kw">;</span> <span class="kw">\</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="kw">done</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">## Approx count of species per taxa</span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">## (each file starts with 15 comment lines, which are be substracted from each count)</span></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13"><span class="fu">wc</span> -l available_*_<span class="va">${TODAY}</span>.txt <span class="kw">|</span>  <span class="fu">sort</span> -nr  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print &quot;|\t&quot;$1-15&quot;\t| &quot;$2&quot;\t|&quot;}&#39;</span> </a></code></pre></div>
 <div id="number-of-species-per-group" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Number of species per group</h3>
-<p>Here is the result on Dec 12, 2017.</p>
+<p>Here is the result on Feb 1, 2018</p>
 <table>
 <thead>
 <tr class="header">
@@ -351,56 +355,44 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td>25626</td>
+<td>26335</td>
 <td>total</td>
 </tr>
 <tr class="even">
-<td>16735</td>
-<td>available_bacteria_2017-12-12.txt</td>
+<td>17443</td>
+<td>available_bacteria_2018-02-01.txt</td>
 </tr>
 <tr class="odd">
-<td>7384</td>
-<td>available_viral_2017-12-12.txt</td>
+<td>7408</td>
+<td>available_viral_2018-02-01.txt</td>
 </tr>
 <tr class="even">
-<td>531</td>
-<td>available_archaea_2017-12-12.txt</td>
+<td>540</td>
+<td>available_archaea_2018-02-01.txt</td>
 </tr>
 <tr class="odd">
-<td>245</td>
-<td>available_fungi_2017-12-12.txt</td>
+<td>249</td>
+<td>available_fungi_2018-02-01.txt</td>
 </tr>
 <tr class="even">
-<td>155</td>
-<td>available_invertebrate_2017-12-12.txt</td>
+<td>160</td>
+<td>available_invertebrate_2018-02-01.txt</td>
 </tr>
 <tr class="odd">
-<td>124</td>
-<td>available_vertebrate_other_2017-12-12.txt</td>
+<td>126</td>
+<td>available_vertebrate_other_2018-02-01.txt</td>
 </tr>
 <tr class="even">
-<td>109</td>
-<td>available_vertebrate_mammalian_2017-12-12.txt</td>
+<td>110</td>
+<td>available_vertebrate_mammalian_2018-02-01.txt</td>
 </tr>
 <tr class="odd">
-<td>99</td>
-<td>available_plant_2017-12-12.txt</td>
+<td>100</td>
+<td>available_plant_2018-02-01.txt</td>
 </tr>
 <tr class="even">
 <td>79</td>
-<td>available_protozoa_2017-12-12.txt</td>
-</tr>
-<tr class="odd">
-<td>0</td>
-<td>available_plastid_2017-12-12.txt</td>
-</tr>
-<tr class="even">
-<td>0</td>
-<td>available_plasmid_2017-12-12.txt</td>
-</tr>
-<tr class="odd">
-<td>0</td>
-<td>available_mitochondrion_2017-12-12.txt</td>
+<td>available_protozoa_2018-02-01.txt</td>
 </tr>
 </tbody>
 </table>
@@ -449,8 +441,8 @@ div.tocify {
 <a class="sourceLine" id="cb5-4" data-line-number="4">  -task list</a></code></pre></div>
 <p>This command actually lists the folders.</p>
 </div>
-<div id="parsing-the-genomes" class="section level3">
-<h3><span class="header-section-number">3.3.3</span> Parsing the genomes</h3>
+<div id="parsing-a-selected-genome-from-ncbi" class="section level3">
+<h3><span class="header-section-number">3.3.3</span> Parsing a selected genome from NCBI</h3>
 <p>Parsing consists in extracting the information from a text-formatted file, in order to organise it in a computable structure.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Parse a given strain of a given genome </span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) </span></a>
@@ -622,10 +614,10 @@ div.tocify {
 <a class="sourceLine" id="cb13-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">## Set a file name for the assembly file</span></a>
 <a class="sourceLine" id="cb13-8" data-line-number="8"><span class="va">ASSEMBLY_URL=</span>ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="va">ASSEMBLY=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_refseq_<span class="va">${TODAY}</span>.txt</a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="va">COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_complete_<span class="va">${TODAY}</span>.txt</a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="va">ONECHROM=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_chromosome_<span class="va">${TODAY}</span>.txt</a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="va">ONECHROM_AND_COMPLETE=</span>chromosome_and_complete_<span class="va">${GROUP}</span>l_genomes_<span class="va">${TODAY}</span>.txt</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="va">ASSEMBLY=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_refseq_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="va">COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_complete_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="va">ONECHROM=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_chromosome_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="va">ONECHROM_AND_COMPLETE=</span>chromosome_and_complete_<span class="va">${GROUP}</span>_genomes_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb13-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">## Dowload the assembly summary from NCBI FTP site</span></a>
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="fu">wget</span> -nc <span class="va">${ASSEMBLY_URL}</span> --output-document <span class="va">${ASSEMBLY}</span> </a>
@@ -649,9 +641,9 @@ div.tocify {
 <a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co">## Count the number of selected species</span></a>
 <a class="sourceLine" id="cb13-34" data-line-number="34"><span class="fu">wc</span> -l <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="va">${ONECHROM_AND_COMPLETE}</span> <span class="va">${ASSEMBLY}</span> </a></code></pre></div>
 <p>The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: <em>reference genome</em>, <em>representative genome</em>, or <em>na</em> (non attributed).</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="va">REFERENCE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_reference_<span class="va">${TODAY}</span>.txt</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="va">REPRESENTATIVE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_representative_<span class="va">${TODAY}</span>.txt</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="va">REPRESENTATIVE_COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_representative_complete_<span class="va">${TODAY}</span>.txt</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="va">REFERENCE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_reference_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="va">REPRESENTATIVE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_representative_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="va">REPRESENTATIVE_COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_representative_complete_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">## Select reference genomes</span></a>
@@ -676,32 +668,95 @@ div.tocify {
 <div id="installing-many-genomes" class="section level2">
 <h2><span class="header-section-number">3.5</span> Installing many genomes</h2>
 <p>We can install multiple species in a single command by specifying a file containing a list of species names (one species name per row).</p>
+<div id="download" class="section level3">
+<h3><span class="header-section-number">3.5.1</span> Download</h3>
 <p><strong>Beware</strong>:</p>
 <ul>
-<li>This tan take a considerable time dependingon the number of selected species and bandwidth of your computer.</li>
-<li>This command will download thousands of genomes on your hard drive, which will undoubtedly occupy some disj space.</li>
+<li><p>This command will download thousands of genomes on your hard drive, which will undoubtedly occupy some disj space.</p></li>
+<li><p>The download can take a considerable time depending on the number of selected species and bandwidth of your computer.</p></li>
 </ul>
+</div>
 <div id="downloading-genome-files-from-ncbi" class="section level3">
-<h3><span class="header-section-number">3.5.1</span> Downloading genome files from NCBI</h3>
+<h3><span class="header-section-number">3.5.2</span> Downloading genome files from NCBI</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co">## File with the list of species to install</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="va">SPECIES_TO_INSTALL=${GROUP}</span>_to_install.txt</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="va">SPECIES_TO_INSTALL=${GROUP}</span>_species_to_install.txt</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">## Get the two first words of the 8th column as Genus and species names</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="fu">cut</span> -f 8 <span class="va">${ONECHROM_AND_COMPLETE}</span> \</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="fu">cut</span> -f 8 <span class="va">${COMPLETE}</span> \</a>
 <a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1&quot;_&quot;$2}&#39;</span> \</a>
 <a class="sourceLine" id="cb15-7" data-line-number="7">   <span class="op">&gt;</span> <span class="va">${SPECIES_TO_INSTALL}</span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="fu">wc</span> -l <span class="va">${SPECIES_TO_INSTALL}</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">## Download all the selected species</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task download</a></code></pre></div>
+<a class="sourceLine" id="cb15-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">## Count the number of species to instal</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="fu">wc</span> -l <span class="va">${SPECIES_TO_INSTALL}</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">## Download all the selected species</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task download</a>
+<a class="sourceLine" id="cb15-15" data-line-number="15">   </a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">## Check the list of downloaded organisms </span></a>
+<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">## Note: organism = Genus + species + strain</span></a>
+<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb15-20" data-line-number="20">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task list</a></code></pre></div>
+</div>
+<div id="parsing" class="section level3">
+<h3><span class="header-section-number">3.5.3</span> Parsing</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">## Parse all organisms</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task list,parse</a></code></pre></div>
 </div>
 <div id="parsing-genomes-from-ncbi-files" class="section level3">
-<h3><span class="header-section-number">3.5.2</span> Parsing genomes from NCBI files</h3>
+<h3><span class="header-section-number">3.5.4</span> Parsing genomes from NCBI files</h3>
+<p>Since the number of genomes to install can be important, we will run <code>install-organism</code> with the option <code>-batch</code>, in order to parallelise the installation steps via a job scheduler. This job scheduler must have been previously defined in RSAT configuration files.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task parse -batch</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="fu">make</span> -f <span class="va">${RSAT}</span>/makefiles/server.mk  watch_jobs</a></code></pre></div>
 </div>
 <div id="rsat-installation" class="section level3">
-<h3><span class="header-section-number">3.5.3</span> RSAT installation</h3>
+<h3><span class="header-section-number">3.5.5</span> RSAT installation</h3>
 </div>
+<div id="default-installation-tasks" class="section level3">
+<h3><span class="header-section-number">3.5.6</span> Default installation tasks</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">## Run default installation tasks</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">## </span><span class="al">NOTE</span><span class="co">: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task config,list,default</a></code></pre></div>
+</div>
+<div id="managing-installation-tasks-with-a-job-scheduler" class="section level3">
+<h3><span class="header-section-number">3.5.7</span> Managing installation tasks with a job scheduler</h3>
+<p>If your RSAT server has been configured adequately, you can add the option <code>-batch</code> to the commands above in order to send the installation tasks to a job scheduler.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="va">ORG_TO_INSTALL=${GROUP}</span>_organisms_to_install.txt</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co">## Parse all organisms</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">   -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task list,parse \</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">  -batch</a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">## Get the list of organisms from the list of parsed species</span></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="ex">install-organism</span> -v 2 -group <span class="va">${GROUP}</span> \</a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">  -species_file <span class="va">${SPECIES_TO_INSTALL}</span> -task list \</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12">  <span class="op">&gt;</span> <span class="va">${ORG_TO_INSTALL}</span></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="co">## Count the number of species and organisms to install</span></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="va">SPECIES_DO_INSTALL_NB=</span><span class="kw">`</span><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> -l  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></a>
+<a class="sourceLine" id="cb19-16" data-line-number="16"><span class="va">ORG_DO_INSTALL_NB=</span><span class="kw">`</span><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> -l <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></a>
+<a class="sourceLine" id="cb19-17" data-line-number="17"><span class="bu">echo</span> <span class="st">&quot;To install: </span><span class="va">${ORG_DO_INSTALL_NB}</span><span class="st"> organisms,  </span><span class="va">${SPECIES_DO_INSTALL_NB}</span><span class="st"> distinct species&quot;</span></a>
+<a class="sourceLine" id="cb19-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb19-19" data-line-number="19"><span class="co">## First retrieve all upstream sequences (cannot be done in batch mode)</span></a>
+<a class="sourceLine" id="cb19-20" data-line-number="20"><span class="ex">install-organism</span> -v 2  \</a>
+<a class="sourceLine" id="cb19-21" data-line-number="21">   -org_file <span class="va">${ORG_TO_INSTALL}</span> -task config,allup<span class="kw">;</span> </a>
+<a class="sourceLine" id="cb19-22" data-line-number="22">   </a>
+<a class="sourceLine" id="cb19-23" data-line-number="23"><span class="co">## Send the other installation tasks to the job scheduler</span></a>
+<a class="sourceLine" id="cb19-24" data-line-number="24"><span class="ex">install-organism</span> -v 2 -org_file <span class="va">${ORG_TO_INSTALL}</span>  -task  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools -batch</a></code></pre></div>
+</div>
+</div>
+<div id="check-the-installation" class="section level2">
+<h2><span class="header-section-number">3.6</span> Check the installation</h2>
+<p>TO BE WRITTEN</p>
 </div>
 </div>
 

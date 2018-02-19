@@ -1,0 +1,70 @@
+---
+title: "Phylogenetic data management"
+author: "Jacques van Helden"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: false
+    fig_caption: true
+    highlight: zenburn
+    theme: cerulean
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 5
+---
+
+
+# Introduction
+
+
+# Typical usages of the command *taxon-frequencies*
+
+## Installing dyad frequencies for a single taxon
+
+
+```{bash eval=FALSE}
+## Adapt the variable depending on your taxon of interest
+export TAXON=Pseudomonadales
+
+## Compute and install strand-insensitive dyad frequencies
+taxon-frequencies -v 1 -taxon ${TAXON} -type dyad -ml 3 -2str -install
+
+## Compute and install strand-sensitive dyad frequencies
+taxon-frequencies -v 1 -taxon ${TAXON} -type dyad -ml 3 -1str -install
+
+## Check the resulting taxonomic frequency file
+zless ${RSAT}/public_html/data/taxon_frequencies/${TAXON}/dyads_3nt_sp0-20_upstream-noorf_${TAXON}-noov-1str.freq.gz
+
+```
+
+
+## Installing dyad frequencies for all sub-taxa of a given taxon
+
+```{bash eval=FALSE}
+## Adapt the variable depending on your taxon of interest
+export TAXON=Pseudomonadales
+
+## Install dyad frequencies for all sub-taxa of a given taxon
+taxon-frequencies -v 2 -type dyad -ml 3 -2str -install -sub_taxa \
+  -taxon ${TAXON}
+
+```
+
+## Install all the background models for a given taxon
+
+```{bash eval=FALSE}
+## Adapt the variable depending on your taxon of interest
+export TAXON=Pseudomonadales
+
+## Install background models for oligonucleotides and dyads
+taxon-frequencies -v 1 -all_models -install -taxon ${TAXON}
+```
+
+
+

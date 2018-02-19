@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2018-02-01" />
+<meta name="date" content="2018-02-19" />
 
 <title>Comparative genomics</title>
 
@@ -272,7 +272,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Comparative genomics</h1>
 <h4 class="author"><em>Jacques van Helden</em></h4>
-<h4 class="date"><em>2018-02-01</em></h4>
+<h4 class="date"><em>2018-02-19</em></h4>
 
 </div>
 
@@ -292,12 +292,12 @@ div.tocify {
 <li><p>Use the program (which is part of the distribution) to create a BLAST-formatted structure (the “database”) with all proteins of the reference organism ().</p></li>
 <li><p>Use the program (part of the distribution) to detect similarities between each protein of the query organism () and the reference organism.</p></li>
 </ol>
-<div id="formatting-the-blast-db" class="section level4">
-<h4><span class="header-section-number">1.1.0.1</span> Formatting the BLAST DB</h4>
+<div id="formatting-the-blast-database" class="section level4">
+<h4><span class="header-section-number">1.1.0.1</span> Formatting the BLAST database</h4>
 <p>This DB formatting step is very efficient, it should be completed in a few seconds.</p>
-<p>genome-blast -v 1 -task formatdb<br />
--q Mycoplasma_pneumoniae<br />
--db Bacillus_subtilis</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">genome-blast</span> -v 1 -task formatdb \</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">      -q Escherichia_coli_GCF_000005845.2_ASM584v2 \</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">      -db Pseudomonas_aeruginosa_GCF_000006765.1_ASM676v1 </a></code></pre></div>
 <p>The result is found in the data directory containing . A new directory has been created, which contains the BLAST-formatted database with all the proteins of the reference organism.</p>
 <p>ls -ltr $RSAT/data/genomes/Bacillus_subtilis/blastdb</p>
 <p>These are binary files, that you should in principle not open as such.</p>
@@ -305,11 +305,9 @@ div.tocify {
 <div id="searching-similarities" class="section level4">
 <h4><span class="header-section-number">1.1.0.2</span> Searching similarities</h4>
 <p>The program compares all the sequences of an input set against all the sequences of a database (the one we just created above). The program generates the appropriate command to find the BLAST database directory, and query it with the proteins of the query organism.</p>
-<p>genome-blast -v 1 -task blastall<br />
-</p>
-<pre><code>  -q Mycoplasma_pneumoniae \
-
-   -db Bacillus_subtilis</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">genome-blast</span> -v 1 -task blastall  \</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">      -q Mycoplasma_pneumoniae \</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">       -db Bacillus_subtilis</a></code></pre></div>
 <p>This task takes a bit less that one minute for (because we chose a very small genomes), and can take around 10 minutes for medium-sized bacterial genomes ( 4,000 genes).</p>
 <p>Note that the command is written in the verbosity message. If you have specific reasons to customize this command, you can adapt it to apply different parameters.</p>
 </div>
@@ -318,30 +316,24 @@ div.tocify {
 <p>One classical orthology criterion (which is not perfect but has practical advantages) is to select the bidirectional best hits as candidate orthologs.</p>
 <p>For this, we need to run the reciprocal blast, i.e. using as query organism, and as reference organism.</p>
 <p>Note that you can run the two BLAST commands ( and ) in a single shot, by specifying multiple tasks for .</p>
-<p>genome-blast -v 1 -task formatdb,blastall<br />
-</p>
-<pre><code>   -q Bacillus_subtilis \
-
-   -db Mycoplasma_pneumoniae</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">genome-blast</span> -v 1 -task formatdb,blastall  \</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">       -q Bacillus_subtilis \</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">       -db Mycoplasma_pneumoniae</a></code></pre></div>
 <p>We can now perform a quick test: select the bidirectional best hit () for the gene .</p>
-<p>get-orthologs -q NP_109706.1 -uth rank 1 -return all<br />
-</p>
-<pre><code>   -org Mycoplasma_pneumoniae -taxon Bacillus_subtilis</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">   <span class="ex">get-orthologs</span> -q NP_109706.1 -uth rank 1 -return all \</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">       -org Mycoplasma_pneumoniae -taxon Bacillus_subtilis</a></code></pre></div>
 </div>
 <div id="applying-genome-blast-between-a-genome-and-a-taxon" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Applying genome-blast between a genome and a taxon</h3>
 <p>Generally, we want to compare a query organism to all the organisms of a given taxon (the ). This can be done with the option .</p>
 <p>As an example, we will BLAST all the proteins of against all the proteins of each species of .</p>
 <p>We can also use the option to activate the reciprocal search: BLAST all gene products of each bacteria of the reference taxon against those of the query organism .</p>
-<p>genome-blast -v 1 -task formatdb,blastall -reciprocal<br />
-</p>
-<pre><code>   -q Mycoplasma_pneumoniae \
-
-   -dbtaxon Mollicutes</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">genome-blast</span> -v 1 -task formatdb,blastall -reciprocal \</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">       -q Mycoplasma_pneumoniae \</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">       -dbtaxon Mollicutes</a></code></pre></div>
 <p>We can now retrieve the orthologs of a gene (e.g. ) in all Mollicutes.</p>
-<p>get-orthologs -q NP_109706.1 -uth rank 1 -return all<br />
-</p>
-<pre><code>   -org Mycoplasma_pneumoniae -taxon Mollicutes</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">get-orthologs</span> -q NP_109706.1 -uth rank 1 -return all \</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">       -org Mycoplasma_pneumoniae -taxon Mollicutes</a></code></pre></div>
 </div>
 </div>
 <div id="getting-putative-homologs-orthologs-and-paralogs" class="section level2">
@@ -350,80 +342,93 @@ div.tocify {
 <p>We will illustrate the concept by retrieving the genes whose product is similar to the protein LexA of , in all the Enterobacteriales. We will then refine the query to extract putative orthologs.</p>
 <div id="getting-genes-by-similarities" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Getting genes by similarities</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">     -taxon Enterobacteriales \</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">     -q lexA -o lexA_all_hits_Enterobacteriales.tab </a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">     -q lexA -o lexA_all_hits_Enterobacteriales.tab </a></code></pre></div>
 <p>The result file is a list of all the Enterobacteriales genes whose product shows some similarity with the LexA protein from <em>E.coli K12</em>.</p>
-<p>… #ref_id ref_org query Sde_1787 Saccharophagus_degradans_2-40 b4043 CPS_0237 Colwellia_psychrerythraea_34H b4043 CPS_2683 Colwellia_psychrerythraea_34H b4043 CPS_1635 Colwellia_psychrerythraea_34H b4043 IL0262 Idiomarina_loihiensis_L2TR b4043 … c5014 Escherichia_coli_CFT073 b4043 c3190 Escherichia_coli_CFT073 b4043 b4043 Escherichia_coli_K_12_substr__MG1655_uid57779 b4043 …</p>
+<pre><code>   ...
+   #ref_id ref_org query
+   Sde_1787        Saccharophagus_degradans_2-40   b4043
+   CPS_0237        Colwellia_psychrerythraea_34H   b4043
+   CPS_2683        Colwellia_psychrerythraea_34H   b4043
+   CPS_1635        Colwellia_psychrerythraea_34H   b4043
+   IL0262  Idiomarina_loihiensis_L2TR      b4043
+   ...
+   c5014   Escherichia_coli_CFT073 b4043
+   c3190   Escherichia_coli_CFT073 b4043
+   b4043   Escherichia_coli_K_12_substr__MG1655_uid57779    b4043
+   ...</code></pre>
 <p>Each similarity is reported by the ID of the gene, the organism to which is belong, and the ID of the query gene. In this case, the third column contains the same ID on all lines: b4043, which is the ID of the gene lexA in . It seems thus poorly informative, but this column becomes useful when several queries are submitted simultaneously.</p>
 </div>
 <div id="obtaining-information-on-the-blast-hits" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Obtaining information on the BLAST hits</h3>
 <p>The program allows to return additional information on the hits. The list of supported return fields is obtained by calling the command with the option . For example, we can ask to return the percentage of identity, the alignment length, the E-value and the rank of each hit.</p>
-<p>get-orthologs -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779<br />
-</p>
-<pre><code> -taxon Enterobacteriales \
-
- -q lexA -return ident,ali_len,e_value,rank \
-
- -o lexA_all_hits_Enterobacteriales.tab \</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">     -q lexA -return ident,ali_len,e_value,rank \</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">     -o lexA_all_hits_Enterobacteriales.tab \</a></code></pre></div>
 <p>Which gives the following result:</p>
-<p>… #ref_id ref_org query ident ali_len e_value rank Sde_1787 Saccharophagus_degradans_2-40 b4043 65.33 199 1e-68 1 CPS_0237 Colwellia_psychrerythraea_34H b4043 65.69 204 6e-75 1 CPS_2683 Colwellia_psychrerythraea_34H b4043 33.94 109 1e-10 2 CPS_1635 Colwellia_psychrerythraea_34H b4043 34.12 85 1e-06 3 IL0262 Idiomarina_loihiensis_L2TR b4043 66.83 202 1e-75 1 … c5014 Escherichia_coli_CFT073 b4043 100.00 202 2e-111 1 c3190 Escherichia_coli_CFT073 b4043 43.33 90 2e-14 2 b4043 Escherichia_coli_K_12_substr__MG1655_uid57779 b4043 100.00 202 2e-111 1 …</p>
+<pre><code>   ...
+   #ref_id ref_org query   ident   ali_len e_value rank
+   Sde_1787        Saccharophagus_degradans_2-40   b4043   65.33   199     1e-68   1
+   CPS_0237        Colwellia_psychrerythraea_34H   b4043   65.69   204     6e-75   1
+   CPS_2683        Colwellia_psychrerythraea_34H   b4043   33.94   109     1e-10   2
+   CPS_1635        Colwellia_psychrerythraea_34H   b4043   34.12   85      1e-06   3
+   IL0262  Idiomarina_loihiensis_L2TR      b4043   66.83   202     1e-75   1
+   ...
+   c5014   Escherichia_coli_CFT073 b4043   100.00  202     2e-111  1
+   c3190   Escherichia_coli_CFT073 b4043   43.33   90      2e-14   2
+   b4043   Escherichia_coli_K_12_substr__MG1655_uid57779    b4043   100.00  202     2e-111  1
+   ...</code></pre>
 <p>Not surprisingly, the answer includes the self-match of lexA (ID b4043) in , with 100% of identify.</p>
 </div>
 <div id="selecting-bidirectional-best-hits" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Selecting bidirectional best hits</h3>
 <p>We can see that the output contains several matches per genome. For instance, there are 3 matches in . If we assume that these similarities reflect homologies, the result contains thus a combination of paralogs and orthologs.</p>
 <p>The simplest criterion to select ortholog is that of . We can select BBH by imposing an upper threshold on the rank, with the option .</p>
-<p>get-orthologs -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779<br />
-</p>
-<pre><code> -taxon Enterobacteriales \
-
- -q lexA -return ident,ali_len,e_value,rank \
-
- -uth rank 1 \
-
- -o lexA_best_hits_Enterobacteriales_bbh.tab</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1">   <span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">     -q lexA -return ident,ali_len,e_value,rank \</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">     -uth rank 1 \</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">     -o lexA_best_hits_Enterobacteriales_bbh.tab</a></code></pre></div>
 <p>The result has now been reduced to admit at most one hit per genome.</p>
-<p>… #ref_id ref_org query ident ali_len e_value rank Sde_1787 Saccharophagus_degradans_2-40 b4043 65.33 199 1e-68 1 CPS_0237 Colwellia_psychrerythraea_34H b4043 65.69 204 6e-75 1 IL0262 Idiomarina_loihiensis_L2TR b4043 66.83 202 1e-75 1 … c5014 Escherichia_coli_CFT073 b4043 100.00 202 2e-111 1 b4043 Escherichia_coli_K_12_substr__MG1655_uid57779 b4043 100.00 202 2e-111 1 …</p>
+<pre><code>   ...
+   #ref_id ref_org query   ident   ali_len e_value rank
+   Sde_1787        Saccharophagus_degradans_2-40   b4043   65.33   199     1e-68   1
+   CPS_0237        Colwellia_psychrerythraea_34H   b4043   65.69   204     6e-75   1
+   IL0262  Idiomarina_loihiensis_L2TR      b4043   66.83   202     1e-75   1
+   ...
+   c5014   Escherichia_coli_CFT073 b4043   100.00  202     2e-111  1
+   b4043   Escherichia_coli_K_12_substr__MG1655_uid57779    b4043   100.00  202     2e-111  1
+   ...
+</code></pre>
 </div>
 <div id="selecting-hits-with-more-stringent-criteria" class="section level3">
 <h3><span class="header-section-number">1.2.4</span> Selecting hits with more stringent criteria</h3>
 <p>It is well known that the sole criterion of BBH is not sufficient to infer orthology between two genes. In particular, there is a risk to obtain irrelevant matches, due to partial matches between a protein and some spurious domains. To avoid this, we can add a constraint on the percentage of identity (min 30%), and on the alignment length (min 50 aa). These limits are somewhat arbitrary, we use them to illustrate the principe, and leave to each user the responsibility to choose the criteria that she/he considers as relevant. Finally, we will use a more stringent threshold on E-value than the default one, by imposing an upper threshold of 1e-10.</p>
-<p>## Note that or this test we suppress the BBH constraint (-uth rank 1) get-orthologs -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779<br />
-</p>
-<pre><code> -taxon Enterobacteriales \
-
- -q lexA \
-
- -return ident,ali_len,e_value,rank \
-
- -lth ident 30 -lth ali_len 50 -uth e_value 1e-10 \
-
- -o lexA_filtered_hits_Enterobacteriales_id30_len50_eval-10.tab</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">   <span class="co">## Note that or this test we suppress the BBH constraint (-uth rank 1)</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">   <span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">     -q lexA \</a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">     -return ident,ali_len,e_value,rank \</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">     -lth ident 30 -lth ali_len 50 -uth e_value 1e-10 \</a>
+<a class="sourceLine" id="cb13-8" data-line-number="8">     -o lexA_filtered_hits_Enterobacteriales_id30_len50_eval-10.tab</a></code></pre></div>
 <p>We can now combine the constrains above with the criterion of BBH.</p>
-<p>## Note that or this test we include the BBH constraint (-uth rank 1) get-orthologs -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779<br />
-</p>
-<pre><code> -taxon Enterobacteriales \
-
- -q lexA \
-
- -return ident,ali_len,e_value,rank \
-
- -lth ident 30 -lth ali_len 50  -uth e_value 1e-10 \
-
- -uth rank 1 \
-
- -o lexA_BBH_Enterobacteriales_bbh_id30_len50_eval-10.tab</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1">   <span class="co">## Note that or this test we include the BBH constraint (-uth rank 1)</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">   <span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">     -q lexA \</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">     -return ident,ali_len,e_value,rank \</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">     -lth ident 30 -lth ali_len 50  -uth e_value 1e-10 \</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">     -uth rank 1 \</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">     -o lexA_BBH_Enterobacteriales_bbh_id30_len50_eval-10.tab</a></code></pre></div>
 <p>As expected, the number of selected hits is reduced by adding these constraints. In Sept 2006, we obtained the following number of hits for lexA in Enterobacteriales.</p>
 <ul>
 <li><p>122 hits without any constraint;</p></li>
-<li><p>107 hits with contrains on ident,ali<br />
-_len and e<br />
-_value;</p></li>
+<li><p>107 hits with contrains on ident,ali_len and e_value;</p></li>
 <li><p>69 hits with the constraint of BBH;</p></li>
-<li><p>69 hits with the combined constraint of BBH, at least 30% identity and an alignment over more than 50 aminoacids, and an E-value<br />
-&lt;= 1.e-10.</p></li>
+<li><p>69 hits with the combined constraint of BBH, at least 30% identity and an alignment over more than 50 aminoacids, and an E-value &lt;= 1.e-10.</p></li>
 </ul>
 <p>Actually, in the particular case of , the BBH constraint already filtered out the spurious matches, but inother cases they can be useful.</p>
 </div>
@@ -431,17 +436,13 @@ _value;</p></li>
 <h3><span class="header-section-number">1.2.5</span> Restricting the number of reference organisms</h3>
 <p>The decrease of sequencing cost impulsed the multiplication of genome sequencing projects. In 2015, some bacterial species are represented by several hundreds of strains in the EnsemblGenomes database (e.g. ). A conseuence is that the comparative genomics analyses can become quite heavy. A more importance drawback is that some taxonomic branches are over-represented relative to other ones.</p>
 <p>To reduce this problem, we added an option to the taxonomic tools.</p>
-<p>## Note that or this test we include the BBH constraint (-uth rank 1) get-orthologs -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779<br />
-</p>
-<pre><code> -taxon Enterobacteriales \
-
- -q lexA -o lexA_orthologs_Enterobacteriales_bbh_id30_len50_eval-10.tab \
-
- -return ident,ali_len,e_value,rank \
-
- -lth ident 30 -lth ali_len 50  -uth e_value 1e-10 \
-
- -uth rank 1 </code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" data-line-number="1">   <span class="co">## Note that or this test we include the BBH constraint (-uth rank 1)</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">   <span class="ex">get-orthologs</span> -v 1 -org Escherichia_coli_K_12_substr__MG1655_uid57779 \</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">     -taxon Enterobacteriales \</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">     -q lexA -o lexA_orthologs_Enterobacteriales_bbh_id30_len50_eval-10.tab \</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">     -return ident,ali_len,e_value,rank \</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">     -lth ident 30 -lth ali_len 50  -uth e_value 1e-10 \</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">     -uth rank 1 </a></code></pre></div>
 </div>
 </div>
 <div id="retrieving-sequences-for-multiple-organisms" class="section level2">
@@ -452,28 +453,20 @@ _value;</p></li>
 <li><p>The second column indicates the organism to which the gne belongs.</p></li>
 </ol>
 <p>The output of can thus directly be used as input for .</p>
-<p>retrieve-seq-multigenome -noorf<br />
-</p>
-<pre><code> -i lexA_orthologs_Enterobacteriales_bbh_id30_len50_eval-10.tab \
-
- -o lexA_orthologs_Enterobacteriales_up-noorf.fasta</code></pre>
-<p><br />
-end{footnotesize}</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1">   <span class="ex">retrieve-seq-multigenome</span> -noorf \</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">     -i lexA_orthologs_Enterobacteriales_bbh_id30_len50_eval-10.tab \</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">     -o lexA_orthologs_Enterobacteriales_up-noorf.fasta</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">   <span class="kw">\</span></a></code></pre></div>
 </div>
 <div id="detection-of-phylogenetic-footprints" class="section level2">
 <h2><span class="header-section-number">1.4</span> Detection of phylogenetic footprints</h2>
 <p><strong>TO BE WRITTEN</strong></p>
-<p>dyad-analysis -v 1<br />
-</p>
-<pre><code> -i lexA_orthologs_Enterobacteriales_up-noorf.fasta \
-
- -sort -2str -noov -lth occ 1 -lth occ_sig 0 \
-
- -return occ,freq,proba,rank \
-
- -l 3 -spacing 0-20 -bg monads \
-
- -o lexA_orthologs_Enterobacteriales_up-noorf_dyads-2str-noov.tab</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1">   <span class="ex">dyad-analysis</span>  -v 1 \</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">     -i lexA_orthologs_Enterobacteriales_up-noorf.fasta \</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">     -sort -2str -noov -lth occ 1 -lth occ_sig 0 \</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">     -return occ,freq,proba,rank \</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">     -l 3 -spacing 0-20 -bg monads \</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">     -o lexA_orthologs_Enterobacteriales_up-noorf_dyads-2str-noov.tab</a></code></pre></div>
 </div>
 <div id="phylogenetic-profiles" class="section level2">
 <h2><span class="header-section-number">1.5</span> Phylogenetic profiles</h2>
@@ -484,53 +477,65 @@ end{footnotesize}</p>
 <li><p>We then use to convert the ortholog table into profiles (one row per gene, one column per genome).</p></li>
 </ol>
 <p>We will illustrate this by calculating the phylogenetic profiles of all the genes from across all the Fungi. We use a level of verbosity of 2, in order to get information about the progress of the calculations.</p>
-<pre><code>## Identify all the putative orthologs (BBH)     get-orthologs -v 2 \
-  -i $RSAT/data/genomes/Saccharomyces_cerevisiae/genome/cds.tab  \
-  -org Saccharomyces_cerevisiae \
-  -taxon Fungi \
-  -uth rank 1 -lth ali_len 50 -lth ident 30 -uth e_value 1e-10 \
-  -return e_value,bit_sc,ident,ali_len \
-  -o Saccharomyces_cerevisiae_vs_Fungi_bbh.tab 
-
-## Convert ortholog table into a profile table     ## with the IDs of the putative orthologs     convert-classes -v 2 \
-  -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab  \
-  -from tab -to profiles \
-  -ccol 2 -mcol 3 -scol 1 -null &quot;&lt;NA&gt;&quot; \
-  -o Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_ids.tab </code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co">## Identify all the putative orthologs (BBH)     </span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="ex">get-orthologs</span> -v 2 \</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">      -i <span class="va">$RSAT</span>/data/genomes/Saccharomyces_cerevisiae/genome/cds.tab  \</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">      -org Saccharomyces_cerevisiae \</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">      -taxon Fungi \</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">      -uth rank 1 -lth ali_len 50 -lth ident 30 -uth e_value 1e-10 \</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">      -return e_value,bit_sc,ident,ali_len \</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">      -o Saccharomyces_cerevisiae_vs_Fungi_bbh.tab </a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="co">## Convert ortholog table into a profile table     </span></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">## with the IDs of the putative orthologs</span></a>
+<a class="sourceLine" id="cb18-12" data-line-number="12"><span class="ex">convert-classes</span> -v 2 \</a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">      -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab  \</a>
+<a class="sourceLine" id="cb18-14" data-line-number="14">      -from tab -to profiles \</a>
+<a class="sourceLine" id="cb18-15" data-line-number="15">      -ccol 2 -mcol 3 -scol 1 -null <span class="st">&quot;&lt;NA&gt;&quot;</span> \</a>
+<a class="sourceLine" id="cb18-16" data-line-number="16">      -o Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_ids.tab </a></code></pre></div>
 <p>The resulting table indicates the identifier of the ortholog genes. The option was used to specify that the string <code>&lt;NA&gt;</code> should be used to indicate the absence of putative orhtolog.</p>
 <p>Another option would be to obtain a “quantitative” profile, where each cell indicates the E-value of the match between the two orthologs. This can be done by specifying a different score column with the option of .</p>
-<pre><code>## Convert ortholog table into a profile table     ## with the E-value of the putative orthologs     convert-classes -v 2 \
-  -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab  \
-  -from tab -to profiles \
-  -ccol 2 -mcol 3 -scol 4 -null &quot;&lt;NA&gt;&quot; \
-  -o Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_evalue.tab </code></pre>
-<p>Detecting pairs of genes with similar phylogenetic profiles ———————————————————–</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co">## Convert ortholog table into a profile table</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">## with the E-value of the putative orthologs</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="ex">convert-classes</span> -v 2 \</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">      -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab  \</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">      -from tab -to profiles \</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">      -ccol 2 -mcol 3 -scol 4 -null <span class="st">&quot;&lt;NA&gt;&quot;</span> \</a>
+<a class="sourceLine" id="cb19-7" data-line-number="7">      -o Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_evalue.tab </a></code></pre></div>
+</div>
+<div id="detecting-pairs-of-genes-with-similar-phylogenetic-profiles" class="section level2">
+<h2><span class="header-section-number">1.6</span> Detecting pairs of genes with similar phylogenetic profiles</h2>
 <p>In the previous section, we generated tables indicating the phylogenetic profiles of each gene from . This table contains one row per gene, and one column per fungal genome.</p>
 <p>We will now use the program to compare each gene profile to each other, to select the pairs of genes with significantly similar profiles. The problem is of course to choose our criterion of similarity between two gene profiles.</p>
 <div id="comparing-binary-profiles-with" class="section level3">
-<h3><span class="header-section-number">1.5.1</span> Comparing binary profiles with</h3>
+<h3><span class="header-section-number">1.6.1</span> Comparing binary profiles with</h3>
 <p>For the binary profiles, the most relevant statistics is the .</p>
-<pre><code>## Compare the binary phylogenetic profiles      ## using the hypergeometric significance     compare-profiles -v 2 \
-  -i Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_evalue.tab \
-  -lth AB 1 -lth sig 0 \
-  -return counts,jaccard,hyper,entropy \
-  -o Saccharomyces_cerevisiae_vs_Fungi_phyloprof_gene_pairs.tab </code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">## Compare the binary phylogenetic profiles</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">## using the hypergeometric significance</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="ex">compare-profiles</span> -v 2 \</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4">      -i Saccharomyces_cerevisiae_vs_Fungi_phyloprofiles_evalue.tab \</a>
+<a class="sourceLine" id="cb20-5" data-line-number="5">      -lth AB 1 -lth sig 0 \</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">      -return counts,jaccard,hyper,entropy \</a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">      -o Saccharomyces_cerevisiae_vs_Fungi_phyloprof_gene_pairs.tab </a></code></pre></div>
 <p>In the previous commands, we set the verbosity to 2, in order to keep track the progress of the task. Actually, the processing can take a few minuts, it is probably the good moment for a coffee break.</p>
 </div>
 <div id="comparing-binary-profiles-with-1" class="section level3">
-<h3><span class="header-section-number">1.5.2</span> Comparing binary profiles with</h3>
+<h3><span class="header-section-number">1.6.2</span> Comparing binary profiles with</h3>
 <p>Another way to compare the phylogenetic profiles is to directly analyze with the table of orthology (previously obtained from ).</p>
 <p>This is just another way of considering the same problem: in order to compare genes <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, we will consider as a first class (<span class="math inline">\(Q\)</span>) the set of genomes in which gene <span class="math inline">\(A\)</span> is present, and as a second class (<span class="math inline">\(R\)</span>) the set of genomes in which gene <span class="math inline">\(B\)</span> is present. We will then calculate the intersection between these two classes, and assess the significance of this intersection, given the total number of genomes.</p>
 <p>Thus, will calculate the hypergeometric statistics, exactly in the same way as .</p>
-<pre><code>## Convert the orthology into &quot;classes&quot;, where each class (second column)     ## corresponds to a gene from Saccharomyces cerevisiae, and indicates      ## the set of genomes (first column) in which this gene is present.      convert-classes -from tab -to tab -mcol 2 -ccol 3 -scol 5 \
-  -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab \
-  -o Saccharomyces_cerevisiae_vs_Fungi_bbh_classes.tab 
-
-## Compare the classes to detect significant overlaps     compare-classes -v 3 \
-  -i Saccharomyces_cerevisiae_vs_Fungi_bbh_classes.tab \
-  -lth QR 1 -lth sig 0 -sort sig -sc 3 \
-  -return occ,proba,dotprod,jac_sim,rank \
-  -o phyloprof_gene_pairs.tab </code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co">## Convert the orthology into &quot;classes&quot;, where each class (second column)   ## corresponds to a gene from Saccharomyces cerevisiae, and indicates      </span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co">## the set of genomes (first column) in which this gene is present.      </span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="ex">convert-classes</span> -from tab -to tab -mcol 2 -ccol 3 -scol 5 \</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">      -i Saccharomyces_cerevisiae_vs_Fungi_bbh.tab \</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">      -o Saccharomyces_cerevisiae_vs_Fungi_bbh_classes.tab </a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="co">## Compare the classes to detect significant overlaps</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="ex">compare-classes</span> -v 3 \</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">      -i Saccharomyces_cerevisiae_vs_Fungi_bbh_classes.tab \</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">      -lth QR 1 -lth sig 0 -sort sig -sc 3 \</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">      -return occ,proba,dotprod,jac_sim,rank \</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12">      -o phyloprof_gene_pairs.tab </a></code></pre></div>
 </div>
 </div>
 </div>

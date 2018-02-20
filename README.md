@@ -5,7 +5,7 @@ Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organism
 ## Installing genomes
 
 
-- [From NCBI]("genome_installation/install_organisms_from_ncbi.html")
+- [From NCBI](genome_installation/install_organisms_from_ncbi.html)
 - From Ensembl and EnsemblGenomes
 
 - Installing and testing [comparative genomics tools](comparative_genomics/comparative_genomics.html)

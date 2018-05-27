@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2018-02-01" />
+<meta name="date" content="2018-02-20" />
 
 <title>Install organisms from NCBI</title>
 
@@ -276,7 +276,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Install organisms from NCBI</h1>
 <h4 class="author"><em>Jacques van Helden</em></h4>
-<h4 class="date"><em>2018-02-01</em></h4>
+<h4 class="date"><em>2018-02-20</em></h4>
 
 </div>
 
@@ -617,7 +617,7 @@ div.tocify {
 <a class="sourceLine" id="cb13-9" data-line-number="9"><span class="va">ASSEMBLY=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_refseq_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"><span class="va">COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_complete_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb13-11" data-line-number="11"><span class="va">ONECHROM=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_chromosome_<span class="va">${TODAY}</span>.tsv</a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="va">ONECHROM_AND_COMPLETE=</span>chromosome_and_complete_<span class="va">${GROUP}</span>_genomes_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="va">ONECHROM_OR_COMPLETE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_chromosome_or_complete_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb13-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">## Dowload the assembly summary from NCBI FTP site</span></a>
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="fu">wget</span> -nc <span class="va">${ASSEMBLY_URL}</span> --output-document <span class="va">${ASSEMBLY}</span> </a>
@@ -636,10 +636,10 @@ div.tocify {
 <a class="sourceLine" id="cb13-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb13-29" data-line-number="29"></a>
 <a class="sourceLine" id="cb13-30" data-line-number="30"><span class="co">## Merge summary tables of species with at least one sequenced chromosome</span></a>
-<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="fu">cat</span> <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="op">&gt;</span>  <span class="va">${ONECHROM_AND_COMPLETE}</span></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="fu">cat</span> <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="op">&gt;</span>  <span class="va">${ONECHROM_OR_COMPLETE}</span></a>
 <a class="sourceLine" id="cb13-32" data-line-number="32"></a>
 <a class="sourceLine" id="cb13-33" data-line-number="33"><span class="co">## Count the number of selected species</span></a>
-<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="fu">wc</span> -l <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="va">${ONECHROM_AND_COMPLETE}</span> <span class="va">${ASSEMBLY}</span> </a></code></pre></div>
+<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="fu">wc</span> -l <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="va">${ONECHROM_OR_COMPLETE}</span> <span class="va">${ASSEMBLY}</span> </a></code></pre></div>
 <p>The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: <em>reference genome</em>, <em>representative genome</em>, or <em>na</em> (non attributed).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="va">REFERENCE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_reference_<span class="va">${TODAY}</span>.tsv</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="va">REPRESENTATIVE=</span>ncbi_organisms_assembly_summary_<span class="va">${GROUP}</span>_representative_<span class="va">${TODAY}</span>.tsv</a>
@@ -662,7 +662,7 @@ div.tocify {
 <a class="sourceLine" id="cb14-19" data-line-number="19">      <span class="op">&gt;</span> <span class="va">${REPRESENTATIVE_COMPLETE}</span></a>
 <a class="sourceLine" id="cb14-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">## Print the umbers of reference or representative genomes</span></a>
-<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="fu">wc</span> -l <span class="va">${REFERENCE}</span> <span class="va">${REPRESENTATIVE_COMPLETE}</span> <span class="va">${REPRESENTATIVE}</span> <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="va">${ONECHROM_AND_COMPLETE}</span> <span class="va">${ASSEMBLY}</span> </a></code></pre></div>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="fu">wc</span> -l <span class="va">${REFERENCE}</span> <span class="va">${REPRESENTATIVE_COMPLETE}</span> <span class="va">${REPRESENTATIVE}</span> <span class="va">${COMPLETE}</span> <span class="va">${ONECHROM}</span> <span class="va">${ONECHROM_OR_COMPLETE}</span> <span class="va">${ASSEMBLY}</span> </a></code></pre></div>
 <hr />
 </div>
 <div id="installing-many-genomes" class="section level2">

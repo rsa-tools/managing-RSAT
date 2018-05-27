@@ -58,13 +58,36 @@ taxon-frequencies -v 2 -type dyad -ml 3 -2str -install -sub_taxa \
 
 ## Install all the background models for a given taxon
 
+The following command will install the taxonomic frequencies 
+
+- for all the oligonucleotides with lengths from 1 to 8
+- for all dyads with monad lengths from 1 to 3
+- with single strand (-1str) and both strands (-2str) options
+- for all the default sequence types: upstream and upstream-noorf
+- with both counting modes: overlapping (-ovlp) and non-overlapping (-noov) 
+
 ```{bash eval=FALSE}
 ## Adapt the variable depending on your taxon of interest
 export TAXON=Pseudomonadales
 
 ## Install background models for oligonucleotides and dyads
-taxon-frequencies -v 1 -all_models -install -taxon ${TAXON}
+taxon-frequencies -v 2 -all_models -install -taxon ${TAXON}
 ```
+
+
+## Installing all background models for all taxa
+
+
+***Beware!*** this comand can take a while. I should definitely adapt taxon-frequencies in order to send the jobs to a task scheduler. 
+
+```{bash eval=FALSE}
+## Install all background models for all the supported taxa
+taxon-frequencies -v 2 -all_models -install -
+
+```
+
+
+
 
 
 

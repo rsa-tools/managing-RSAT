@@ -79,13 +79,13 @@ genomes are available. For this, use the option .
 ```{bash eval=FALSE}
 ## Retrieve the list of supported species on EnsEMBL
 install-ensembl-genome -v 1  -available_species \
-    -o available_species_ensembl.tab
+    -o available_species_ensembl.tsv
     
 ## Read the result file
-more available_species_ensembl.tab
+more available_species_ensembl.tsv
 
 ## Count the number of available genomes (using grep -v to discard comment lines)
-grep -v '^;' available_species_ensembl.tab | wc -l
+grep -v '^;' available_species_ensembl.tsv | wc -l
 ## Note: on August 6, 2018, this returns 117 organism names
 ```
 
@@ -97,7 +97,7 @@ documented with variations.
 
 ```{bash eval=FALSE}
 ## select genomes for which variations are available in Ensembl
-awk -F'\t' '$2 ~ "variations"' available_species_ensembl.tab | grep -v '^;'
+awk -F'\t' '$2 ~ "variations"' available_species_ensembl.tsv | grep -v '^;'
 ```
 
 
@@ -120,51 +120,104 @@ above, except the installation of variations (see Section [1.3](#sect:download_
 
 The historical Ensembl project was focused on vertebrate genomes + a few model organisms (, , …).
 
-A more recent project called extends the project to a wider taxonomic range (in Oct 2014, there are \>15,000 genomes available at EnsemblGenomes, where as Ensembl only provides 69 genomes).
+A more recent project called extends the project to a wider taxonomic range (in August 2018, EnsemblGenomes release 40 contains 45175 genomes, where as Ensembl only provides 117 genomes).
 
-The program supports the installation of genomes from as well as . By
-default, it opens a connection to the historical database, but the
-option enables to install genomes from the new project .
+The program `install-ensembl-genome` supports the installation of genomes from  EnsemblGenomes as well as Ensembl. By default, it opens a connection to the historical Ensembl database, but the option `-db ensemblgenomes` enables to install genomes from EnsemblGenomes.
 
 ```{bash eval=FALSE}
 ## Get the list of available species from the extended project
 ## EnsemblGenomes
 install-ensembl-genome -v 2 -available_species -db ensemblgenomes \
-   -o available_species_at_EnsemblGenome.txt
+   -o available_species_EnsemblGenome.tsv
+
+## Count the number of genomes available
+grep -v '^;' available_species_EnsemblGenome.tsv | wc -l
+## Returns 45175 on August 6, 2018
 
 ```
 
-You can then identify your genome of interest in the file , and start
-the installation (don’t forget the option .
+You can then identify your genome of interest in the file , and start the installation (don’t forget the option .
 
-    ## Install Escherichia coli (strain K12 MG1665) from EnsemblGenomes
-    install-ensembl-genome -v 2 -db ensemblgenomes \
-       -species Escherichia_coli_str_k_12_substr_mg1655
+```{bash eval=FALSE}
+## Install Escherichia coli (strain K12 MG1665) from EnsemblGenomes
+install-ensembl-genome -v 2 -db ensemblgenomes \
+   -species Escherichia_coli_str_k_12_substr_mg1655
+
+```
 
 ## Downloading variations
 
-The program downloads variations from the Web site, and installs it on
-the local site.
+The program downloads variations from the Web site, and installs it on the local site.
 
-This program relies on , which must be installed beforehand on your
-computer.
+This program relies on , which must be installed beforehand on your computer.
+```{bash eval=FALSE}
+## Retrieve the list of supported species in the EnsEMBL variation database
+download-ensembl-variations -v 1  -available_species -o species_with_variations_ensembl.tsv
 
-    ## Retrieve the list of supported species in the EnsEMBL variation database
-    download-ensembl-variations -v 1  -available_species
+## Check the content of the result file
+more species_with_variations_ensembl.tsv
+
+## Count genomes with variations available at Ensembl
+grep -v '^;' species_with_variations_ensembl.tsv | wc -l
+## Result : 23 on August 6, 2018
+
+```
+
+Note: as an alternative to `download-ensembl-variations`, we could have used the command `ìnstall-ensembl-genomes` with the option `-task variations`.
+
 
 We can now download all the variations available for the yeast.
 
-    ## Download all variations for a selected organism on your server
-    download-ensembl-variations -v 1 -species Saccharomyces_cerevisiae
+```{bash eval=FALSE}
+## Download all variations for a selected organism on your server
+download-ensembl-variations -v 1 -species Saccharomyces_cerevisiae
+```
 
-Variation files are stored in a specific subfolder for the specified
-organism.
+Variation files are stored in a specific subfolder for the specified organism.
 
-    ## Check the content of the variation directory for the yeast
-    make -f makefiles/variation-scan_demo.mk \
-       SPECIES=Saccharomyces_cerevisiae ASSEMBLY=R64-1-1 \
-       variation_stats
+```{bash eval=FALSE}
+## Check the content of the variation directory for the yeast
+make -f makefiles/variation-scan_demo.mk \
+     SPECIES=Saccharomyces_cerevisiae ASSEMBLY=R64-1-1 \
+     variation_stats
+```
 
-This command will indicate the location of the variation directory on
-your server, and count the number of lines for each variation file
-(there is one separate file per chromosome or contig).
+This command will indicate the location of the variation directory on your server, and count the number of lines for each variation file (there is one separate file per chromosome or contig).
+
+
+****
+
+## Installing the Human genome
+
+In the examples above we intently installed the smallest genome available at Ensembl, in order to obtain the results in a reasonable time and with a reasonable disk space occupancy. 
+
+The installation of Metazoa occupies much more space, and takes a significantly longer time. 
+
+We summarize hereafter the commands to download and install the Human genome, its annotations, and the variations from Ensembl. To this purpose, we customize the options of `install-ensembl-genomes` in order to :
+
+- download the genome sequence,
+- download genome annotations (features),
+- download variations,
+- update RSAT configuration in order to enable the downloaded genome,
+- install the genome on RSAT (compute oligo and dyad frequencies + some other tasks)
+
+**Beware:** the following command will mobilize ~5 Gb of disk space for the genome + 11.6 Gb for the variations. 
+
+```{bash eval=FALSE}
+
+## Install Human genome from Ensembl, including polymorphic variations
+install-ensembl-genome -v 2 -db ensembl -org Homo_sapiens -task genome,features,config,install,variations
+
+## Check the disk space occupied by the different folders
+du -sm data/genomes/Homo_sapiens_GRCh38/*
+
+## Result (2018-08-06) in Megabytes per folder
+# 5196    data/genomes/Homo_sapiens_GRCh38/genome
+# 18      data/genomes/Homo_sapiens_GRCh38/oligo-frequencies
+# 11633   data/genomes/Homo_sapiens_GRCh38/variations
+
+```
+
+
+
+

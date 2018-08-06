@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Jacques van Helden" />
+
+<meta name="date" content="2018-08-06" />
+
+<title>Uninstalling organisms from your RSAT instance</title>
+
+<script src="uninstalling_organisms_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="uninstalling_organisms_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="uninstalling_organisms_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="uninstalling_organisms_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="uninstalling_organisms_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="uninstalling_organisms_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="uninstalling_organisms_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="uninstalling_organisms_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="uninstalling_organisms_files/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span. { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Uninstalling organisms from your RSAT instance</h1>
+<h4 class="author"><em>Jacques van Helden</em></h4>
+<h4 class="date"><em>2018-08-06</em></h4>
+
+</div>
+
+
+<div id="uninstalling-organisms-from-rsat" class="section level1">
+<h1><span class="header-section-number">1</span> Uninstalling organisms from RSAT</h1>
+<p>Let us imagine that we don’t need an organism anymore nd we want to suppress it from the list of available organisms on our RSAT server.</p>
+<p>A concrete case: in the tutorial “<a href="install_organisms_from_ensembl.html">Installing genomes from Ensembl and EnsemblGenomes</a>” we installed <em>Saccharomyces cerevisiae</em> for the sake of test. After that, we installed the human genome, and since everything worked fine we would now like to suppress the version of <em>Saccharomyces cerevisiaie</em> downloaded from Ensembl.</p>
+<p>We first need to identify the particular version that we installed from Ensembl.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Identify the full name of the Saccharomyces cerevisiae genome </span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">## that was downloaded from Ensembl</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ex">supported-organisms</span> -source ensembl -taxon Saccharomyces</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># result (2018-08-06): Saccharomyces_cerevisiae_R64-1-1</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">## Disable the usage of this genome (without deleting the files)</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="ex">install-organism</span> -org Saccharomyces_cerevisiae_R64-1-1 -task uninstall</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">## Check that this organism is not supported anymore</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="ex">supported-organisms</span> -source ensembl -taxon Saccharomyces</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">## Gives no result</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">## Check if the genome data is still there in the RSAT genome folder.</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="fu">du</span> -sm <span class="va">$RSAT</span>/public_html/data/genomes/Saccharomyces_cerevisiae_R64-1-1</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">## Result: the folder is still there and occupies 39Mb</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">## Erase the genome data </span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="ex">install-organism</span> -org Saccharomyces_cerevisiae_R64-1-1 -task erase</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">## Check if the genome data has well been removed now</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="fu">du</span> -sm <span class="va">$RSAT</span>/public_html/data/genomes/Saccharomyces_cerevisiae_R64-1-1</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">## Result: &quot;No such file or directory&quot;</span></a></code></pre></div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

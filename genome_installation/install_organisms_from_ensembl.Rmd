@@ -217,5 +217,3 @@ du -sm data/genomes/Homo_sapiens_GRCh38/*
 ```
 
 
-
-

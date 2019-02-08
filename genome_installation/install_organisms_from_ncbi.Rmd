@@ -103,16 +103,16 @@ Here is the result on Feb 1, 2018
 
 | Number of species | Taxonomic group |
 |---------|--------------------------|
-|       26335   | total |
-|       17443   | available_bacteria_2018-02-01.txt     |
-|       7408    | available_viral_2018-02-01.txt        |
-|       540     | available_archaea_2018-02-01.txt      |
-|       249     | available_fungi_2018-02-01.txt        |
-|       160     | available_invertebrate_2018-02-01.txt |
-|       126     | available_vertebrate_other_2018-02-01.txt     |
-|       110     | available_vertebrate_mammalian_2018-02-01.txt |
-|       100     | available_plant_2018-02-01.txt        |
-|       79      | available_protozoa_2018-02-01.txt     |
+|       32109   | total |
+|       22481   | available_bacteria_2019-02-08.txt     |
+|       7956    | available_viral_2019-02-08.txt        |
+|       621     | available_archaea_2019-02-08.txt      |
+|       289     | available_fungi_2019-02-08.txt        |
+|       179     | available_invertebrate_2019-02-08.txt |
+|       149     | available_vertebrate_other_2019-02-08.txt     |
+|       123     | available_vertebrate_mammalian_2019-02-08.txt |
+|       111     | available_plant_2019-02-08.txt        |
+|       80      | available_protozoa_2019-02-08.txt     |
 
 
 
@@ -125,7 +125,18 @@ Here is the result on Feb 1, 2018
 
 ## Installing the genome for a given species
 
-### Download the genome(s)
+### Listing the available strains for the species of interest
+
+```{bash eval=FALSE}
+## List the available strains for a given species (e.g. Rhodospirillum centenum).
+install-organism -v 1 -group bacteria \
+  -species ${SPECIES} \
+  -task list
+```
+
+This command actually lists the folders. 
+
+### Downloading the genome(s)
 
 
 ```{bash eval=FALSE}
@@ -135,9 +146,14 @@ export SPECIES=Rhodospirillum_centenum
 export STRAIN=GCF_000016185.1_ASM1618v1
 export TAXON=Rhodospirillum
 
-## An example of altrnative set of parameters
+## An example of alternative set of parameters
 # export SPECIES=Rhizobium_etli
 # export STRAIN=GCF_000092045.1_ASM9204v1
+# export TAXON=Rhizobiales
+
+## Yet another example, just for Mere
+# export SPECIES=Sinorhizobium_meliloti
+# export STRAIN=GCF_000006965.1_ASM696v1
 # export TAXON=Rhizobiales
 
 ## Download the genome(s) for a given species 
@@ -160,16 +176,6 @@ ls -1 $RSAT/downloads/refseq/bacteria/${SPECIES}/latest_assembly_versions
 
 3. **Beware:** for some bacterial species of particular interest (e.g. important human pathogens), severak thousands of strains have been sequenced. It might cost a lot of time and disk space to download all of them. TO avoid that, the option `-strain` enables to specify the full strain name (more precisely the subfolder corresponding to the strain of interest in the species folder on the NCBI FTP site). 
 
-### Listing the available strains for the species of interest
-
-```{bash eval=FALSE}
-## List the available strains for a given species (e.g. Rhodospirillum centenum).
-install-organism -v 1 -group bacteria \
-  -species ${SPECIES} \
-  -task list
-```
-
-This command actually lists the folders. 
 
 ### Parsing a selected genome from NCBI
 
@@ -279,7 +285,7 @@ You can do the similar test with the stop codon frequencies. Note that nothing f
 retrieve-seq -all -org ${SPECIES}_${STRAIN} \
    -type downstream -from -1 -to -3 -o stop_seq.fasta
 
-more stop_seq.fasta
+head -20 stop_seq.fasta
 
 ## Check that most genes have ATG as start codon
 oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str \
@@ -312,7 +318,7 @@ We can use this assembly summary  to select only those genomes with the a comple
 For example, for the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the installation to genomes with at least one fully sequenced chromosome (categories "Chromosome" and "Complete Genome").
 
 ```{bash eval=FALSE}
-## Get curret date to use as suffix for output files
+## Get current date to use as suffix for output files
 export TODAY=`date +%Y-%m-%d`
 
 ## Choose a taxonomic group of interest
@@ -401,7 +407,7 @@ SPECIES_TO_INSTALL=${GROUP}_species_to_install.txt
 
 ## Get the two first words of the 8th column as Genus and species names
 cut -f 8 ${COMPLETE} \
-  | awk '{print $1"_"$2}' \
+  | sed 's/ /_/g' \
    > ${SPECIES_TO_INSTALL}
 
 ## Count the number of species to instal

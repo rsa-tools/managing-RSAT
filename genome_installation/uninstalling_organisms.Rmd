@@ -1,0 +1,58 @@
+---
+title: "Uninstalling organisms from your RSAT instance"
+author: "Jacques van Helden"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: false
+    fig_caption: true
+    highlight: kate
+    theme: cerulean
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 5
+---
+
+
+
+# Uninstalling organisms from RSAT
+
+Let us imagine that we don't need an organism anymore nd we want to suppress it from the list of available organisms on our RSAT server. 
+
+A concrete case: in the tutorial "[Installing genomes from Ensembl and EnsemblGenomes](install_organisms_from_ensembl.html)" we installed *Saccharomyces cerevisiae* for the sake of test. After that, we installed the human genome, and since everything worked fine we would now like to suppress the version of *Saccharomyces cerevisiaie* downloaded from Ensembl. 
+
+We first need to identify the particular version that we installed from Ensembl. 
+
+```{bash eval=FALSE}
+## Identify the full name of the Saccharomyces cerevisiae genome 
+## that was downloaded from Ensembl
+supported-organisms -source ensembl -taxon Saccharomyces
+# result (2018-08-06): Saccharomyces_cerevisiae_R64-1-1
+
+## Disable the usage of this genome (without deleting the files)
+install-organism -org Saccharomyces_cerevisiae_R64-1-1 -task uninstall
+
+## Check that this organism is not supported anymore
+supported-organisms -source ensembl -taxon Saccharomyces
+## Gives no result
+
+## Check if the genome data is still there in the RSAT genome folder.
+du -sm $RSAT/public_html/data/genomes/Saccharomyces_cerevisiae_R64-1-1
+## Result: the folder is still there and occupies 39Mb
+
+## Erase the genome data 
+install-organism -org Saccharomyces_cerevisiae_R64-1-1 -task erase
+
+## Check if the genome data has well been removed now
+du -sm $RSAT/public_html/data/genomes/Saccharomyces_cerevisiae_R64-1-1
+## Result: "No such file or directory"
+```
+
+
+

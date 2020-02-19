@@ -98,22 +98,21 @@ wc -l available_*_${TODAY}.txt |  sort -nr  | awk '{print "|\t"$1-15"\t| "$2"\t|
 
 ### Number of species per group
 
-Here is the result on Feb 1, 2018 
+Here is the result on Feb 4, 2020 
 
 
 | Number of species | Taxonomic group |
 |---------|--------------------------|
-|       32109   | total |
-|       22481   | available_bacteria_2019-02-08.txt     |
-|       7956    | available_viral_2019-02-08.txt        |
-|       621     | available_archaea_2019-02-08.txt      |
-|       289     | available_fungi_2019-02-08.txt        |
-|       179     | available_invertebrate_2019-02-08.txt |
-|       149     | available_vertebrate_other_2019-02-08.txt     |
-|       123     | available_vertebrate_mammalian_2019-02-08.txt |
-|       111     | available_plant_2019-02-08.txt        |
-|       80      | available_protozoa_2019-02-08.txt     |
-
+|       38795   | total |
+|       27870   | available_bacteria_2020-02-04.txt     |
+|       9036    | available_viral_2020-02-04.txt        |
+|       736     | available_archaea_2020-02-04.txt      |
+|       309     | available_fungi_2020-02-04.txt        |
+|       196     | available_invertebrate_2020-02-04.txt |
+|       180     | available_vertebrate_other_2020-02-04.txt     |
+|       132     | available_vertebrate_mammalian_2020-02-04.txt |
+|       124     | available_plant_2020-02-04.txt        |
+|       92      | available_protozoa_2020-02-04.txt     |
 
 
 **Notes** 
@@ -142,9 +141,14 @@ This command actually lists the folders.
 ```{bash eval=FALSE}
 ## Select a species and straint of interest 
 ## (can be adapted to your needs)
-export SPECIES=Rhodospirillum_centenum
-export STRAIN=GCF_000016185.1_ASM1618v1
-export TAXON=Rhodospirillum
+
+export SPECIES=Escherichia_coli
+export STRAIN=GCF_000005845.2_ASM584v2
+export TAXON=Gammaproteobacteria
+
+# export SPECIES=Rhodospirillum_centenum
+# export STRAIN=GCF_000016185.1_ASM1618v1
+# export TAXON=Rhodospirillum
 
 ## An example of alternative set of parameters
 # export SPECIES=Rhizobium_etli
@@ -157,7 +161,7 @@ export TAXON=Rhodospirillum
 # export TAXON=Rhizobiales
 
 ## Download the genome(s) for a given species 
-## (e.g. Rhodospirillum_centenum)  
+## (e.g. Escherichia_coli)  
 install-organism -v 1 -group bacteria \
   -species ${SPECIES} \
   -task download,list
@@ -216,11 +220,11 @@ Note that for the subsequent tasks, the options `-species` and `-strains` are no
 
 ```{bash eval=FALSE}
 ## Configure the organism for RSAT
-install-organism -v 1 -org ${SPECIES}_${STRAIN} -task config
+install-organism -v 1 -org ${SPECIES}_${STRAIN} -source NCBI -task config
 
 
-## Check that the organism has weel been declared
-supported-organisms -taxon ${TAXON}
+## Check that the organism has wel been declared
+supported-organisms -taxon ${TAXON} -return ID,source,last_update | grep ${STRAIN}
 
 ```
 
@@ -232,7 +236,6 @@ The simplest way to run it is to select the "default" tasks.
 
 ```{bash eval=FALSE}
 ## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)
-
 install-organism -v 1 -org ${SPECIES}_${STRAIN} -task default
 
 ```
@@ -261,7 +264,7 @@ install-organism -v 1 -org ${SPECIES}_${STRAIN} -task default
 ### Checking that the organism is well supported
 
 ```{bash eval=FALSE}
-## Get all the organisms of the Genus Rhodospirillum
+## Get all the organisms the taxon of interest
 supported-organisms -taxon ${TAXON}
 ```
 
@@ -271,7 +274,8 @@ supported-organisms -taxon ${TAXON}
 ## Retrieve all the start codon sequences
 retrieve-seq -all -org ${SPECIES}_${STRAIN} -from 0 -to 2 -o start_seq.fasta
 
-more start_seq.fasta
+## Check the result
+head -n 20 start_seq.fasta
 
 ## Check that most genes have ATG as start codon
 oligo-analysis -v 1 -i start_seq.fasta  -l 3 -1str -return occ,freq -sort | more
@@ -285,6 +289,7 @@ You can do the similar test with the stop codon frequencies. Note that nothing f
 retrieve-seq -all -org ${SPECIES}_${STRAIN} \
    -type downstream -from -1 -to -3 -o stop_seq.fasta
 
+## Check the beginning of the result file
 head -20 stop_seq.fasta
 
 ## Check that most genes have ATG as start codon
@@ -446,7 +451,6 @@ install-organism -v 2 -group ${GROUP} \
 
 make -f ${RSAT}/makefiles/server.mk  watch_jobs
 ```
-
 
 
 ### RSAT installation

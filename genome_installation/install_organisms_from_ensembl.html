@@ -353,6 +353,15 @@ div.tocify {
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Install Escherichia coli (strain K12 MG1665) from EnsemblGenomes</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="ex">install-ensembl-genome</span> -v 2 -db ensemblgenomes \</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">   -species Escherichia_coli_str_k_12_substr_mg1655</a></code></pre></div>
+<p>Another way to install the genomes from EnsemblGenomes is to use the <code>ensemblgenomes_FTP_client.mk</code> script in the makefiles folder. This script runs faster than the program <code>install-ensembl-genome</code> (because it downloads the files using the FTP protocol while <code>install-ensembl-genome</code> uses the MySQL connection).</p> 
+<div class="sourceCode" id="cb6-2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">## Get the list of available species from EnsemblGenomes</span></a>
+<a class="sourceLine" id="cb6-2-2" data-line-number="2"><span class="ex">make -f makefiles/ensemblgenomes_FTP_client.mk</span> GROUP=Plants RELEASE=48 organisms</a>
+<a class="sourceLine" id="cb6-2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-2-4" data-line-number="4"><span class="co">## Download one species</span></a>
+<a class="sourceLine" id="cb6-2-5" data-line-number="5"><span class="ex">make -f makefiles/ensemblgenomes_FTP_client.mk</span> GROUP=Plants RELEASE=X SPECIES=oryza_longistaminata download_one_species</a>
+<a class="sourceLine" id="cb6-2-6" data-line-number="6"><span class="co">## Install one species after downloading</span></a>
+<a class="sourceLine" id="cb6-2-7" data-line-number="7"><span class="ex">make -f makefiles/ensemblgenomes_FTP_client.mk</span> GROUP=Plants RELEASE=X SPECIES=oryza_longistaminata install_one_species</a>
+</code></pre></div> 
 </div>
 <div id="downloading-variations" class="section level1">
 <h1><span class="header-section-number">7</span> Downloading variations</h1>

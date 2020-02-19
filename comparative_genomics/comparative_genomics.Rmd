@@ -61,14 +61,12 @@ genome-blast -v 1 -task formatdb \
 ```
 
 
-   
-
-
 The result is found in the data directory containing . A new directory has been created, which contains the BLAST-formatted database with all the proteins of the reference organism.
 
 
-
-   ls -ltr $RSAT/data/genomes/Bacillus_subtilis/blastdb
+```{bash EVAL=false}
+ls -ltr $RSAT/data/genomes/Pseudomonas_aeruginosa_GCF_000006765.1_ASM676v1/blastdb
+```
 
 
 
@@ -90,18 +88,17 @@ and query it with the proteins of the query organism.
 ```{bash eval=FALSE}
 genome-blast -v 1 -task blastall  \
       -q Mycoplasma_pneumoniae \
-       -db Bacillus_subtilis
+      -db ls -ltr $RSAT/data/genomes/Pseudomonas_aeruginosa_GCF_000006765.1_ASM676v1/blastdb
 ```
 
 
 This task takes a bit less that one minute for (because we chose a very
 small genomes), and can take around 10 minutes for medium-sized
-bacterial genomes ( 4,000 genes).
+bacterial genomes (~4,000 genes).
 
 Note that the command is written in the verbosity message. If you have
 specific reasons to customize this command, you can adapt it to apply
 different parameters.
-
 
 
 #### Searching reciprocal similarities
@@ -176,6 +173,19 @@ We can now retrieve the orthologs of a gene (e.g. ) in all Mollicutes.
 ```{bash eval=FALSE}
 get-orthologs -q NP_109706.1 -uth rank 1 -return all \
        -org Mycoplasma_pneumoniae -taxon Mollicutes
+```
+
+
+## TO BE SORTED
+
+```{bash eval=FALSE}
+## Define reference organism
+export REF=Escherichia_coli_GCF_000005845.2_ASM584v2
+export QUERY=
+
+## Get the list of organisms supported for phylogenetic footprinting tools
+supported-organisms -return ID,blast_available | awk '$2 == 1'
+
 ```
 
 

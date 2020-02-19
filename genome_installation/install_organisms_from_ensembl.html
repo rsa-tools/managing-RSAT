@@ -7,11 +7,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2018-08-06" />
+<meta name="date" content="2020-02-19" />
 
 <title>Installing genomes and variations from Ensembl and EnsemblGenomes</title>
 
@@ -28,7 +29,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
@@ -93,7 +94,29 @@ code span.st { color: #bf0303; } /* String */
 code span.va { color: #0057ae; } /* Variable */
 code span.vs { color: #bf0303; } /* VerbatimString */
 code span.wa { color: #bf0303; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 <style type="text/css">
   pre:not([class]) {
     background-color: white;
@@ -129,9 +152,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -145,7 +166,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -156,50 +176,72 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -248,8 +290,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -258,6 +298,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -276,8 +326,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Installing genomes and variations from Ensembl and EnsemblGenomes</h1>
-<h4 class="author"><em>Jacques van Helden</em></h4>
-<h4 class="date"><em>2018-08-06</em></h4>
+<h4 class="author">Jacques van Helden</h4>
+<h4 class="date">2020-02-19</h4>
 
 </div>
 
@@ -298,11 +348,11 @@ div.tocify {
 <p>It performs the following tasks:</p>
 <ol style="list-style-type: decimal">
 <li><p><code>install-ensembl-genome -available_species</code> returns the list species available on the Ensembl server, together with their status of availability for the 3 data types (genome sequence, features, variations). When thisoption is called, the program does not install any genome.</p></li>
-<li><p>The option <code>install-ensembl-genome -task genome</code> runs the program <code>download-ensembl-genome</code> to download the complete genomic sequence of a given organism from the <a href="http://ensembl.org">Ensembl Web site</a>, and formats it according to <em>RSAT</em> requirements (conversion from the original fasta sequence file to one file per chromosome, in raw format).</p></li>
-<li><p>The option <code>install-ensembl-genome -task features</code> runs <code>download-ensembl-features</code> to download the positions and descriptions of genomic features (genes, CDS, mRNAs, …).</p></li>
-<li><p>If the option <code>-task variations</code> is activated, <code>install-ensembl-genome</code> runs <code>download-ensembl-variations</code> to download the description of genomic variations (polymorphism). Note that variations are supported only for a subset of genomes.</p></li>
-<li><p><code>install-ensembl-genome -task config</code> updates RSAT configuration files to make the newly installed genome available.</p></li>
-<li><p><code>install-ensembl-genome -task install</code> runs the additional tasks required to have a fully functional genome on the local site: compute genomic statisics (intergenic sizes, …) and background models (oligonucleotide and dyad frequencies).</p></li>
+<li><p>The option <code>install-ensembl-genome -task genome -org [Selected_organism]</code> runs the program <code>download-ensembl-genome</code> to download the complete genomic sequence of a given organism from the <a href="http://ensembl.org">Ensembl Web site</a>, and formats it according to <em>RSAT</em> requirements (conversion from the original fasta sequence file to one file per chromosome, in raw format).</p></li>
+<li><p>The option <code>install-ensembl-genome -task features  -org [Selected_organism]</code> runs <code>download-ensembl-features</code> to download the positions and descriptions of genomic features (genes, CDS, mRNAs, …).</p></li>
+<li><p>If the option <code>-task variations</code> is activated, <code>install-ensembl-genome -org [Selected_organism]</code> runs <code>download-ensembl-variations</code> to download the description of genomic variations (polymorphism). Note that variations are supported only for a subset of genomes.</p></li>
+<li><p><code>install-ensembl-genome -org [Selected_organism] -task config</code> updates RSAT configuration files to make the newly installed genome available.</p></li>
+<li><p><code>install-ensembl-genome -org [Selected_organism] -task install</code> runs the additional tasks required to have a fully functional genome on the local site: compute genomic statisics (intergenic sizes, …) and background models (oligonucleotide and dyad frequencies).</p></li>
 </ol>
 <p>The detailed description of the program and the list of options can be obtained with the option .</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Get the description of the program + all options</span></a>
@@ -311,22 +361,24 @@ div.tocify {
 <div id="getting-the-list-of-available-genomes" class="section level1">
 <h1><span class="header-section-number">3</span> Getting the list of available genomes</h1>
 <p>Before installing a genome, it is generally a good idea to know which genomes are available. For this, use the option .</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Retrieve the list of supported species on EnsEMBL</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">install-ensembl-genome</span> -v 1  -available_species \</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    -o available_species_ensembl.tsv</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">## Read the result file</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="fu">more</span> available_species_ensembl.tsv</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">## Count the number of available genomes (using grep -v to discard comment lines)</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_species_ensembl.tsv <span class="kw">|</span> <span class="fu">wc</span> -l</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">## Note: on August 6, 2018, this returns 117 organism names</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">export</span> <span class="va">TODAY=</span><span class="kw">`</span><span class="fu">date</span> <span class="st">&#39;+%Y-%m-%d&#39;</span><span class="kw">`</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">## Retrieve the list of supported species on EnsEMBL</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="ex">install-ensembl-genome</span> -v 1  -available_species \</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    -o available_species_ensembl_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    </a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">## Read the result file</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="fu">more</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">## Count the number of available genomes (using grep -v to discard comment lines)</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">wc</span> -l</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">## Note: on August 6, 2018, this returns 117 organism names</span></a></code></pre></div>
 </div>
 <div id="availability-of-polymorphic-variations-for-ensembl-genomes" class="section level1">
 <h1><span class="header-section-number">4</span> Availability of polymorphic variations for Ensembl genomes</h1>
 <p><strong><em>Beware:</em></strong> inter-individual variations are available for a subset only of the genomes available in Ensembl. The option <code>-available_species</code> indicates, for each species, the availability (genome, features, variations). Obviously, the programs to analyse regulatory variations (<code>variation-info</code>, <code>convert-variations</code>, <code>retrieve-variation-seq</code>, <code>variation-scan</code>) are working only for the genomes documented with variations.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">## select genomes for which variations are available in Ensembl</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="fu">awk</span> -F<span class="st">&#39;\t&#39;</span> <span class="st">&#39;$2 ~ &quot;variations&quot;&#39;</span> available_species_ensembl.tsv <span class="kw">|</span> <span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="fu">awk</span> -F<span class="st">&#39;\t&#39;</span> <span class="st">&#39;$2 ~ &quot;variations&quot;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span></a></code></pre></div>
 </div>
 <div id="installing-a-genome-from-ensembl" class="section level1">
 <h1><span class="header-section-number">5</span> Installing a genome from Ensembl</h1>
@@ -341,14 +393,16 @@ div.tocify {
 <p>The historical Ensembl project was focused on vertebrate genomes + a few model organisms (, , …).</p>
 <p>A more recent project called extends the project to a wider taxonomic range (in August 2018, EnsemblGenomes release 40 contains 45175 genomes, where as Ensembl only provides 117 genomes).</p>
 <p>The program <code>install-ensembl-genome</code> supports the installation of genomes from EnsemblGenomes as well as Ensembl. By default, it opens a connection to the historical Ensembl database, but the option <code>-db ensemblgenomes</code> enables to install genomes from EnsemblGenomes.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">## Get the list of available species from the extended project</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">## EnsemblGenomes</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="ex">install-ensembl-genome</span> -v 2 -available_species -db ensemblgenomes \</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">   -o available_species_EnsemblGenome.tsv</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## Count the number of genomes available</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_species_EnsemblGenome.tsv <span class="kw">|</span> <span class="fu">wc</span> -l</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## Returns 45175 on August 6, 2018</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="bu">export</span> <span class="va">TODAY=</span><span class="kw">`</span><span class="fu">date</span> <span class="st">&#39;+%Y-%m-%d&#39;</span><span class="kw">`</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">## Get the list of available species from the extended project</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">## EnsemblGenomes</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="ex">install-ensembl-genome</span> -v 2 -available_species -db ensemblgenomes \</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">   -o available_species_EnsemblGenome_<span class="va">${TODAY}</span>.tsv</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">## Count the number of genomes available</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="fu">grep</span> -v <span class="st">&#39;^;&#39;</span> available_species_EnsemblGenome_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">wc</span> -l</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">## Returns 45175 on August 6, 2018</span></a></code></pre></div>
 <p>You can then identify your genome of interest in the file , and start the installation (don’t forget the option .</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">## Install Escherichia coli (strain K12 MG1665) from EnsemblGenomes</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="ex">install-ensembl-genome</span> -v 2 -db ensemblgenomes \</a>
@@ -379,8 +433,8 @@ div.tocify {
 <p>This command will indicate the location of the variation directory on your server, and count the number of lines for each variation file (there is one separate file per chromosome or contig).</p>
 <hr />
 </div>
-<div id="installing-the-human-genome" class="section level1">
-<h1><span class="header-section-number">8</span> Installing the Human genome</h1>
+<div id="installing-the-human-genome-and-human-polymorphic-variations" class="section level1">
+<h1><span class="header-section-number">8</span> Installing the Human genome and human polymorphic variations</h1>
 <p>In the examples above we intently installed the smallest genome available at Ensembl, in order to obtain the results in a reasonable time and with a reasonable disk space occupancy.</p>
 <p>The installation of Metazoa occupies much more space, and takes a significantly longer time.</p>
 <p>We summarize hereafter the commands to download and install the Human genome, its annotations, and the variations from Ensembl. To this purpose, we customize the options of <code>install-ensembl-genomes</code> in order to :</p>
@@ -391,7 +445,7 @@ div.tocify {
 <li>update RSAT configuration in order to enable the downloaded genome,</li>
 <li>install the genome on RSAT (compute oligo and dyad frequencies + some other tasks)</li>
 </ul>
-<p><strong>Beware:</strong> the following command will mobilize ~5 Gb of disk space for the genome + 11.6 Gb for the variations.</p>
+<p><strong>Beware:</strong> the following command will mobilize ~11.7 Gb of disk space for the genome + 11.5 Gb for the variations.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">## Install Human genome from Ensembl, including polymorphic variations</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="ex">install-ensembl-genome</span> -v 2 -db ensembl -org Homo_sapiens -task genome,features,config,install,variations</a>
@@ -400,9 +454,9 @@ div.tocify {
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="fu">du</span> -sm data/genomes/Homo_sapiens_GRCh38/*</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">## Result (2018-08-06) in Megabytes per folder</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co"># 5196    data/genomes/Homo_sapiens_GRCh38/genome</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co"># 11701   data/genomes/Homo_sapiens_GRCh38/genome</span></a>
 <a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co"># 18      data/genomes/Homo_sapiens_GRCh38/oligo-frequencies</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co"># 11633   data/genomes/Homo_sapiens_GRCh38/variations</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co"># 11544   data/genomes/Homo_sapiens_GRCh38/variations</span></a></code></pre></div>
 </div>
 
 
@@ -423,6 +477,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

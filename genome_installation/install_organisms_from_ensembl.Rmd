@@ -49,15 +49,15 @@ It performs the following tasks:
 1.  `install-ensembl-genome -available_species`  returns the list species available on the Ensembl server, together with their status of availability for  the 3 data types (genome sequence, features, variations). When thisoption is called, the program does not install any genome.
 
 
-2.  The option `install-ensembl-genome -task genome` runs the program  `download-ensembl-genome` to download the complete genomic sequence of a given organism from the [Ensembl Web site](http://ensembl.org), and formats it according to *RSAT* requirements (conversion from the original fasta sequence file to one file per chromosome, in raw format).
+2.  The option `install-ensembl-genome -task genome -org [Selected_organism]` runs the program  `download-ensembl-genome` to download the complete genomic sequence of a given organism from the [Ensembl Web site](http://ensembl.org), and formats it according to *RSAT* requirements (conversion from the original fasta sequence file to one file per chromosome, in raw format).
 
-3.  The option  `install-ensembl-genome -task features` runs `download-ensembl-features` to download the positions and descriptions of genomic features (genes, CDS, mRNAs, ...).
+3.  The option  `install-ensembl-genome -task features  -org [Selected_organism]` runs `download-ensembl-features` to download the positions and descriptions of genomic features (genes, CDS, mRNAs, ...).
 
-4.  If the option `-task variations` is activated, `install-ensembl-genome` runs `download-ensembl-variations` to download the description of genomic variations (polymorphism). Note that  variations are supported only for a subset of genomes.
+4.  If the option `-task variations` is activated, `install-ensembl-genome -org [Selected_organism]` runs `download-ensembl-variations` to download the description of genomic variations (polymorphism). Note that  variations are supported only for a subset of genomes.
 
-5.  `install-ensembl-genome -task config` updates RSAT configuration files to make the newly installed genome available.
+5.  `install-ensembl-genome -org [Selected_organism] -task config` updates RSAT configuration files to make the newly installed genome available.
 
-6.  `install-ensembl-genome -task install` runs the additional tasks required to have a fully functional  genome on the local site: compute genomic statisics (intergenic sizes, ...) and background models (oligonucleotide and dyad frequencies).
+6.  `install-ensembl-genome -org [Selected_organism] -task install` runs the additional tasks required to have a fully functional  genome on the local site: compute genomic statisics (intergenic sizes, ...) and background models (oligonucleotide and dyad frequencies).
 
 
 The detailed description of the program and the list of options can be
@@ -75,15 +75,17 @@ Before installing a genome, it is generally a good idea to know which
 genomes are available. For this, use the option .
 
 ```{bash eval=FALSE}
+export TODAY=`date '+%Y-%m-%d'`
+
 ## Retrieve the list of supported species on EnsEMBL
 install-ensembl-genome -v 1  -available_species \
-    -o available_species_ensembl.tsv
+    -o available_species_ensembl_${TODAY}.tsv
     
 ## Read the result file
-more available_species_ensembl.tsv
+more available_species_ensembl_${TODAY}.tsv
 
 ## Count the number of available genomes (using grep -v to discard comment lines)
-grep -v '^;' available_species_ensembl.tsv | wc -l
+grep -v '^;' available_species_ensembl_${TODAY}.tsv | wc -l
 ## Note: on August 6, 2018, this returns 117 organism names
 ```
 
@@ -95,7 +97,7 @@ documented with variations.
 
 ```{bash eval=FALSE}
 ## select genomes for which variations are available in Ensembl
-awk -F'\t' '$2 ~ "variations"' available_species_ensembl.tsv | grep -v '^;'
+awk -F'\t' '$2 ~ "variations"' available_species_ensembl_${TODAY}.tsv | grep -v '^;'
 ```
 
 
@@ -123,13 +125,15 @@ A more recent project called extends the project to a wider taxonomic range (in 
 The program `install-ensembl-genome` supports the installation of genomes from  EnsemblGenomes as well as Ensembl. By default, it opens a connection to the historical Ensembl database, but the option `-db ensemblgenomes` enables to install genomes from EnsemblGenomes.
 
 ```{bash eval=FALSE}
+export TODAY=`date '+%Y-%m-%d'`
+
 ## Get the list of available species from the extended project
 ## EnsemblGenomes
 install-ensembl-genome -v 2 -available_species -db ensemblgenomes \
-   -o available_species_EnsemblGenome.tsv
+   -o available_species_EnsemblGenome_${TODAY}.tsv
 
 ## Count the number of genomes available
-grep -v '^;' available_species_EnsemblGenome.tsv | wc -l
+grep -v '^;' available_species_EnsemblGenome_${TODAY}.tsv | wc -l
 ## Returns 45175 on August 6, 2018
 
 ```

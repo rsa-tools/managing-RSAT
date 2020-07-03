@@ -196,23 +196,28 @@ make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=$EGRELE
 The procedures described can also be used to install arbitrary genomes from other sources,
 provided that 4 input files are available with the following extensions: 
 
-* SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence
-* SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence 
-* SPECIES_RSAT_ID.gtf : annotation file 
-* SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features
+* $SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence
+* $SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence 
+* $SPECIES_RSAT_ID.gtf : annotation file 
+* $SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features
 
 where SPECIES_RSAT_ID is a string identifying this organism and its annotation. 
-For instance, for assembly Wm82.a2.v1 of *Glycine max* from [JGI Phytozome](https://phytozome.jgi.doe.gov), we could install with:
+
+Note: parse-gtf takes also GFF3 files, which is the format available at JGI.
+
+For instance, for assembly Wm82.a2.v1 of *Glycine max* from [JGI Phytozome](https://phytozome.jgi.doe.gov), we could install it with:
  
 ```{r, engine='bash', eval=FALSE}
 cd $RSAT
 
-mkdir -p $RSAT/data/genomes/Glycine_max.Wm82.a2.v1.JGI/genome
+SPECIES_RSAT_ID=Glycine_max.Wm82.a2.v1.JGI
+
+mkdir -p $RSAT/data/genomes/${SPECIES_RSAT_ID}/genome
 # put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)
 
 make -f makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max \
-    SPECIES_DIR=/var/www/html/rsat/data/genomes/Glycine_max.Wm82.a2.v1.JGI \
-    SPECIES_RSAT_ID=Glycine_max.Wm82.a2.v1.JGI TAXON_ID=3847 GTF_SOURCE=JGI \
+    SPECIES_DIR=/var/www/html/rsat/data/genomes/$SPECIES_RSAT_ID \
+    SPECIES_RSAT_ID=$SPECIES_RSAT_ID TAXON_ID=3847 GTF_SOURCE=JGI \
     install_from_gtf
 ```
 

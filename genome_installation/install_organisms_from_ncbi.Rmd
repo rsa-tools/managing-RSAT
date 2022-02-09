@@ -100,21 +100,20 @@ Note: for some species, several strains have been sequenced. The number of genom
 
 ### Number of species per group
 
-Here is the result on Feb 4, 2020 
-
+Here is the result on Feb 9, 2022
 
 | Number of species | Taxonomic group |
 |---------|--------------------------|
-|       38795   | total |
-|       27870   | available_bacteria_2020-02-04.txt     |
-|       9036    | available_viral_2020-02-04.txt        |
-|       736     | available_archaea_2020-02-04.txt      |
-|       309     | available_fungi_2020-02-04.txt        |
-|       196     | available_invertebrate_2020-02-04.txt |
-|       180     | available_vertebrate_other_2020-02-04.txt     |
-|       132     | available_vertebrate_mammalian_2020-02-04.txt |
-|       124     | available_plant_2020-02-04.txt        |
-|       92      | available_protozoa_2020-02-04.txt     |
+|       39310   | available_bacteria_2022-02-09.txt     |
+|       11191   | available_viral_2022-02-09.txt        |
+|       910     | available_archaea_2022-02-09.txt      |
+|       432     | available_fungi_2022-02-09.txt        |
+|       277     | available_invertebrate_2022-02-09.txt |
+|       269     | available_vertebrate_other_2022-02-09.txt     |
+|       180     | available_vertebrate_mammalian_2022-02-09.txt |
+|       145     | available_plant_2022-02-09.txt        |
+|       94      | available_protozoa_2022-02-09.txt     |
+|       52928   | total |
 
 
 **Notes** 

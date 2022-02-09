@@ -95,6 +95,8 @@ wc -l available_*_${TODAY}.txt |  sort -nr  | awk '{print "|\t"$1-15"\t| "$2"\t|
 
 ```
 
+Note: for some species, several strains have been sequenced. The number of genomes available at NCBI thus exceeds by far the number of distinct species. 
+
 
 ### Number of species per group
 
@@ -127,16 +129,30 @@ Here is the result on Feb 4, 2020
 ### Listing the available strains for the species of interest
 
 ```{bash eval=FALSE}
-## List the available strains for a given species (e.g. Rhodospirillum centenum).
+## Select a species of interest 
+## (can be adapted to your needs)
+export SPECIES=Escherichia_coli
+
+
+## Some examples of alternative set of parameters
+# export SPECIES=Rhodospirillum_centenum
+# export SPECIES=Rhizobium_etli
+# export SPECIES=Sinorhizobium_meliloti
+
+## Download the list of strains for the selected species 
+## (e.g. Escherichia_coli)  
 install-organism -v 1 -group bacteria \
   -species ${SPECIES} \
   -task list
+
+## This list can be stored in a tab-separated text file 
+install-organism -v 1 -group bacteria   -species ${SPECIES}   -task download,list -o strain-list_${SPECIES}.tsv
+
 ```
 
-This command actually lists the folders. 
 
-### Downloading the genome(s)
 
+### Downloading a selected strain
 
 ```{bash eval=FALSE}
 ## Select a species and straint of interest 
@@ -164,12 +180,13 @@ export TAXON=Gammaproteobacteria
 ## (e.g. Escherichia_coli)  
 install-organism -v 1 -group bacteria \
   -species ${SPECIES} \
+  -strain ${STRAIN} \
   -task download,list
 ```
 
 **Notes**
 
-1. The option `-species` requires to specify the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore character (`_`), with exactly the same spelling and cases as on the NCBI FTP refseq site. 
+1. The option `-species` should be followed by a string concatenating the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore character (`_`), with exactly the same spelling and cases as on the NCBI FTP refseq site. 
 
 2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a separate folder, with the same organistion as on the NCBI FTP site. 
 

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Bruno Contreras Moreira" />
+
+<meta name="date" content="2022-02-24" />
+
+<title>Installing genomes from EnsemblGenomes</title>
+
+<script src="install_organisms_ensembl_genomes_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="install_organisms_ensembl_genomes_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="install_organisms_ensembl_genomes_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="install_organisms_ensembl_genomes_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="install_organisms_ensembl_genomes_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="install_organisms_ensembl_genomes_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="install_organisms_ensembl_genomes_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="install_organisms_ensembl_genomes_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="install_organisms_ensembl_genomes_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="install_organisms_ensembl_genomes_files/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #ffffff;
+    color: #a0a0a0;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+div.sourceCode
+  { color: #1f1c1b; background-color: #ffffff; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span { color: #1f1c1b; } /* Normal */
+code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+code span.an { color: #ca60ca; } /* Annotation */
+code span.at { color: #0057ae; } /* Attribute */
+code span.bn { color: #b08000; } /* BaseN */
+code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #924c9d; } /* Char */
+code span.cn { color: #aa5500; } /* Constant */
+code span.co { color: #898887; } /* Comment */
+code span.cv { color: #0095ff; } /* CommentVar */
+code span.do { color: #607880; } /* Documentation */
+code span.dt { color: #0057ae; } /* DataType */
+code span.dv { color: #b08000; } /* DecVal */
+code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code span.fl { color: #b08000; } /* Float */
+code span.fu { color: #644a9b; } /* Function */
+code span.im { color: #ff5500; } /* Import */
+code span.in { color: #b08000; } /* Information */
+code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code span.op { color: #1f1c1b; } /* Operator */
+code span.ot { color: #006e28; } /* Other */
+code span.pp { color: #006e28; } /* Preprocessor */
+code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+code span.sc { color: #3daee9; } /* SpecialChar */
+code span.ss { color: #ff5500; } /* SpecialString */
+code span.st { color: #bf0303; } /* String */
+code span.va { color: #0057ae; } /* Variable */
+code span.vs { color: #bf0303; } /* VerbatimString */
+code span.wa { color: #bf0303; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Installing genomes from EnsemblGenomes</h1>
+<h4 class="author">Bruno Contreras Moreira</h4>
+<h4 class="date">2022-02-24</h4>
+
+</div>
+
+
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This document explains how to install genomes and annotations from Ensembl Genomes using mostly the <a href="ftp://ftp.ensemblgenomes.org/pub">FTP</a> site. Gene Ontology terms are optional and are obtained from <a href="http://plants.ensembl.org/biomart/martview">BioMart</a> instead.</p>
+<p>Note that while Ensembl covers Vertebrates, Ensembl Non Vertebrates (NV, Ensembl Genomes) includes the other divisions (Protists, Fungi, Plants, Bacteria, Metazoa). These instructions have mostly been tested with <strong>Ensembl Plants</strong>.</p>
+<p>This installation procedure can actually be used to <strong>install genomes from other sources</strong> as well, see below.</p>
+<p>This protocol uses a makefile found in the rsat directory <a href="makefiles/ensemblgenomes_FTP_client.mk">makefiles/ensemblgenomes_FTP_client.mk</a> for these tasks.</p>
+<p>This document <strong>does not</strong> use the following scripts, which are documented elsewhere:</p>
+<ul>
+<li><code>install-ensembl-genome</code>,</li>
+<li><code>download-ensembl-genome</code>,</li>
+<li><code>download-ensembl-features</code>,</li>
+<li><code>download-ensembl-variations</code>.</li>
+</ul>
+<div id="downloading-a-genome-from-another-rsat-web-server" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Downloading a genome from another RSAT web server</h2>
+<p>Usually the fastest way of getting a genome installed is to fetch it from other RSAT server. This way oligo frequencies are not computed; instead thay are copied over:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-organism</span> <span class="dt">\\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-server</span> http://rsat.eead.csic.es/plants <span class="dt">\\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-org</span> Arabidopsis_thaliana.TAIR10.29</span></code></pre></div>
+</div>
+<div id="installing-genome-sequences-and-annotations-from-ensembl-genomes" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Installing genome sequences and annotations from Ensembl Genomes</h2>
+<div id="check-ftp-site-url" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Check FTP site URL</h3>
+<p>The current FTP site is at <a href="ftp://ftp.ensemblgenomes.org" class="uri">ftp://ftp.ensemblgenomes.org</a> ; should it change in the future, or its folder structure, <a href="makefiles/ensemblgenomes_FTP_client.mk">../../makefiles/ensemblgenomes_FTP_client.mk</a> will have to be updated.</p>
+</div>
+<div id="find-out-current-ensembl-genomes-release" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Find out current Ensembl Genomes release</h3>
+<p>Visit the Web site of your division of interest, such as <a href="http://plants.ensembl.org" class="uri">http://plants.ensembl.org</a>, and check the release statement at the bottom. Alternatively you can use the REST <a href="http://rest.ensembl.org/documentation/info/eg_version">info/eg_version endpoint</a></p>
+<p>Ensembl Genome releases are integers and have an offset of 53 with Ensembl releases. For instance, Ensembl release 99 corresponds to Ensembl Genomes 46.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGRELEASE</span><span class="op">=</span>46</span></code></pre></div>
+</div>
+<div id="get-supported-species" class="section level3" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Get supported species</h3>
+<p>We shall download the current list of supported genomes in the respective division (GROUP). This can be done by running the following command:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGDIVISION</span><span class="op">=</span>Plants</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> organisms</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># in the example, this will create $RSAT/data/ensemblgenomes/plants/release-46/species_EnsemblPlants.txt</span></span></code></pre></div>
+<p>Once this is done then you can install genomes from that release.</p>
+</div>
+</div>
+<div id="install-all-species" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Install all species</h2>
+<p>You can install all genomes with these commands:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download FASTA and GTF files</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_all_species</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># parse input files, extract genomic features and compute oligo frequencies</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> install_all_species</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check upstream sequences can be retrieved</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> check_all_species</span></code></pre></div>
+<p>The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following command-line:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+<p><strong>Note:</strong> this will take a very long time, weeks for Ensembl Plant releases, so it might not be a good idea.</p>
+</div>
+<div id="install-selected-species" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Install selected species</h2>
+<p>In case you want to install a single genome you can do that by:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata download_one_species</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata install_one_species</span></code></pre></div>
+<p>You can also install selected genomes from older releases:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 organisms</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa download_one_species</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa install_one_species</span></code></pre></div>
+<p>As indicated earlier, the newly installed species are added to $RSAT/data/supported_organisms.tab and should appear in the list produced by:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+</div>
+<div id="compute-genome-stats-report" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Compute genome stats report</h2>
+<p>Run this to generate a report of descriptive stats of genomes currently in your system, such as <a href="http://rsat.eead.csic.es/plants/data/stats" class="uri">http://rsat.eead.csic.es/plants/data/stats</a> :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk calc_stats</span></code></pre></div>
+<div id="install-variation-data" class="section level3" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Install variation data</h3>
+<p>If variation data is available for your species of interest you can download it with:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa variations_one_species</span></code></pre></div>
+<p><strong>Note:</strong> this will update file $RSAT/data/supported_organisms.tab</p>
+</div>
+<div id="download-and-install-compara-homologies" class="section level3" number="1.5.2">
+<h3><span class="header-section-number">1.5.2</span> Download and Install Compara homologies</h3>
+<p>Script <code>get-orthologs-compara</code> can be used to retrieve homologues (orthologues by default) precomputed at Ensembl Compara. In order to use it you must first install Compara in your system, which you can do with:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ENSRELEASE</span><span class="op">=</span>99</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> download_compara</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> parse_compara_match</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> install_compara</span></code></pre></div>
+<p>All going well you can check the species with installed homologies with:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">get-orthologs-compara</span> <span class="at">-supported_organisms</span></span></code></pre></div>
+</div>
+<div id="install-gene-ontology-terms-from-biomart" class="section level3" number="1.5.3">
+<h3><span class="header-section-number">1.5.3</span> Install Gene Ontology terms from BioMart</h3>
+<p>First we shall get the current registry for the division of interest. Only Plants, Metazoa and Fungi are supported. For instance, for Plants the registry is at <a href="http://plants.ensembl.org/biomart/martservice?type=registry" class="uri">http://plants.ensembl.org/biomart/martservice?type=registry</a></p>
+<p>The XML content of the registry must be copied and pasted into file <em>$RSAT/ext_lib/biomart-perl/conf/martURLLocation.xml</em> . For instance, for Plants release 46 it will look like:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;MartRegistry&gt;
+  &lt;MartURLLocation database=&quot;plants_mart_46&quot; default=&quot;&quot; displayName=&quot;Ensembl Plants Genes 46&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;plants_mart&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;1&quot; /&gt;
+  &lt;MartURLLocation database=&quot;plants_snp_mart_46&quot; default=&quot;&quot; displayName=&quot;Ensembl Plants Variations 46&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;plants_variations&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;1&quot; /&gt;
+  &lt;MartURLLocation database=&quot;plants_sequence_mart_46&quot; default=&quot;&quot; displayName=&quot;Ensembl Plants Sequences 46&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;plants_sequences&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;0&quot; /&gt;
+  &lt;MartURLLocation database=&quot;plants_genomic_features_mart_46&quot; default=&quot;&quot; displayName=&quot;Ensembl Plants Genomic Features 46&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;plants_genomic_features&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;0&quot; /&gt;
+  &lt;MartURLLocation database=&quot;ontology_mart_99&quot; default=&quot;&quot; displayName=&quot;Ontology Mart 99&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;ontology&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;0&quot; /&gt;
+&lt;/MartRegistry&gt;</code></pre>
+<p>Once this is done we shall update the registry cache with:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-ensembl-go-annotations-biomart</span> <span class="at">-reg</span></span></code></pre></div>
+<p>This will take a few minutes, but then we can do:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_go</span></code></pre></div>
+<p>And for each species for which we want GO terms we can now do:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa download_go_annotations</span></code></pre></div>
+</div>
+<div id="installing-from-other-sources" class="section level3" number="1.5.4">
+<h3><span class="header-section-number">1.5.4</span> Installing from other sources</h3>
+<p>The procedures described can also be used to install arbitrary genomes from other sources, provided that 4 input files are available with the following extensions:</p>
+<ul>
+<li>$SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence</li>
+<li>$SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence</li>
+<li>$SPECIES_RSAT_ID.gtf : annotation file</li>
+<li>$SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features</li>
+</ul>
+<p>where SPECIES_RSAT_ID is a string identifying this organism and its annotation.</p>
+<p>Note: parse-gtf takes also GFF3 files, which is the format available at JGI.</p>
+<p>For instance, for assembly Wm82.a2.v1 of <em>Glycine max</em> from <a href="https://phytozome.jgi.doe.gov">JGI Phytozome</a>, we could install it with:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="va">SPECIES_RSAT_ID</span><span class="op">=</span>Glycine_max.Wm82.a2.v1.JGI</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$RSAT</span>/data/genomes/<span class="va">${SPECIES_RSAT_ID}</span>/genome</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max <span class="dt">\</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    SPECIES_DIR=/var/www/html/rsat/data/genomes/<span class="va">$SPECIES_RSAT_ID</span> <span class="dt">\</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    SPECIES_RSAT_ID=<span class="va">$SPECIES_RSAT_ID</span> TAXON_ID=3847 GTF_SOURCE=JGI <span class="dt">\</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    install_from_gtf</span></code></pre></div>
+<p>Note that TAXON_ID can be obtained at <a href="https://www.ncbi.nlm.nih.gov/taxonomy" class="uri">https://www.ncbi.nlm.nih.gov/taxonomy</a></p>
+<hr />
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

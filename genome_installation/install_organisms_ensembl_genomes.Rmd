@@ -24,13 +24,18 @@ output:
 This document explains how to install genomes and annotations from Ensembl Genomes using mostly the [FTP](ftp://ftp.ensemblgenomes.org/pub) site.
 Gene Ontology terms are optional and are obtained from [BioMart](http://plants.ensembl.org/biomart/martview) instead.
 
-Note that while Ensembl covers Vertebrates, Ensembl Non Vertebrates (NV, Ensembl Genomes) includes the other divisions (Protists, Fungi, Plants, Bacteria, Metazoa). These instructions have mostly been tested with **Ensembl Plants**.
+Note that while Ensembl covers Vertebrates, Ensembl Genomes (EG, also known as Non Vertebrates, NV) 
+includes the other divisions (Protists, Fungi, Plants, Bacteria, Metazoa). 
+These instructions have mostly been tested with **Ensembl Plants**.
 
-This installation procedure can actually be used to **install genomes from other sources** as well, see below.
+This protocol uses the Makefile 
+[ensemblgenomes_FTP_client.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk),
+which can also be used to install arbitrary genomes from other sources from FASTA and GTF files,
+as explained in 
+[Installing organisms from FASTA and GTF files](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html).
 
-This protocol uses a makefile found in the rsat directory [makefiles/ensemblgenomes_FTP_client.mk](makefiles/ensemblgenomes_FTP_client.mk) for these tasks.
-
-This document **does not** use the following scripts, which are documented elsewhere: 
+This document **does not** use the following scripts, which are documented in
+[Installing genomes and variations from Ensembl](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_from_ensembl.html): 
 
 - `install-ensembl-genome`, 
 - `download-ensembl-genome`,
@@ -38,22 +43,13 @@ This document **does not** use the following scripts, which are documented elsew
 - `download-ensembl-variations`.
 
 
-## Downloading a genome from another RSAT web server
-
-Usually the fastest way of getting a genome installed is to fetch it from other RSAT server. This way oligo frequencies are not computed; instead thay are copied over:
-
-```{r, engine='bash', eval=FALSE}
-download-organism \\
-   -server http://rsat.eead.csic.es/plants \\
-   -org Arabidopsis_thaliana.TAIR10.29
-```
-
 ## Installing genome sequences and annotations from Ensembl Genomes
 
 ### Check FTP site URL
 
-The current FTP site is at ftp://ftp.ensemblgenomes.org ; should it change in the future, or its folder structure, [../../makefiles/ensemblgenomes_FTP_client.mk](makefiles/ensemblgenomes_FTP_client.mk) will have to be updated.
-
+The current FTP site is at ftp://ftp.ensemblgenomes.org ; should it change in the future, or its folder structure, 
+[ensemblgenomes_FTP_client.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk)
+will be updated accordingly.
 
 ### Find out current Ensembl Genomes release 
 
@@ -107,8 +103,7 @@ command-line:
 supported-organisms
 ```
 
-
-**Note:** this will take a very long time, weeks for Ensembl Plant releases, so it might not be a good idea.
+**Note:** this will take a very long time, many days for a complete Ensembl Genomes release, so it might not be a good idea.
 
 ## Install selected species
 
@@ -129,15 +124,19 @@ make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=42 SPEC
 make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=42 SPECIES=oryza_sativa install_one_species
 ```
 
-As indicated earlier, the newly installed species are added to $RSAT/data/supported_organisms.tab and should appear in the list produced by:
+As indicated earlier, the newly installed species are added to $RSAT/data/supported_organisms.tab 
+and should appear in the list produced by:
 
 ```{r, engine='bash', eval=FALSE}
 supported-organisms
 ```
 
-## Compute genome stats report
+## Other optional tasks
 
-Run this to generate a report of descriptive stats of genomes currently in your system, such as http://rsat.eead.csic.es/plants/data/stats :
+### Compute genome stats report
+
+This step generates a report of descriptive stats of genomes currently in your system, 
+such as http://rsat.eead.csic.es/plants/data/stats :
 ```{r, engine='bash', eval=FALSE}
 make -f makefiles/ensemblgenomes_FTP_client.mk calc_stats
 ```
@@ -153,8 +152,7 @@ make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=$EGRELE
 
 **Note:** this will update file $RSAT/data/supported_organisms.tab
 
-
-### Download and Install Compara homologies
+### Download and install Ensembl Compara homologies (optional)
 
 Script `get-orthologs-compara` can be used to retrieve homologues (orthologues by default) precomputed at Ensembl Compara.
 In order to use it you must first install Compara in your system, which you can do with:
@@ -207,37 +205,5 @@ And for each species for which we want GO terms we can now do:
 ```{r, engine='bash', eval=FALSE}
 make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=$EGRELEASE SPECIES=oryza_sativa download_go_annotations
 ```
-
-### Installing from other sources
-
-The procedures described can also be used to install arbitrary genomes from other sources,
-provided that 4 input files are available with the following extensions: 
-
-* $SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence
-* $SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence 
-* $SPECIES_RSAT_ID.gtf : annotation file 
-* $SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features
-
-where SPECIES_RSAT_ID is a string identifying this organism and its annotation. 
-
-Note: parse-gtf takes also GFF3 files, which is the format available at JGI.
-
-For instance, for assembly Wm82.a2.v1 of *Glycine max* from [JGI Phytozome](https://phytozome.jgi.doe.gov), we could install it with:
- 
-```{r, engine='bash', eval=FALSE}
-cd $RSAT
-
-SPECIES_RSAT_ID=Glycine_max.Wm82.a2.v1.JGI
-
-mkdir -p $RSAT/data/genomes/${SPECIES_RSAT_ID}/genome
-# put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)
-
-make -f makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max \
-    SPECIES_DIR=/var/www/html/rsat/data/genomes/$SPECIES_RSAT_ID \
-    SPECIES_RSAT_ID=$SPECIES_RSAT_ID TAXON_ID=3847 GTF_SOURCE=JGI \
-    install_from_gtf
-```
-
-Note that TAXON_ID can be obtained at <https://www.ncbi.nlm.nih.gov/taxonomy>
 
 *********

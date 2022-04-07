@@ -1,5 +1,5 @@
 ---
-title: "Installing genomes from EnsemblGenomes"
+title: "Installing genomes from Ensembl Genomes"
 author: "Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
@@ -43,15 +43,15 @@ This document **does not** use the following scripts, which are documented in
 - `download-ensembl-variations`.
 
 
-## Installing genome sequences and annotations from Ensembl Genomes
+# Installing genome sequences and annotations from Ensembl Genomes
 
-### Check FTP site URL
+## Check FTP site URL
 
 The current FTP site is at ftp://ftp.ensemblgenomes.org ; should it change in the future, or its folder structure, 
 [ensemblgenomes_FTP_client.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk)
 will be updated accordingly.
 
-### Find out current Ensembl Genomes release 
+## Find out current Ensembl Genomes release 
 
 Visit the Web site of your division of interest, such as http://plants.ensembl.org, and check the release statement at the bottom.
 Alternatively you can use the REST [info/eg_version endpoint](http://rest.ensembl.org/documentation/info/eg_version)
@@ -63,7 +63,7 @@ For instance, Ensembl release 99 corresponds to Ensembl Genomes 46.
 export EGRELEASE=46
 ```
 
-### Get supported species 
+## Get supported species 
 
 We shall download the current list of supported genomes in the respective division (GROUP).
 This can be done by running the following command:
@@ -79,7 +79,7 @@ make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=$EGRELE
 
 Once this is done then you can install genomes from that release.
 
-## Install all species 
+# Install all species 
 
 You can install all genomes with these commands:
 
@@ -103,9 +103,23 @@ command-line:
 supported-organisms
 ```
 
-**Note:** this will take a very long time, many days for a complete Ensembl Genomes release, so it might not be a good idea.
+This will take a very long time, many days for a complete Ensembl Genomes release.
+The most time-consuming task is the calculation of genomic frequencies of oligos and dyads.
+Check the table for the installation time of selected plant genomes: 
 
-## Install selected species
+|organisms|genome assembly length (Mb)|installation time (minutes)|
+|:--------|--------------------------:|--------------------------:|
+|Arabidopsis_thaliana.TAIR10.46|119.7|144|
+|Brachypodium_distachyon.Brachypodium_distachyon_v3.0.46|271.2|233|
+|Oryza_sativa.IRGSP-1.0.46|375.0|290|
+|Beta_vulgaris.RefBeet-1.2.2.46|566.2|320|
+|Glycine_max.Glycine_max_v2.1.46|978.5|660|
+|Zea_mays.Zm-B73-REFERENCE-NAM-5.0.51|2182.1|1069|
+|Helianthus_annuus.HanXRQr1.0.46|3027.8|1689|
+|Hordeum_vulgare.IBSCv2.46|4834.4|3574|
+|Triticum_aestivum.IWGSC.46|14547.3|10458|
+
+# Install selected species
 
 In case you want to install a single genome you can do that by:
 
@@ -131,9 +145,9 @@ and should appear in the list produced by:
 supported-organisms
 ```
 
-## Other optional tasks
+# Other optional tasks
 
-### Compute genome stats report
+## Compute genome stats report
 
 This step generates a report of descriptive stats of genomes currently in your system, 
 such as http://rsat.eead.csic.es/plants/data/stats :
@@ -141,7 +155,7 @@ such as http://rsat.eead.csic.es/plants/data/stats :
 make -f makefiles/ensemblgenomes_FTP_client.mk calc_stats
 ```
 
-### Install variation data
+## Install variation data
 
 If variation data is available for your species of interest you can download it with:
 
@@ -152,7 +166,7 @@ make -f makefiles/ensemblgenomes_FTP_client.mk GROUP=$EGDIVISION RELEASE=$EGRELE
 
 **Note:** this will update file $RSAT/data/supported_organisms.tab
 
-### Download and install Ensembl Compara homologies (optional)
+## Download and install Ensembl Compara homologies (optional)
 
 Script `get-orthologs-compara` can be used to retrieve homologues (orthologues by default) precomputed at Ensembl Compara.
 In order to use it you must first install Compara in your system, which you can do with:
@@ -173,7 +187,7 @@ All going well you can check the species with installed homologies with:
 get-orthologs-compara -supported_organisms
 ```
 
-### Install Gene Ontology terms from BioMart
+## Install Gene Ontology terms from BioMart
 
 First we shall get the current registry for the division of interest. Only Plants, Metazoa and Fungi are supported.
 For instance, for Plants the registry is at http://plants.ensembl.org/biomart/martservice?type=registry

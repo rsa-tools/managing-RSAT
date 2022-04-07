@@ -1,0 +1,44 @@
+---
+title: "Installing genomes from a RSAT server"
+author: "Bruno Contreras Moreira"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: false
+    fig_caption: true
+    highlight: kate
+    theme: cerulean
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 5
+---
+
+This procedure allows the installation of any genome available in a RSAT Web server.
+This is usually the fastest way of getting a genome installed, 
+as this way oligo and dyad frequencies are not computed, they are copied over instead.
+
+To find out which genomes are available visit your favorite RSAT server and in the left menu 
+click on 'Genomes and genes: supported organisms' to get an up-to-date table. The organism
+name you need for the command below is the one in column ID:
+
+```{r, engine='bash', eval=FALSE}
+download-organism \\
+   -server http://rsat.eead.csic.es/plants \\
+   -org Arabidopsis_thaliana.TAIR10.29
+```
+
+
+The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following 
+command-line:
+
+```{r, engine='bash', eval=FALSE}
+supported-organisms
+```
+
+*********

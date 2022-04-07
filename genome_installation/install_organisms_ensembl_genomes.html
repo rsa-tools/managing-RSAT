@@ -11,9 +11,9 @@
 
 <meta name="author" content="Bruno Contreras Moreira" />
 
-<meta name="date" content="2022-02-24" />
+<meta name="date" content="2022-04-07" />
 
-<title>Installing genomes from EnsemblGenomes</title>
+<title>Installing genomes from Ensembl Genomes</title>
 
 <script src="install_organisms_ensembl_genomes_files/header-attrs-2.11/header-attrs.js"></script>
 <script src="install_organisms_ensembl_genomes_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -327,9 +327,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Installing genomes from EnsemblGenomes</h1>
+<h1 class="title toc-ignore">Installing genomes from Ensembl Genomes</h1>
 <h4 class="author">Bruno Contreras Moreira</h4>
-<h4 class="date">2022-02-24</h4>
+<h4 class="date">2022-04-07</h4>
 
 </div>
 
@@ -337,103 +337,155 @@ div.tocify {
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>This document explains how to install genomes and annotations from Ensembl Genomes using mostly the <a href="ftp://ftp.ensemblgenomes.org/pub">FTP</a> site. Gene Ontology terms are optional and are obtained from <a href="http://plants.ensembl.org/biomart/martview">BioMart</a> instead.</p>
-<p>Note that while Ensembl covers Vertebrates, Ensembl Non Vertebrates (NV, Ensembl Genomes) includes the other divisions (Protists, Fungi, Plants, Bacteria, Metazoa). These instructions have mostly been tested with <strong>Ensembl Plants</strong>.</p>
-<p>This installation procedure can actually be used to <strong>install genomes from other sources</strong> as well, see below.</p>
-<p>This protocol uses a makefile found in the rsat directory <a href="makefiles/ensemblgenomes_FTP_client.mk">makefiles/ensemblgenomes_FTP_client.mk</a> for these tasks.</p>
-<p>This document <strong>does not</strong> use the following scripts, which are documented elsewhere:</p>
+<p>Note that while Ensembl covers Vertebrates, Ensembl Genomes (EG, also known as Non Vertebrates, NV) includes the other divisions (Protists, Fungi, Plants, Bacteria, Metazoa). These instructions have mostly been tested with <strong>Ensembl Plants</strong>.</p>
+<p>This protocol uses the Makefile <a href="https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk">ensemblgenomes_FTP_client.mk</a>, which can also be used to install arbitrary genomes from other sources from FASTA and GTF files, as explained in <a href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_FASTA_GTF.html">Installing organisms from FASTA and GTF files</a>.</p>
+<p>This document <strong>does not</strong> use the following scripts, which are documented in <a href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_from_ensembl.html">Installing genomes and variations from Ensembl</a>:</p>
 <ul>
 <li><code>install-ensembl-genome</code>,</li>
 <li><code>download-ensembl-genome</code>,</li>
 <li><code>download-ensembl-features</code>,</li>
 <li><code>download-ensembl-variations</code>.</li>
 </ul>
-<div id="downloading-a-genome-from-another-rsat-web-server" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Downloading a genome from another RSAT web server</h2>
-<p>Usually the fastest way of getting a genome installed is to fetch it from other RSAT server. This way oligo frequencies are not computed; instead thay are copied over:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-organism</span> <span class="dt">\\</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-server</span> http://rsat.eead.csic.es/plants <span class="dt">\\</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-org</span> Arabidopsis_thaliana.TAIR10.29</span></code></pre></div>
 </div>
-<div id="installing-genome-sequences-and-annotations-from-ensembl-genomes" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Installing genome sequences and annotations from Ensembl Genomes</h2>
-<div id="check-ftp-site-url" class="section level3" number="1.2.1">
-<h3><span class="header-section-number">1.2.1</span> Check FTP site URL</h3>
-<p>The current FTP site is at <a href="ftp://ftp.ensemblgenomes.org" class="uri">ftp://ftp.ensemblgenomes.org</a> ; should it change in the future, or its folder structure, <a href="makefiles/ensemblgenomes_FTP_client.mk">../../makefiles/ensemblgenomes_FTP_client.mk</a> will have to be updated.</p>
+<div id="installing-genome-sequences-and-annotations-from-ensembl-genomes" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Installing genome sequences and annotations from Ensembl Genomes</h1>
+<div id="check-ftp-site-url" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Check FTP site URL</h2>
+<p>The current FTP site is at <a href="ftp://ftp.ensemblgenomes.org" class="uri">ftp://ftp.ensemblgenomes.org</a> ; should it change in the future, or its folder structure, <a href="https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk">ensemblgenomes_FTP_client.mk</a> will be updated accordingly.</p>
 </div>
-<div id="find-out-current-ensembl-genomes-release" class="section level3" number="1.2.2">
-<h3><span class="header-section-number">1.2.2</span> Find out current Ensembl Genomes release</h3>
+<div id="find-out-current-ensembl-genomes-release" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Find out current Ensembl Genomes release</h2>
 <p>Visit the Web site of your division of interest, such as <a href="http://plants.ensembl.org" class="uri">http://plants.ensembl.org</a>, and check the release statement at the bottom. Alternatively you can use the REST <a href="http://rest.ensembl.org/documentation/info/eg_version">info/eg_version endpoint</a></p>
 <p>Ensembl Genome releases are integers and have an offset of 53 with Ensembl releases. For instance, Ensembl release 99 corresponds to Ensembl Genomes 46.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGRELEASE</span><span class="op">=</span>46</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGRELEASE</span><span class="op">=</span>46</span></code></pre></div>
 </div>
-<div id="get-supported-species" class="section level3" number="1.2.3">
-<h3><span class="header-section-number">1.2.3</span> Get supported species</h3>
+<div id="get-supported-species" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Get supported species</h2>
 <p>We shall download the current list of supported genomes in the respective division (GROUP). This can be done by running the following command:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGDIVISION</span><span class="op">=</span>Plants</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> organisms</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># in the example, this will create $RSAT/data/ensemblgenomes/plants/release-46/species_EnsemblPlants.txt</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">EGDIVISION</span><span class="op">=</span>Plants</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> organisms</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># in the example, this will create $RSAT/data/ensemblgenomes/plants/release-46/species_EnsemblPlants.txt</span></span></code></pre></div>
 <p>Once this is done then you can install genomes from that release.</p>
 </div>
 </div>
-<div id="install-all-species" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Install all species</h2>
+<div id="install-all-species" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Install all species</h1>
 <p>You can install all genomes with these commands:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download FASTA and GTF files</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_all_species</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># parse input files, extract genomic features and compute oligo frequencies</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> install_all_species</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check upstream sequences can be retrieved</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> check_all_species</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download FASTA and GTF files</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_all_species</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># parse input files, extract genomic features and compute oligo frequencies</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> install_all_species</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check upstream sequences can be retrieved</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nohup</span> make <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> check_all_species</span></code></pre></div>
 <p>The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following command-line:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
-<p><strong>Note:</strong> this will take a very long time, weeks for Ensembl Plant releases, so it might not be a good idea.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+<p>This will take a very long time, many days for a complete Ensembl Genomes release. The most time-consuming task is the calculation of genomic frequencies of oligos and dyads. Check the table for the installation time of selected plant genomes:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">organisms</th>
+<th align="right">genome assembly length (Mb)</th>
+<th align="right">installation time (minutes)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Arabidopsis_thaliana.TAIR10.46</td>
+<td align="right">119.7</td>
+<td align="right">144</td>
+</tr>
+<tr class="even">
+<td align="left">Brachypodium_distachyon.Brachypodium_distachyon_v3.0.46</td>
+<td align="right">271.2</td>
+<td align="right">233</td>
+</tr>
+<tr class="odd">
+<td align="left">Oryza_sativa.IRGSP-1.0.46</td>
+<td align="right">375.0</td>
+<td align="right">290</td>
+</tr>
+<tr class="even">
+<td align="left">Beta_vulgaris.RefBeet-1.2.2.46</td>
+<td align="right">566.2</td>
+<td align="right">320</td>
+</tr>
+<tr class="odd">
+<td align="left">Glycine_max.Glycine_max_v2.1.46</td>
+<td align="right">978.5</td>
+<td align="right">660</td>
+</tr>
+<tr class="even">
+<td align="left">Zea_mays.Zm-B73-REFERENCE-NAM-5.0.51</td>
+<td align="right">2182.1</td>
+<td align="right">1069</td>
+</tr>
+<tr class="odd">
+<td align="left">Helianthus_annuus.HanXRQr1.0.46</td>
+<td align="right">3027.8</td>
+<td align="right">1689</td>
+</tr>
+<tr class="even">
+<td align="left">Hordeum_vulgare.IBSCv2.46</td>
+<td align="right">4834.4</td>
+<td align="right">3574</td>
+</tr>
+<tr class="odd">
+<td align="left">Triticum_aestivum.IWGSC.46</td>
+<td align="right">14547.3</td>
+<td align="right">10458</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="install-selected-species" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Install selected species</h2>
+<div id="install-selected-species" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Install selected species</h1>
 <p>In case you want to install a single genome you can do that by:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata download_one_species</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata install_one_species</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata download_one_species</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_longistaminata install_one_species</span></code></pre></div>
 <p>You can also install selected genomes from older releases:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 organisms</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa download_one_species</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa install_one_species</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 organisms</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa download_one_species</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=42 SPECIES=oryza_sativa install_one_species</span></code></pre></div>
 <p>As indicated earlier, the newly installed species are added to $RSAT/data/supported_organisms.tab and should appear in the list produced by:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
 </div>
-<div id="compute-genome-stats-report" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> Compute genome stats report</h2>
-<p>Run this to generate a report of descriptive stats of genomes currently in your system, such as <a href="http://rsat.eead.csic.es/plants/data/stats" class="uri">http://rsat.eead.csic.es/plants/data/stats</a> :</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk calc_stats</span></code></pre></div>
-<div id="install-variation-data" class="section level3" number="1.5.1">
-<h3><span class="header-section-number">1.5.1</span> Install variation data</h3>
+<div id="other-optional-tasks" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Other optional tasks</h1>
+<div id="compute-genome-stats-report" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Compute genome stats report</h2>
+<p>This step generates a report of descriptive stats of genomes currently in your system, such as <a href="http://rsat.eead.csic.es/plants/data/stats" class="uri">http://rsat.eead.csic.es/plants/data/stats</a> :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk calc_stats</span></code></pre></div>
+</div>
+<div id="install-variation-data" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Install variation data</h2>
 <p>If variation data is available for your species of interest you can download it with:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa variations_one_species</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa variations_one_species</span></code></pre></div>
 <p><strong>Note:</strong> this will update file $RSAT/data/supported_organisms.tab</p>
 </div>
-<div id="download-and-install-compara-homologies" class="section level3" number="1.5.2">
-<h3><span class="header-section-number">1.5.2</span> Download and Install Compara homologies</h3>
+<div id="download-and-install-ensembl-compara-homologies-optional" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Download and install Ensembl Compara homologies (optional)</h2>
 <p>Script <code>get-orthologs-compara</code> can be used to retrieve homologues (orthologues by default) precomputed at Ensembl Compara. In order to use it you must first install Compara in your system, which you can do with:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ENSRELEASE</span><span class="op">=</span>99</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> download_compara</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> parse_compara_match</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> install_compara</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ENSRELEASE</span><span class="op">=</span>99</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> download_compara</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> parse_compara_match</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk RELEASE=<span class="va">$EGRELEASE</span> ENSEMBL_RELEASE=<span class="va">$ENSRELEASE</span> GROUP=<span class="va">$EGDIVISION</span> install_compara</span></code></pre></div>
 <p>All going well you can check the species with installed homologies with:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">get-orthologs-compara</span> <span class="at">-supported_organisms</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">get-orthologs-compara</span> <span class="at">-supported_organisms</span></span></code></pre></div>
 </div>
-<div id="install-gene-ontology-terms-from-biomart" class="section level3" number="1.5.3">
-<h3><span class="header-section-number">1.5.3</span> Install Gene Ontology terms from BioMart</h3>
+<div id="install-gene-ontology-terms-from-biomart" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Install Gene Ontology terms from BioMart</h2>
 <p>First we shall get the current registry for the division of interest. Only Plants, Metazoa and Fungi are supported. For instance, for Plants the registry is at <a href="http://plants.ensembl.org/biomart/martservice?type=registry" class="uri">http://plants.ensembl.org/biomart/martservice?type=registry</a></p>
 <p>The XML content of the registry must be copied and pasted into file <em>$RSAT/ext_lib/biomart-perl/conf/martURLLocation.xml</em> . For instance, for Plants release 46 it will look like:</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -446,38 +498,12 @@ div.tocify {
   &lt;MartURLLocation database=&quot;ontology_mart_99&quot; default=&quot;&quot; displayName=&quot;Ontology Mart 99&quot; host=&quot;plants.ensembl.org&quot; includeDatasets=&quot;&quot; martUser=&quot;&quot; name=&quot;ontology&quot; path=&quot;/biomart/martservice&quot; port=&quot;80&quot; serverVirtualSchema=&quot;plants_mart&quot; visible=&quot;0&quot; /&gt;
 &lt;/MartRegistry&gt;</code></pre>
 <p>Once this is done we shall update the registry cache with:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-ensembl-go-annotations-biomart</span> <span class="at">-reg</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-ensembl-go-annotations-biomart</span> <span class="at">-reg</span></span></code></pre></div>
 <p>This will take a few minutes, but then we can do:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_go</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> download_go</span></code></pre></div>
 <p>And for each species for which we want GO terms we can now do:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa download_go_annotations</span></code></pre></div>
-</div>
-<div id="installing-from-other-sources" class="section level3" number="1.5.4">
-<h3><span class="header-section-number">1.5.4</span> Installing from other sources</h3>
-<p>The procedures described can also be used to install arbitrary genomes from other sources, provided that 4 input files are available with the following extensions:</p>
-<ul>
-<li>$SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence</li>
-<li>$SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence</li>
-<li>$SPECIES_RSAT_ID.gtf : annotation file</li>
-<li>$SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features</li>
-</ul>
-<p>where SPECIES_RSAT_ID is a string identifying this organism and its annotation.</p>
-<p>Note: parse-gtf takes also GFF3 files, which is the format available at JGI.</p>
-<p>For instance, for assembly Wm82.a2.v1 of <em>Glycine max</em> from <a href="https://phytozome.jgi.doe.gov">JGI Phytozome</a>, we could install it with:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="va">SPECIES_RSAT_ID</span><span class="op">=</span>Glycine_max.Wm82.a2.v1.JGI</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$RSAT</span>/data/genomes/<span class="va">${SPECIES_RSAT_ID}</span>/genome</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max <span class="dt">\</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    SPECIES_DIR=/var/www/html/rsat/data/genomes/<span class="va">$SPECIES_RSAT_ID</span> <span class="dt">\</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    SPECIES_RSAT_ID=<span class="va">$SPECIES_RSAT_ID</span> TAXON_ID=3847 GTF_SOURCE=JGI <span class="dt">\</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    install_from_gtf</span></code></pre></div>
-<p>Note that TAXON_ID can be obtained at <a href="https://www.ncbi.nlm.nih.gov/taxonomy" class="uri">https://www.ncbi.nlm.nih.gov/taxonomy</a></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk GROUP=<span class="va">$EGDIVISION</span> RELEASE=<span class="va">$EGRELEASE</span> SPECIES=oryza_sativa download_go_annotations</span></code></pre></div>
 <hr />
-</div>
 </div>
 </div>
 

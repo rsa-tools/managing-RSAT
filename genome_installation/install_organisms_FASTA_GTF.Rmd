@@ -1,0 +1,66 @@
+---
+title: "Installing genomes from FASTA and GTF files"
+author: "Bruno Contreras Moreira"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    self_contained: false
+    fig_caption: true
+    highlight: kate
+    theme: cerulean
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+  pdf_document:
+    fig_caption: yes
+    highlight: zenburn
+    toc: yes
+    toc_depth: 5
+---
+
+This protocol uses the Makefile 
+[ensemblgenomes_FTP_client.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk),
+which can also be used to install organisms from Ensembl Genomes,
+as explained in 
+[Installing genomes from Ensembl Genomes](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_ensembl_genomes.html).
+
+This procedure supports the installation of arbitrary genomes from any sources,
+provided that 4 input files are obtained with the following extensions: 
+
+* $SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence
+* $SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence 
+* $SPECIES_RSAT_ID.gtf : annotation file 
+* $SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features
+
+where SPECIES_RSAT_ID is a string identifying this organism and its annotation. 
+
+Note: parse-gtf takes also GFF3 files, but the script expects the .gtf extension
+
+For instance, to install assembly Wm82.a2.v1 of *Glycine max* from [JGI Phytozome](https://phytozome.jgi.doe.gov), 
+we could do:
+ 
+```{r, engine='bash', eval=FALSE}
+cd $RSAT
+
+SPECIES_RSAT_ID=Glycine_max.Wm82.a2.v1.JGI
+
+mkdir -p $RSAT/data/genomes/${SPECIES_RSAT_ID}/genome
+# put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)
+
+make -f makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max \
+    SPECIES_DIR=/var/www/html/rsat/data/genomes/$SPECIES_RSAT_ID \
+    SPECIES_RSAT_ID=$SPECIES_RSAT_ID TAXON_ID=3847 GTF_SOURCE=JGI \
+    install_from_gtf
+```
+
+Note that TAXON_ID can be obtained at <https://www.ncbi.nlm.nih.gov/taxonomy>
+
+The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following 
+command-line:
+
+```{r, engine='bash', eval=FALSE}
+supported-organisms
+```
+
+*********

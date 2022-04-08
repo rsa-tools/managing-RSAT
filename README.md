@@ -13,9 +13,10 @@ Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organism
 - [Uninstalling genomes from RSAT](genome_installation/uninstalling_organisms.html)
 - Installing and testing [comparative genomics tools](comparative_genomics/comparative_genomics.html)
 
+<!--
 ## Updating RSAT
 
 ## Management of temporary files
-
+-->
 
 

@@ -189,11 +189,19 @@ get-orthologs-compara -supported_organisms
 
 ## Install Gene Ontology terms from BioMart
 
-First we shall get the current registry for the division of interest. Only Plants, Metazoa and Fungi are supported.
+These operations have been tested in Ensembl Plants, but should work also with Metazoa and Fungi.
+They require the installation of optional software, which can be done as follows:
+
+```{r, engine='bash', eval=FALSE}
+sudo bash
+cd $RSAT
+make -f makefiles/install_software.mk install_biomart-perl check_biomart-perl
+```
+To complete the configuration we shall get the current registry for the division of interest. 
 For instance, for Plants the registry is at http://plants.ensembl.org/biomart/martservice?type=registry
 
 The XML content of the registry must be copied and pasted into file *$RSAT/ext_lib/biomart-perl/conf/martURLLocation.xml* .
-For instance, for Plants release 46 it will look like:
+For instance, for Plants release 46 it looked like this:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 

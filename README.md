@@ -1,7 +1,7 @@
 # Managing-RSAT
 View website : https://rsa-tools.github.io/managing-RSAT/
 
-Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organisms, updates, temp files, users.
+Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organisms, updates, temporary files, users.
 
 ## Installing genomes
 
@@ -16,7 +16,16 @@ Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organism
 <!--
 ## Updating RSAT
 
+TO BE WRITTEN
+
 ## Management of temporary files
+
+TO BE WRITTEN
+
+## User management
+
+TO BE WRITTEN
+
 -->
 
 

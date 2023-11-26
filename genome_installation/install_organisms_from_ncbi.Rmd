@@ -103,7 +103,7 @@ Note: for some species, several strains have been sequenced. The number of genom
 Here is the result on Nov 26, 2023
 
 | Number of species | Taxonomic group |
-|---------|--------------------------|
+|---------|---------------------------|
 |       50033   | available_bacteria_2023-11-26.txt     |
 |       14148   | available_viral_2023-11-26.txt        |
 |       1176    | available_archaea_2023-11-26.txt      |
@@ -190,7 +190,8 @@ install-organism -v 1 -group bacteria \
 2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a separate folder, with the same organistion as on the NCBI FTP site. 
 
 ```{r list_downloaded_genomes, eval=FALSE}
-ls -1 $RSAT/downloads/refseq/bacteria/${SPECIES}/latest_assembly_versions
+echo "Strain folder: $RSAT/downloads/refseq/${STRAIN}/"
+ls -1 $RSAT/downloads/refseq/${STRAIN}/
 ```
 
 
@@ -427,7 +428,7 @@ We can install multiple species in a single command by specifying a file contain
 SPECIES_TO_INSTALL=${GROUP}_species_to_install.txt
 
 ## Get the two first words of the 8th column as Genus and species names
-cut -f 8 ${COMPLETE} \
+cut -f 8 ${REPRESENTATIVE_COMPLETE} \
   | sed 's/ /_/g' \
    > ${SPECIES_TO_INSTALL}
 

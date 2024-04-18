@@ -1,5 +1,5 @@
 ---
-title: "Installing genomes from a RSAT server"
+title: "Donwloading genomes from an RSAT server"
 author: "Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
@@ -20,8 +20,7 @@ output:
 ---
 
 This procedure allows the installation of any genome available in a RSAT Web server.
-This is usually the fastest way of getting a genome installed, 
-as this way oligo and dyad frequencies are not computed, they are copied over instead.
+This is usually the fastest way of getting a genome installed, as this way oligo and dyad frequencies are not computed, they are copied over instead.
 
 To find out which genomes are available visit your favorite RSAT server and in the left menu 
 click on 'Genomes and genes: supported organisms' to get an up-to-date table. The organism

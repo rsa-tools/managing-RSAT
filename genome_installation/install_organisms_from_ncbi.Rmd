@@ -215,6 +215,16 @@ This returns 5014 assemblies (24/04/2024), with only one assembly per species, a
 grep -v '^;' representative_complete_major.tsv | grep -v '^#' | cut -f 6 | sort  | uniq -c|sort -nr | less
 ```
 
+We can export a bash script with the instructions to install each of these genomes. 
+
+```{bash eval=FALSE}
+install-organism -v 1 -group bacteria  -task list \
+  -list_format bash \
+  -filter refseq_category "representative genome" \
+  -filter assembly_level "Complete Genome" \
+  -o representative_complete_major.bash
+
+```
 
 
 ### Downloading a selected assembly

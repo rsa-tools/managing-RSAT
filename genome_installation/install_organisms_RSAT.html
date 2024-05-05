@@ -11,11 +11,11 @@
 
 <meta name="author" content="Bruno Contreras Moreira" />
 
-<meta name="date" content="2022-04-07" />
+<meta name="date" content="2024-04-14" />
 
-<title>Installing genomes from a RSAT server</title>
+<title>Donwloading genomes from an RSAT server</title>
 
-<script src="install_organisms_RSAT_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="install_organisms_RSAT_files/header-attrs-2.25/header-attrs.js"></script>
 <script src="install_organisms_RSAT_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_RSAT_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="install_organisms_RSAT_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="install_organisms_RSAT_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="install_organisms_RSAT_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="install_organisms_RSAT_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="install_organisms_RSAT_files/navigation-1.1/tabsets.js"></script>
@@ -46,6 +46,7 @@
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -56,7 +57,7 @@
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -67,7 +68,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -130,13 +131,20 @@ code span.wa { color: #bf0303; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -172,6 +180,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -191,8 +202,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -200,16 +211,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -327,20 +331,31 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Installing genomes from a RSAT server</h1>
+<h1 class="title toc-ignore">Donwloading genomes from an RSAT
+server</h1>
 <h4 class="author">Bruno Contreras Moreira</h4>
-<h4 class="date">2022-04-07</h4>
+<h4 class="date">2024-04-14</h4>
 
 </div>
 
 
-<p>This procedure allows the installation of any genome available in a RSAT Web server. This is usually the fastest way of getting a genome installed, as this way oligo and dyad frequencies are not computed, they are copied over instead.</p>
-<p>To find out which genomes are available visit your favorite RSAT server and in the left menu click on ‘Genomes and genes: supported organisms’ to get an up-to-date table. The organism name you need for the command below is the one in column ID:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">download-organism</span> <span class="dt">\\</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-server</span> http://rsat.eead.csic.es/plants <span class="dt">\\</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">-org</span> Arabidopsis_thaliana.TAIR10.29</span></code></pre></div>
-<p>The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following command-line:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+<p>This procedure allows the installation of any genome available in a
+RSAT Web server. This is usually the fastest way of getting a genome
+installed, as this way oligo and dyad frequencies are not computed, they
+are copied over instead.</p>
+<p>To find out which genomes are available visit your favorite RSAT
+server and in the left menu click on ‘Genomes and genes: supported
+organisms’ to get an up-to-date table. The organism name you need for
+the command below is the one in column ID:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">download-organism</span> <span class="dt">\\</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>   <span class="ex">-server</span> http://rsat.eead.csic.es/plants <span class="dt">\\</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>   <span class="ex">-org</span> Arabidopsis_thaliana.TAIR10.29</span></code></pre></div>
+<p>The newly installed species will be added to
+$RSAT/data/supported_organisms.tab and should be listed with the
+following command-line:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
 <hr />
 
 

@@ -79,15 +79,19 @@ The output of *install-organisms* indicates the local path of the assembly summa
 ```{bash eval=FALSE}
 ;    Assembly summary file    	$RSAT/downloads/refseq/bacteria/assembly_summary.txt
 ;    Assembly summary columns 	$RSAT/downloads/refseq/bacteria/assembly_summary_colums.tsv
-;    Available assemblies     	  349430
+;    Available assemblies     	  350727
 ```
 
 
 ```{bash eval=FALSE}
 ## Count the number of species.
 ## Note: grep is used to filter out the comment lines.
-grep -v '^#' $RSAT/downloads/refseq/${GROUP}/assembly_summary.txt | wc -l
+export ASSEMBLY_SUMMARY=downloads/refseq/${GROUP}/assembly_summary.txt
+grep -v '^#' ${ASSEMBLY_SUMMARY} | wc -l
 ```
+
+
+### Getting lists of available species for other groups
 
 We can of course do the same for other taxa, for example Archaea, Fungi or Mammalian. 
 
@@ -103,7 +107,9 @@ done
 
 ## Approx count of species per taxa
 ## (each file starts with 15 comment lines, which are be substracted from each count)
-wc -l $RSAT/downloads/refseq/*/assembly_summary.txt |  sort -nr  | awk '{print "|\t"$1-15"\t| "$2"\t|"}' 
+wc -l $RSAT/downloads/refseq/*/assembly_summary.txt \
+   | sort -nr \
+   | awk '{print "|\t"$1-15"\t| "$2"\t|"}' 
 
 ```
 
@@ -116,16 +122,16 @@ Here is the result on April 24, 2024
 
 | Number of species | Taxonomic group |
 |---------|---------------------------|
-|	349417	| $RSAT/downloads/refseq/bacteria/assembly_summary.txt	|
-|	14979	| $RSAT/downloads/refseq/viral/assembly_summary.txt	|
-|	2010	| $RSAT/downloads/refseq/archaea/assembly_summary.txt	|
-|	569	| $RSAT/downloads/refseq/fungi/assembly_summary.txt	|
-|	384	| $RSAT/downloads/refseq/invertebrate/assembly_summary.txt	|
-|	383	| $RSAT/downloads/refseq/vertebrate_other/assembly_summary.txt	|
-|	216	| $RSAT/downloads/refseq/vertebrate_mammalian/assembly_summary.txt	|
-|	169	| $RSAT/downloads/refseq/plant/assembly_summary.txt	|
-|	83	| $RSAT/downloads/refseq/protozoa/assembly_summary.txt	|
-|	*368330*	| *total*	|
+|       350714  | downloads/refseq/bacteria/assembly_summary.txt        |
+|       14979   | downloads/refseq/viral/assembly_summary.txt   |
+|       2016    | downloads/refseq/archaea/assembly_summary.txt |
+|       583     | downloads/refseq/fungi/assembly_summary.txt   |
+|       388     | downloads/refseq/invertebrate/assembly_summary.txt    |
+|       385     | downloads/refseq/vertebrate_other/assembly_summary.txt        |
+|       216     | downloads/refseq/vertebrate_mammalian/assembly_summary.txt    |
+|       169     | downloads/refseq/plant/assembly_summary.txt   |
+|       83      | downloads/refseq/protozoa/assembly_summary.txt        |
+|       **369653**  | **total** |
 
 
 **Notes** 
@@ -136,19 +142,61 @@ Here is the result on April 24, 2024
 
 ## Filtering assemblies
 
-We can filter the assemblies in order to select a reasonable number of genomes to install. 
+In order to select a reasonable number of genomes to install, we can filter the assemblies based on different criteria. 
 
-Firstly, we could select the so called reference genomes
+
+### Listing the available assemblies for a species of interest
+
+The option `-species` enables selecting a subset of assemblies corresponding to a given species of a given genus. The argulent `-species` should be followed by a string concatenating the Genus (with a leading uppercase) and species (in lowercase) separated by an underscore character (`_`), with exactly the same spelling and cases as on the NCBI FTP refseq site. Note that special characters (`][)(/` etc) should be replaced by an underscore. 
+
+
+```{bash eval=FALSE}
+## List the assemblies for a given species, e.g. Rhizobium etli
+install-organism -v 1 -group bacteria \
+  -species Rhizobium_etli \
+  -task list -list_format org
+
+```
+
+Beware, for some species of interest, the number of assemblies can be quite large.
+This is for example the case for *Escherchia coli*. 
+
+```{bash eval=FALSE}
+## List the assemblies for Escherichia coli)
+install-organism -v 1 -group bacteria \
+  -species Escherichia_coli \
+  -task list -list_format org \
+  -o assemblies_Escherichia_coli.txt
+
+## Count the number of assemblies
+grep -v '^;' assemblies_Escherichia_coli.txt | grep -v '^#' | wc -l
+
+## Display the first rows of this file
+head -n 20 assemblies_Escherichia_coli.txt
+
+```
+
+For the species *Escherichia_coli*, we get 34510 assemblies (05/05/2024). 
+
+We generally don't need to install all these assemblies. We should thus use additional information in order to narrow down the number of genomes to install. To this purpose, the next sections explain how to select genomes labeled either as **reference** or **representative**, and completely sequenced. 
+
+
+### Selecting reference genomes
+
+The assembly summary includes a field `refseq_category`, which is quite convenient 
 
 ```{bash eval=FALSE}
 install-organism -v 1 -group bacteria  -task list \
   -list_format org \
-  -filter  refseq_category "reference genome" 
+  -filter refseq_category "reference genome"
 ```
 
 This will print out the list of assemblies labeled as "reference genome" in the column "refseq_category" of the bacterial genome assembly file. 
 
-The result can be printed in 3 formats : 
+As of 05/05/2024, no more than 15 bacterial genomes are labeled "reference", among the 350,729 available assemblies. 
+
+
+The option -list_format enables to export the result in 3 alternative formats. 
 
 - *org* a list of organism names (default output, as shown above)
 
@@ -157,85 +205,54 @@ The result can be printed in 3 formats :
 ```{bash eval=FALSE}
 install-organism -v 1 -group bacteria  -task list \
   -list_format table \
-  -filter  refseq_category "reference genome"  -o reference_genomes.tsv
+  -filter  refseq_category "reference genome"  \
+  -o reference_genomes.tsv
 ```
 
-- *bash*  a bash script sith the commands to install each of the selected assemblies
+- *bash*  a bash script with the commands to install each of the selected assemblies
 
 ```{bash eval=FALSE}
 install-organism -v 1 -group bacteria  -task list \
   -list_format bash \
-  -filter  refseq_category "reference genome" -o reference_genomes.bash
+  -filter  refseq_category "reference genome" \
+  -o reference_genomes.bash
 ```
-
-
-### Listing the available assemblies for a species of interest
-
-The option `-species` enabled to select a subset of assemblies corresponding to a given species of a given genus. THe option should be followed by a string concatenating the Genus (with a leading uppercase) and species (in lowercases) separated by an undescore character (`_`), with exactly the same spelling and cases as on the NCBI FTP refseq site. 
-
-
-```{bash eval=FALSE}
-## Select a species of interest 
-## (can be adapted to your needs)
-export SPECIES=Escherichia_coli
-
-## Some examples of alternative set of parameters
-# export SPECIES=Rhodospirillum_centenum
-# export SPECIES=Rhizobium_etli
-# export SPECIES=Sinorhizobium_meliloti
-# export SPECIES=Mycobacterium_tuberculosis
-
-## List the assemblies for a given species 
-## (e.g. Escherichia_coli)  
-install-organism -v 1 -group bacteria \
-  -species ${SPECIES} \
-  -task list
-
-```
-
-With *Escherichia_coli* as species, we get 34417 assemblies (24/04/2024).
 
 
 ### Listing the available assemblies - representative and complete genomes
 
-We can combine several filtering criteria to select a more reasonable number of assemblies. 
-For example, we could select the assemblies labeled as "representative genome" in the column refseq_category, and "Complete Genome" in the colum ""
+We can combine several filtering criteria to select a more reasonable number of assemblies. For example, we could select the assemblies labeled as "representative genome" in the column refseq_category, and "Complete Genome" in the colum ""
 
 ```{bash eval=FALSE}
 install-organism -v 1 -group bacteria  -task list \
   -list_format table \
   -filter refseq_category "representative genome" \
   -filter assembly_level "Complete Genome" \
-  -o representative_complete_major.tsv
+  -o representative_complete.tsv
 ```
 
 This returns 5014 assemblies (24/04/2024), with only one assembly per species, and belonging to 1555 distinct genus. The number of assemblies per genus can be displayed with the following command; 
 
 ```{bash eval=FALSE}
-grep -v '^;' representative_complete_major.tsv | grep -v '^#' | cut -f 6 | sort  | uniq -c|sort -nr | less
+grep -v '^;' representative_complete.tsv \
+   | grep -v '^#' \
+   | cut -f 6 | sort  \
+   | uniq -c | sort -nr | less
 ```
 
-We can export a bash script with the instructions to install each of these genomes. 
 
-```{bash eval=FALSE}
-install-organism -v 1 -group bacteria  -task list \
-  -list_format bash \
-  -filter refseq_category "representative genome" \
-  -filter assembly_level "Complete Genome" \
-  -o representative_complete_major.bash
-
-```
-
+## Installing one assembly for a given species and strain of interest
 
 ### Downloading a selected assembly
 
-We will now download the genome of a selected assembly, and install it on our RSAT server. As an illustration, we will install the reference strain K-12 of *Escherichia coli*. 
+We will now download the genome of a selected assembly, and install it on the RSAT server. As an illustration, we will install the reference strain K-12 of *Escherichia coli*. 
 
 ```{bash eval=FALSE}
 ## Select a species and assembly of interest 
 ## (can be adapted to your needs)
 grep Escherichia reference_genomes.tsv | grep K-12
 grep Escherichia reference_genomes.tsv | grep K-12 | cut -f 8
+
 export ASSEMBLY=GCF_000005845.2
 
 
@@ -247,23 +264,22 @@ install-organism -v 1 -group bacteria \
 
 ## Download the selected assemblies 
 install-organism -v 1 -group bacteria \
-  -species ${SPECIES} \
-  -strain ${STRAIN} \
-  -task download,parse,config,default
+  -filter assembly_accession ${ASSEMBLY} \
+  -task download
+  
 ```
 
-**Notes**
+**Note**:  downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a specific subfolder built from the group, genus, species, and assembly. 
 
+For example, the reference assembly for *Escherichia coli* is stored in
 
-2. Downloaded genomes will be installed in a folder `$RSAT/downloads/refseq` on your computer. Each strain is stored in a separate folder, with the same organistion as on the NCBI FTP site. 
+`downloads/refseq/bacteria//Escherichia/Escherichia_coli_str._K-12_substr._MG1655/GCF_000005845.2_ASM584v2/`
+
 
 ```{r list_downloaded_genomes, eval=FALSE}
-echo "Strain folder: $RSAT/downloads/refseq/${STRAIN}/"
-ls -1 $RSAT/downloads/refseq/${STRAIN}/
+ls -1 downloads/refseq/bacteria/Escherichia/Escherichia_coli_str._K-12_substr._MG1655/GCF_000005845.2_ASM584v2
 ```
 
-
-3. **Beware:** for some bacterial species of particular interest (e.g. important human pathogens), severak thousands of strains have been sequenced. It might cost a lot of time and disk space to download all of them. TO avoid that, the option `-strain` enables to specify the full strain name (more precisely the subfolder corresponding to the strain of interest in the species folder on the NCBI FTP site). 
 
 
 ### Parsing a selected genome from NCBI
@@ -274,25 +290,32 @@ Parsing consists in extracting the information from a text-formatted file, in or
 ## Parse a given strain of a given genome 
 ## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) 
 install-organism -v 2 -group bacteria \
-  -species ${SPECIES} \
-  -strain ${STRAIN} \
+  -filter assembly_accession ${ASSEMBLY} \
   -task parse
 ```
 
-**Note:** if the option `-strain` is omitted, `install-organisms` parses all the strains found in the download folder of the selected organism. 
 
+### Organism names
 
-For each parsed genome, the program creates a folder whose name is the concatenation of the genus, species and strain names:  `$RSAT/public_html/data/[Genus_species_strain]`
+For each parsed genome, the program creates a folder whose name is the concatenation of the genus, species, strain accession and assembly name, separated by undescore characters. 
 
+`$RSAT/public_html/data/[Genus]_[species]_[assembly_accession]_[asm_name]`
 
-From now on we will directly refer to this concatenated name as the "Organism name" (generally denoted by the option `-org` in RSAT commands. 
+For *Escherichia coli K12* reference strain, this gives: 
+
+`Escherichia_coli_str._K-12_substr._MG1655_GCF_000005845.2_ASM584v2`
+
+From now on we will directly refer to this concatenated name as the ***Organism name*** (generally denoted by the option `-org` in RSAT commands. 
 
 ```{bash eval=FALSE}
+
+export ORG=Escherichia_coli_str._K-12_substr._MG1655_GCF_000005845.2_ASM584v2
+
 ## Check the parsing result
-ls -l ${RSAT}/public_html/data/genomes/${SPECIES}_${STRAIN}/genome/
+ls -l ${RSAT}/public_html/data/genomes/${ORG}/genome/
 
 ## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)
-du -sm ${RSAT}/public_html/data/genomes/${SPECIES}_${STRAIN}/genome/
+du -sm ${RSAT}/public_html/data/genomes/${ORG}/genome/
 ```
 
 This gives the number of megabases occupied by the genome folder. 
@@ -301,15 +324,13 @@ This gives the number of megabases occupied by the genome folder.
 
 In order to make the parsed genome available for RSAT, you need to run the configuration task.
 
-Note that for the subsequent tasks, the options `-species` and `-strains` are not used anymore, we will instead specify "organisms" installed on RSAT, identified by the concatenation of Genus, species and strain. 
-
 ```{bash eval=FALSE}
 ## Configure the organism for RSAT
-install-organism -v 1 -org ${SPECIES}_${STRAIN} -source NCBI -task config
+install-organism -v 1 -org ${ORG} -source NCBI -task config
 
 
 ## Check that the organism has wel been declared
-supported-organisms -taxon ${TAXON} -return ID,source,last_update | grep ${STRAIN}
+supported-organisms -return ID,source,last_update | grep ${ORG}
 
 ```
 
@@ -321,11 +342,11 @@ The simplest way to run it is to select the "default" tasks.
 
 ```{bash eval=FALSE}
 ## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)
-install-organism -v 1 -org ${SPECIES}_${STRAIN} -task default
+install-organism -v 1 -org ${ORG} -task default
 
 ```
 
-#### Detailed list of supported installation tasks (default and others)
+### Detailed list of supported installation tasks (default and others)
 
 | Task | Meaning                                     |
 |-------------|-------------------------------------------------|
@@ -349,15 +370,15 @@ install-organism -v 1 -org ${SPECIES}_${STRAIN} -task default
 ### Checking that the organism is well supported
 
 ```{bash eval=FALSE}
-## Get all the organisms the taxon of interest
-supported-organisms -taxon ${TAXON}
+## Get all the supported organisms
+supported-organisms | grep ${ORG}
 ```
 
 ### Checking the correctness of gene annotations by computing start/stop codon frequencies
 
 ```{bash eval=FALSE}
 ## Retrieve all the start codon sequences
-retrieve-seq -all -org ${SPECIES}_${STRAIN} -from 0 -to 2 -o start_seq.fasta
+retrieve-seq -all -org ${ORG} -from 0 -to 2 -o start_seq.fasta
 
 ## Check the result
 head -n 20 start_seq.fasta
@@ -371,7 +392,7 @@ You can do the similar test with the stop codon frequencies. Note that nothing f
 
 ```{bash eval=FALSE}
 ## Compute all trinucleotide frequencies in the stop codons
-retrieve-seq -all -org ${SPECIES}_${STRAIN} \
+retrieve-seq -all -org ${ORG} \
    -type downstream -from -1 -to -3 -o stop_seq.fasta
 
 ## Check the beginning of the result file
@@ -385,11 +406,11 @@ oligo-analysis -v 1 -i stop_seq.fasta  -l 3 -1str \
 
 
 ****
-## Selecting organisms with Complete genomes or Chromosomes
+## Installing multiple genomes
 
-For each taxonomic group, NCBI provides a summary file with indications of the sequencing status for each genome project. Here is the link for Bacteria (you can easily adapt it for other groups). 
+### Selecting reference organisms with complete genome
 
-- <https://ftp.ncbi.nlm.nih.gov/genomes/refseq/bacteria/assembly_summary.txt> 
+The assembly summary file provided by NCBI for each taxonomic group gives detailed indications of the sequencing status for each assembly.
 
 This table contains many columns with valuable information for genome management. The column contain is indicated in a separate file. 
 
@@ -405,71 +426,66 @@ Genome assemblies are classigied in four levels ([PMCID: PMC4702866](https://www
 We can use this assembly summary  to select only those genomes with the a completion level that we consider appropriate. 
 
 
-For example, for the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the installation to genomes with at least one fully sequenced chromosome (categories "Chromosome" and "Complete Genome").
+For example, for the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the installation to genomes by combining the following criteria : 
+
+- The field **refseq_category** (column 5) is either *reference genome* or *representative genome*. 
+
+- The field **assembly_level** (column 12) is *Complete genome*
+
+Since ewe downloaded the assembly summary file above, we can count the number of genomes of different types in these columns. 
 
 ```{bash eval=FALSE}
-## Get current date to use as suffix for output files
-export TODAY=`date +%Y-%m-%d`
-
 ## Choose a taxonomic group of interest
 export GROUP=bacteria
+export ASSEMBLY_SUMMARY=downloads/refseq/${GROUP}/assembly_summary.txt
 
-## Set a file name for the assembly file
-ASSEMBLY_URL=https://ftp.ncbi.nlm.nih.gov/genomes/refseq/${GROUP}/assembly_summary.txt
-ASSEMBLY=ncbi_organisms_assembly_summary_${GROUP}_refseq_${TODAY}.tsv
-COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_complete_${TODAY}.tsv
-ONECHROM=ncbi_organisms_assembly_summary_${GROUP}_chromosome_${TODAY}.tsv
-ONECHROM_OR_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_chromosome_or_complete_${TODAY}.tsv
+## Count the number of assemblies for each value of the refseq_category
+grep -v '^#' ${ASSEMBLY_SUMMARY} | cut -f 5,12 | sort | uniq -c | sort -n
+```
 
-## Dowload the assembly summary from NCBI FTP site
-wget -nc ${ASSEMBLY_URL} --output-document ${ASSEMBLY} 
+As of May 5, 2024, the number of assemblies in these categories is the following: 
 
-## Count the number of organisms (remove comments first) 
-grep -v '^#' ${ASSEMBLY} | wc -l
+```{bash eval=FALSE}
+     15 reference genome        Complete Genome
+    470 representative genome   Chromosome
+   4818 na                      Chromosome
+   5027 representative genome   Complete Genome
+   5195 representative genome   Scaffold
+   7940 representative genome   Contig
+  35394 na                      Complete Genome
+ 105250 na                      Scaffold
+ 186618 na                      Contig
+```
 
-## Select only the genomes with a Complete or Chromosome annotation in the field assembly_level
-awk -F "\t" '$12=="Chromosome" && $11=="latest"{print $0}' \
-      ${ASSEMBLY} \
-      > ${ONECHROM}
-      
-awk -F "\t" '$12=="Complete Genome" && $11=="latest"{print $0}' \
-      ${ASSEMBLY} \
-      > ${COMPLETE}
+### Installing the reference genomes with complete genome
+
+We saw above that we can apply two filters to select the 15 genomes labeled as *reference genome* in the field `refseq_category` and *Complete Genome* in `assembly_level`. 
+
+We will first list the selected organisms in order to make sure that the filter works properly (and avoid the risk of unwillingly installing 350,000 assemblies). 
 
 
-## Merge summary tables of species with at least one sequenced chromosome
-cat ${COMPLETE} ${ONECHROM} >  ${ONECHROM_OR_COMPLETE}
+```{bash eval=FALSE}
+export GROUP=bacteria
 
-## Count the number of selected species
-wc -l ${COMPLETE} ${ONECHROM} ${ONECHROM_OR_COMPLETE} ${ASSEMBLY} 
+## Select the reference genomes with complete genome
+install-organism -v 1 -group ${GROUP} \
+  -filter refseq_category "reference genome" \
+  -filter assembly_level "Complete Genome" \
+  -task list -list_format org
+
+
 
 ```
 
-The assembly summary also contains information about the status of the genome for the biologist community, with three possible statuses: *reference genome*, *representative genome*, or *na* (non attributed).
-
-```{bash reference_genomes, eval=FALSE}
-REFERENCE=ncbi_organisms_assembly_summary_${GROUP}_reference_${TODAY}.tsv
-REPRESENTATIVE=ncbi_organisms_assembly_summary_${GROUP}_representative_${TODAY}.tsv
-REPRESENTATIVE_COMPLETE=ncbi_organisms_assembly_summary_${GROUP}_representative_complete_${TODAY}.tsv
+This should give a list of 15 genomes. We will then specity the tasks required to install each of these genomes. Note that this can take some time, since each genome has to be downloaded, parsed, and processed in order to be ready for use on the RSAT server. In particular, the computation of oligonucleotide and dyads in all the non-coding upstream sequences can take some time. 
 
 
-## Select reference genomes
-awk -F "\t" '$5=="reference genome" && $11=="latest"{print $0}' \
-      ${ASSEMBLY} \
-      > ${REFERENCE}
-
-## Select representative genomes
-awk -F "\t" '$5=="representative genome" && $11=="latest"{print $0}' \
-      ${ASSEMBLY} \
-      > ${REPRESENTATIVE}
-
-## Select representative and complete genomes
-awk -F "\t" '$5=="representative genome" && $12=="Complete Genome"  && $11=="latest"{print $0}' \
-      ${ASSEMBLY} \
-      > ${REPRESENTATIVE_COMPLETE}
-
-## Print the umbers of reference or representative genomes
-wc -l ${REFERENCE} ${REPRESENTATIVE_COMPLETE} ${REPRESENTATIVE} ${COMPLETE} ${ONECHROM} ${ONECHROM_OR_COMPLETE} ${ASSEMBLY} 
+```{bash eval=FALSE}
+## Install the reference genomes with complete genome
+install-organism -v 1 -group ${GROUP} \
+  -filter refseq_category "reference genome" \
+  -filter assembly_level "Complete Genome" \
+  -task download,parse,config,default
 
 ```
 
@@ -536,9 +552,6 @@ install-organism -v 2 -group ${GROUP} \
 
 make -f ${RSAT}/makefiles/server.mk  watch_jobs
 ```
-
-
-### RSAT installation
 
 
 ### Default installation tasks

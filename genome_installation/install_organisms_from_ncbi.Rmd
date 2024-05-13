@@ -489,6 +489,27 @@ install-organism -v 1 -group ${GROUP} \
 
 ```
 
+### Installing the representative genomes with complete genome
+
+```{bash eval=FALSE}
+export GROUP=bacteria
+
+## Select the representative genomes with complete genome
+install-organism -v 1 -group ${GROUP} \
+  -filter refseq_category "representative genome" \
+  -filter assembly_level "Complete Genome" \
+  -task list -list_format org \
+  -o ${GROUP}_representative_complete.txt
+
+## Count the number of representative genomes
+grep -v '^;' ${GROUP}_representative_complete.txt \
+  | grep -v '^#' \
+  | wc -l
+
+```
+
+Depending on the group of interest, the number of representative genomes can amount to a few tens, or several thousands. In the lattre case, yous should better see the next section (Managing installation tasks with a task scheduler). 
+
 
 
 *****

@@ -118,20 +118,20 @@ Note: for some species, several strains have been sequenced. The number of genom
 
 ### Number of species per group
 
-Here is the result on April 24, 2024
+Here is the result on July 31, 2024
 
 | Number of species | Taxonomic group |
 |---------|---------------------------|
-|       350714  | downloads/refseq/bacteria/assembly_summary.txt        |
-|       14979   | downloads/refseq/viral/assembly_summary.txt   |
-|       2016    | downloads/refseq/archaea/assembly_summary.txt |
-|       583     | downloads/refseq/fungi/assembly_summary.txt   |
-|       388     | downloads/refseq/invertebrate/assembly_summary.txt    |
-|       385     | downloads/refseq/vertebrate_other/assembly_summary.txt        |
-|       216     | downloads/refseq/vertebrate_mammalian/assembly_summary.txt    |
-|       169     | downloads/refseq/plant/assembly_summary.txt   |
-|       83      | downloads/refseq/protozoa/assembly_summary.txt        |
-|       **369653**  | **total** |
+|       367675  | /Users/jvanheld/packages/rsat/downloads/refseq/bacteria/assembly_summary.txt  |
+|       14975   | /Users/jvanheld/packages/rsat/downloads/refseq/viral/assembly_summary.txt     |
+|       2171    | /Users/jvanheld/packages/rsat/downloads/refseq/archaea/assembly_summary.txt   |
+|       588     | /Users/jvanheld/packages/rsat/downloads/refseq/fungi/assembly_summary.txt     |
+|       404     | /Users/jvanheld/packages/rsat/downloads/refseq/invertebrate/assembly_summary.txt      |
+|       399     | /Users/jvanheld/packages/rsat/downloads/refseq/vertebrate_other/assembly_summary.txt  |
+|       220     | /Users/jvanheld/packages/rsat/downloads/refseq/vertebrate_mammalian/assembly_summary.txt      |
+|       171     | /Users/jvanheld/packages/rsat/downloads/refseq/plant/assembly_summary.txt     |
+|       83      | /Users/jvanheld/packages/rsat/downloads/refseq/protozoa/assembly_summary.txt  |
+|       **386806**  | **total** |
 
 
 **Notes** 

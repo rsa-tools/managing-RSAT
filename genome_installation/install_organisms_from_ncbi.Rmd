@@ -152,7 +152,7 @@ The option `-species` enables selecting a subset of assemblies corresponding to 
 
 ```{bash eval=FALSE}
 ## List the assemblies for a given species, e.g. Rhizobium etli
-install-organism -v 1 -group bacteria \
+install-organism -v 1 -group ${GROUP} \
   -species Rhizobium_etli \
   -task list -list_format org
 
@@ -163,7 +163,7 @@ This is for example the case for *Escherchia coli*.
 
 ```{bash eval=FALSE}
 ## List the assemblies for Escherichia coli)
-install-organism -v 1 -group bacteria \
+install-organism -v 1 -group ${GROUP} \
   -species Escherichia_coli \
   -task list -list_format org \
   -o assemblies_Escherichia_coli.txt
@@ -186,7 +186,7 @@ We generally don't need to install all these assemblies. We should thus use addi
 The assembly summary includes a field `refseq_category`, which is quite convenient 
 
 ```{bash eval=FALSE}
-install-organism -v 1 -group bacteria  -task list \
+install-organism -v 1 -group ${GROUP}  -task list \
   -list_format org \
   -filter refseq_category "reference genome"
 ```
@@ -203,7 +203,7 @@ The option -list_format enables to export the result in 3 alternative formats.
 - *table* a table with the different names and identifiers of the selected assemblies
 
 ```{bash eval=FALSE}
-install-organism -v 1 -group bacteria  -task list \
+install-organism -v 1 -group ${GROUP}  -task list \
   -list_format table \
   -filter  refseq_category "reference genome"  \
   -o reference_genomes.tsv
@@ -212,7 +212,7 @@ install-organism -v 1 -group bacteria  -task list \
 - *bash*  a bash script with the commands to install each of the selected assemblies
 
 ```{bash eval=FALSE}
-install-organism -v 1 -group bacteria  -task list \
+install-organism -v 1 -group ${GROUP}  -task list \
   -list_format bash \
   -filter  refseq_category "reference genome" \
   -o reference_genomes.bash
@@ -224,7 +224,7 @@ install-organism -v 1 -group bacteria  -task list \
 We can combine several filtering criteria to select a more reasonable number of assemblies. For example, we could select the assemblies labeled as "representative genome" in the column refseq_category, and "Complete Genome" in the colum ""
 
 ```{bash eval=FALSE}
-install-organism -v 1 -group bacteria  -task list \
+install-organism -v 1 -group ${GROUP}  -task list \
   -list_format table \
   -filter refseq_category "representative genome" \
   -filter assembly_level "Complete Genome" \
@@ -258,12 +258,12 @@ export ASSEMBLY=GCF_000005845.2
 
 ## List the selected assemblies for a given species 
 ## (e.g. Escherichia_coli)  
-install-organism -v 1 -group bacteria \
+install-organism -v 1 -group ${GROUP} \
   -filter assembly_accession ${ASSEMBLY} \
   -task list
 
 ## Download the selected assemblies 
-install-organism -v 1 -group bacteria \
+install-organism -v 1 -group ${GROUP} \
   -filter assembly_accession ${ASSEMBLY} \
   -task download
   
@@ -289,7 +289,7 @@ Parsing consists in extracting the information from a text-formatted file, in or
 ```{bash eval=FALSE}
 ## Parse a given strain of a given genome 
 ## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) 
-install-organism -v 2 -group bacteria \
+install-organism -v 2 -group ${GROUP} \
   -filter assembly_accession ${ASSEMBLY} \
   -task parse
 ```

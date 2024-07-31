@@ -11,11 +11,11 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2024-05-13" />
+<meta name="date" content="2024-07-31" />
 
 <title>Install organisms from NCBI</title>
 
-<script src="install_organisms_from_ncbi_files/header-attrs-2.25/header-attrs.js"></script>
+<script src="install_organisms_from_ncbi_files/header-attrs-2.27/header-attrs.js"></script>
 <script src="install_organisms_from_ncbi_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_from_ncbi_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -333,7 +333,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Install organisms from NCBI</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2024-05-13</h4>
+<h4 class="date">2024-07-31</h4>
 
 </div>
 
@@ -546,7 +546,7 @@ that special characters (<code>][)(/</code> etc) should be replaced by
 an underscore.</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">## List the assemblies for a given species, e.g. Rhizobium etli</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">-species</span> Rhizobium_etli <span class="dt">\</span></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> org</span></code></pre></div>
 <p>Beware, for some species of interest, the number of assemblies can be
@@ -554,7 +554,7 @@ quite large. This is for example the case for <em>Escherchia
 coli</em>.</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">## List the assemblies for Escherichia coli)</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">-species</span> Escherichia_coli <span class="dt">\</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> org <span class="dt">\</span></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">-o</span> assemblies_Escherichia_coli.txt</span>
@@ -579,7 +579,7 @@ genomes</h3>
 <p>The assembly summary includes a field <code>refseq_category</code>,
 which is quite convenient</p>
 <div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria  <span class="at">-task</span> list <span class="dt">\</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">-list_format</span> org <span class="dt">\</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span></span></code></pre></div>
 <p>This will print out the list of assemblies labeled as “reference
@@ -596,7 +596,7 @@ above)</p></li>
 of the selected assemblies</p></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria  <span class="at">-task</span> list <span class="dt">\</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">-list_format</span> table <span class="dt">\</span></span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">-filter</span>  refseq_category <span class="st">&quot;reference genome&quot;</span>  <span class="dt">\</span></span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">-o</span> reference_genomes.tsv</span></code></pre></div>
@@ -605,7 +605,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="
 selected assemblies</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria  <span class="at">-task</span> list <span class="dt">\</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">-list_format</span> bash <span class="dt">\</span></span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">-filter</span>  refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">-o</span> reference_genomes.bash</span></code></pre></div>
@@ -620,7 +620,7 @@ number of assemblies. For example, we could select the assemblies
 labeled as “representative genome” in the column refseq_category, and
 “Complete Genome” in the colum “”</p>
 <div class="sourceCode" id="cb10"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria  <span class="at">-task</span> list <span class="dt">\</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="at">-list_format</span> table <span class="dt">\</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;representative genome&quot;</span> <span class="dt">\</span></span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
@@ -658,12 +658,12 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href=
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">## List the selected assemblies for a given species </span></span>
 <span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">## (e.g. Escherichia_coli)  </span></span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria <span class="dt">\</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
 <span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="at">-task</span> list</span>
 <span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a></span>
 <span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">## Download the selected assemblies </span></span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> bacteria <span class="dt">\</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
 <span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  <span class="at">-task</span> download</span>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>  </span></code></pre></div>
@@ -685,7 +685,7 @@ file, in order to organise it in a computable structure.</p>
 <div class="sourceCode" id="cb14"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">## Parse a given strain of a given genome </span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) </span></span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> bacteria <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
 <span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="at">-task</span> parse</span></code></pre></div>
 </div>

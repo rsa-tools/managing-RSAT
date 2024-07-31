@@ -11,11 +11,11 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2022-04-07" />
+<meta name="date" content="2024-05-20" />
 
 <title>Installing genomes and variations from Ensembl</title>
 
-<script src="install_organisms_from_ensembl_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="install_organisms_from_ensembl_files/header-attrs-2.25/header-attrs.js"></script>
 <script src="install_organisms_from_ensembl_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_from_ensembl_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="install_organisms_from_ensembl_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="install_organisms_from_ensembl_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="install_organisms_from_ensembl_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="install_organisms_from_ensembl_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="install_organisms_from_ensembl_files/navigation-1.1/tabsets.js"></script>
@@ -46,6 +46,7 @@
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -56,7 +57,7 @@
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -67,7 +68,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -130,13 +131,20 @@ code span.wa { color: #bf0303; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -172,6 +180,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -191,8 +202,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -200,16 +211,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -327,69 +331,136 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Installing genomes and variations from Ensembl</h1>
+<h1 class="title toc-ignore">Installing genomes and variations from
+Ensembl</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2022-04-07</h4>
+<h4 class="date">2024-05-20</h4>
 
 </div>
 
 
-<div id="rsat-tools-to-install-genomes-from-ensembl" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> RSAT tools to install genomes from Ensembl</h1>
-<p>The Ensembl browser (<a href="http://ensembl.org" class="uri">http://ensembl.org</a>) contains mostly genomes of Vertebrate organisms.</p>
-<p>RSAT includes a series of programs to download and install genomes from Ensembl:</p>
+<div id="rsat-tools-to-install-genomes-from-ensembl"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> RSAT tools to install
+genomes from Ensembl</h1>
+<p>The Ensembl browser (<a href="http://ensembl.org"
+class="uri">http://ensembl.org</a>) contains mostly genomes of
+Vertebrate organisms.</p>
+<p>RSAT includes a series of programs to download and install genomes
+from Ensembl:</p>
 <ol style="list-style-type: decimal">
-<li><p><code>install-ensembl-genome</code> is a wrapper enabling to autmoatize the download (genome sequences, features, variations) and configuration tasks.</p></li>
-<li><p><code>download-ensembl-genome</code> downloads the genomics sequences and converts them in the raw format required for .</p></li>
-<li><p><code>download-ensembl-features</code> downloads tab-delimited text files describing genomic features (transcripts, CDS, genes, …).</p></li>
-<li><p><code>download-ensembl-variations</code> downloads tab-delimited text files describing genomic variations (polymorphism).</p></li>
+<li><p><code>install-ensembl-genome</code> is a wrapper enabling to
+autmoatize the download (genome sequences, features, variations) and
+configuration tasks.</p></li>
+<li><p><code>download-ensembl-genome</code> downloads the genomics
+sequences and converts them in the raw format required for .</p></li>
+<li><p><code>download-ensembl-features</code> downloads tab-delimited
+text files describing genomic features (transcripts, CDS, genes,
+…).</p></li>
+<li><p><code>download-ensembl-variations</code> downloads tab-delimited
+text files describing genomic variations (polymorphism).</p></li>
 </ol>
 </div>
-<div id="installing-genomes-from-ensembl" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Installing genomes from Ensembl</h1>
-<p>The program <code>install-ensembl-genome</code> manages all the required steps to download and install a genome (sequence, features, and optionally variations) from Ensembl to <em>RSAT</em>.</p>
+<div id="installing-genomes-from-ensembl" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Installing genomes from
+Ensembl</h1>
+<p>The program <code>install-ensembl-genome</code> manages all the
+required steps to download and install a genome (sequence, features, and
+optionally variations) from Ensembl to <em>RSAT</em>.</p>
 <p>It performs the following tasks:</p>
 <ol style="list-style-type: decimal">
-<li><p><code>install-ensembl-genome -available_species</code> returns the list species available on the Ensembl server, together with their status of availability for the 3 data types (genome sequence, features, variations). When thisoption is called, the program does not install any genome.</p></li>
-<li><p>The option <code>install-ensembl-genome -task genome -org [Selected_organism]</code> runs the program <code>download-ensembl-genome</code> to download the complete genomic sequence of a given organism from the <a href="http://ensembl.org">Ensembl Web site</a>, and formats it according to <em>RSAT</em> requirements (conversion from the original fasta sequence file to one file per chromosome, in raw format).</p></li>
-<li><p>The option <code>install-ensembl-genome -task features  -org [Selected_organism]</code> runs <code>download-ensembl-features</code> to download the positions and descriptions of genomic features (genes, CDS, mRNAs, …).</p></li>
-<li><p>If the option <code>-task variations</code> is activated, <code>install-ensembl-genome -org [Selected_organism]</code> runs <code>download-ensembl-variations</code> to download the description of genomic variations (polymorphism). Note that variations are supported only for a subset of genomes.</p></li>
-<li><p><code>install-ensembl-genome -org [Selected_organism] -task config</code> updates RSAT configuration files to make the newly installed genome available.</p></li>
-<li><p><code>install-ensembl-genome -org [Selected_organism] -task install</code> runs the additional tasks required to have a fully functional genome on the local site: compute genomic statisics (intergenic sizes, …) and background models (oligonucleotide and dyad frequencies).</p></li>
+<li><p><code>install-ensembl-genome -available_species</code> returns
+the list species available on the Ensembl server, together with their
+status of availability for the 3 data types (genome sequence, features,
+variations). When thisoption is called, the program does not install any
+genome.</p></li>
+<li><p>The option
+<code>install-ensembl-genome -task genome -org [Selected_organism]</code>
+runs the program <code>download-ensembl-genome</code> to download the
+complete genomic sequence of a given organism from the <a
+href="http://ensembl.org">Ensembl Web site</a>, and formats it according
+to <em>RSAT</em> requirements (conversion from the original fasta
+sequence file to one file per chromosome, in raw format).</p></li>
+<li><p>The option
+<code>install-ensembl-genome -task features  -org [Selected_organism]</code>
+runs <code>download-ensembl-features</code> to download the positions
+and descriptions of genomic features (genes, CDS, mRNAs, …).</p></li>
+<li><p>If the option <code>-task variations</code> is activated,
+<code>install-ensembl-genome -org [Selected_organism]</code> runs
+<code>download-ensembl-variations</code> to download the description of
+genomic variations (polymorphism). Note that variations are supported
+only for a subset of genomes.</p></li>
+<li><p><code>install-ensembl-genome -org [Selected_organism] -task config</code>
+updates RSAT configuration files to make the newly installed genome
+available.</p></li>
+<li><p><code>install-ensembl-genome -org [Selected_organism] -task install</code>
+runs the additional tasks required to have a fully functional genome on
+the local site: compute genomic statisics (intergenic sizes, …) and
+background models (oligonucleotide and dyad frequencies).</p></li>
 </ol>
-<p>The detailed description of the program and the list of options can be obtained with the option .</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Get the description of the program + all options</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-help</span></span></code></pre></div>
+<p>The detailed description of the program and the list of options can
+be obtained with the option .</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">## Get the description of the program + all options</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-help</span></span></code></pre></div>
 </div>
-<div id="getting-the-list-of-available-genomes" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Getting the list of available genomes</h1>
-<p>Before installing a genome, it is generally a good idea to know which genomes are available. For this, use the option .</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">TODAY</span><span class="op">=</span><span class="kw">`</span><span class="fu">date</span> <span class="st">&#39;+%Y-%m-%d&#39;</span><span class="kw">`</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Retrieve the list of supported species on EnsEMBL</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 1  <span class="at">-available_species</span> <span class="dt">\</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-o</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Read the result file</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">more</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">## Count the number of available genomes (using grep -v to discard comment lines)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">## Note: on August 6, 2018, this returns 117 organism names</span></span></code></pre></div>
+<div id="getting-the-list-of-available-genomes" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Getting the list of
+available genomes</h1>
+<p>Before installing a genome, it is generally a good idea to know which
+genomes are available. For this, use the option .</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">TODAY</span><span class="op">=</span><span class="kw">`</span><span class="fu">date</span> <span class="st">&#39;+%Y-%m-%d&#39;</span><span class="kw">`</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">## Retrieve the list of supported species on EnsEMBL</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 1  <span class="at">-available_species</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="at">-o</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">## Read the result file</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">more</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">## Count the number of available genomes (using grep -v to discard comment lines)</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">## Note: on August 6, 2018, this returns 117 organism names</span></span></code></pre></div>
 </div>
-<div id="availability-of-polymorphic-variations-for-genomes-in-ensembl" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Availability of polymorphic variations for genomes in Ensembl</h1>
-<p><strong><em>Beware:</em></strong> inter-individual variations are available for a subset only of the genomes available in Ensembl. The option <code>-available_species</code> indicates, for each species, the availability (genome, features, variations). Obviously, the programs to analyse regulatory variations (<code>variation-info</code>, <code>convert-variations</code>, <code>retrieve-variation-seq</code>, <code>variation-scan</code>) are working only for the genomes documented with variations.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">## select genomes for which variations are available in Ensembl</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span><span class="st">&#39;\t&#39;</span> <span class="st">&#39;$2 ~ &quot;variations&quot;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span></span></code></pre></div>
+<div id="availability-of-polymorphic-variations-for-genomes-in-ensembl"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Availability of
+polymorphic variations for genomes in Ensembl</h1>
+<p><strong><em>Beware:</em></strong> inter-individual variations are
+available for a subset only of the genomes available in Ensembl. The
+option <code>-available_species</code> indicates, for each species, the
+availability (genome, features, variations). Obviously, the programs to
+analyse regulatory variations (<code>variation-info</code>,
+<code>convert-variations</code>, <code>retrieve-variation-seq</code>,
+<code>variation-scan</code>) are working only for the genomes documented
+with variations.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">## select genomes for which variations are available in Ensembl</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span><span class="st">&#39;\t&#39;</span> <span class="st">&#39;$2 ~ &quot;variations&quot;&#39;</span> available_species_ensembl_<span class="va">${TODAY}</span>.tsv <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span></span></code></pre></div>
 </div>
-<div id="installing-a-genome-from-ensembl" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Installing a genome from Ensembl</h1>
-<p>We can now download and install the complete genomic sequence for the species of our choice. For the sake of space and time economy, we will use a small genome for this manual: the budding yeast <em>Saccharomyces cerevisiae</em>.</p>
-<p><em>Beware</em>: some installation steps take a lot of time. For large genomes (e.g. Vertebrate organisms), the full installation can thus take several hours. This should in principle not be a big issue, since installing a genome is not a daily task, but it is worth knowing that the whole process requires a continuous connection during several hours.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Install the genome sequences for a selected organism</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 2 <span class="at">-species</span> Saccharomyces_cerevisiae</span></code></pre></div>
-<p>This command will automatically run all the installation tasks described above, except the installation of variations (see Section <a href="#sect:download_ensembl_variations">1.3</a>).</p>
+<div id="installing-a-genome-from-ensembl" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Installing a genome
+from Ensembl</h1>
+<p>We can now download and install the complete genomic sequence for the
+species of our choice. For the sake of space and time economy, we will
+use a small genome for this manual: the budding yeast <em>Saccharomyces
+cerevisiae</em>.</p>
+<p><em>Beware</em>: some installation steps take a lot of time. For
+large genomes (e.g. Vertebrate organisms), the full installation can
+thus take several hours. This should in principle not be a big issue,
+since installing a genome is not a daily task, but it is worth knowing
+that the whole process requires a continuous connection during several
+hours.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">## Install the genome sequences for a selected organism</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 2 <span class="at">-species</span> Saccharomyces_cerevisiae</span></code></pre></div>
+<p>This command will automatically run all the installation tasks
+described above, except the installation of variations (see Section <a
+href="#sect:download_ensembl_variations">1.3</a>).</p>
 <!--
 # Installing genomes from EnsemblGenomes
 
@@ -426,58 +497,86 @@ install-ensembl-genome -v 2 -db ensemblgenomes \
 -->
 </div>
 <div id="downloading-variations" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Downloading variations</h1>
-<p>The program downloads variations from the Web site, and installs it on the local site.</p>
-<p>This program relies on , which must be installed beforehand on your computer.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Retrieve the list of supported species in the EnsEMBL variation database</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">download-ensembl-variations</span> <span class="at">-v</span> 1  <span class="at">-available_species</span> <span class="at">-o</span> species_with_variations_ensembl.tsv</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the content of the result file</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">more</span> species_with_variations_ensembl.tsv</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">## Count genomes with variations available at Ensembl</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> species_with_variations_ensembl.tsv <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">## Result : 23 on August 6, 2018</span></span></code></pre></div>
-<p>Note: as an alternative to <code>download-ensembl-variations</code>, we could have used the command <code>ìnstall-ensembl-genomes</code> with the option <code>-task variations</code>.</p>
+<h1><span class="header-section-number">6</span> Downloading
+variations</h1>
+<p>The program downloads variations from the Web site, and installs it
+on the local site.</p>
+<p>This program relies on , which must be installed beforehand on your
+computer.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">## Retrieve the list of supported species in the EnsEMBL variation database</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">download-ensembl-variations</span> <span class="at">-v</span> 1  <span class="at">-available_species</span> <span class="at">-o</span> species_with_variations_ensembl.tsv</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">## Check the content of the result file</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">more</span> species_with_variations_ensembl.tsv</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">## Count genomes with variations available at Ensembl</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> species_with_variations_ensembl.tsv <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">## Result : 23 on August 6, 2018</span></span></code></pre></div>
+<p>Note: as an alternative to <code>download-ensembl-variations</code>,
+we could have used the command <code>ìnstall-ensembl-genomes</code> with
+the option <code>-task variations</code>.</p>
 <p>We can now download all the variations available for the yeast.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Download all variations for a selected organism on your server</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">download-ensembl-variations</span> <span class="at">-v</span> 1 <span class="at">-species</span> Saccharomyces_cerevisiae</span></code></pre></div>
-<p>Variation files are stored in a specific subfolder for the specified organism.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the content of the variation directory for the yeast</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/variation-scan_demo.mk <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     SPECIES=Saccharomyces_cerevisiae ASSEMBLY=R64-1-1 <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     variation_stats</span></code></pre></div>
-<p>This command will indicate the location of the variation directory on your server, and count the number of lines for each variation file (there is one separate file per chromosome or contig).</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">## Download all variations for a selected organism on your server</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">download-ensembl-variations</span> <span class="at">-v</span> 1 <span class="at">-species</span> Saccharomyces_cerevisiae</span></code></pre></div>
+<p>Variation files are stored in a specific subfolder for the specified
+organism.</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">## Check the content of the variation directory for the yeast</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/variation-scan_demo.mk <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>     SPECIES=Saccharomyces_cerevisiae ASSEMBLY=R64-1-1 <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>     variation_stats</span></code></pre></div>
+<p>This command will indicate the location of the variation directory on
+your server, and count the number of lines for each variation file
+(there is one separate file per chromosome or contig).</p>
 <hr />
 </div>
-<div id="installing-the-human-genome-and-human-polymorphic-variations" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Installing the Human genome and human polymorphic variations</h1>
-<p>In the examples above we intently installed the smallest genome available at Ensembl, in order to obtain the results in a reasonable time and with a reasonable disk space occupancy.</p>
-<p>The installation of Metazoa occupies much more space, and takes a significantly longer time.</p>
-<p>We summarize hereafter the commands to download and install the Human genome, its annotations, and the variations from Ensembl. To this purpose, we customize the options of <code>install-ensembl-genomes</code> in order to :</p>
+<div id="installing-the-human-genome-and-human-polymorphic-variations"
+class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Installing the Human
+genome and human polymorphic variations</h1>
+<p>In the examples above we intently installed the smallest genome
+available at Ensembl, in order to obtain the results in a reasonable
+time and with a reasonable disk space occupancy.</p>
+<p>The installation of Metazoa occupies much more space, and takes a
+significantly longer time.</p>
+<p>We summarize hereafter the commands to download and install the Human
+genome, its annotations, and the variations from Ensembl. To this
+purpose, we customize the options of
+<code>install-ensembl-genomes</code> in order to :</p>
 <ul>
 <li>download the genome sequence,</li>
 <li>download genome annotations (features),</li>
 <li>download variations,</li>
-<li>update RSAT configuration in order to enable the downloaded genome,</li>
-<li>install the genome on RSAT (compute oligo and dyad frequencies + some other tasks)</li>
+<li>update RSAT configuration in order to enable the downloaded
+genome,</li>
+<li>install the genome on RSAT (compute oligo and dyad frequencies +
+some other tasks)</li>
 </ul>
-<p><strong>Beware:</strong> the following command will mobilize ~11.7 Gb of disk space for the genome + 11.5 Gb for the variations.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Install Human genome from Ensembl, including polymorphic variations</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 2 <span class="at">-db</span> ensembl <span class="at">-org</span> Homo_sapiens <span class="at">-task</span> genome,features,config,install,variations</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Check the disk space occupied by the different folders</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sm</span> data/genomes/Homo_sapiens_GRCh38/<span class="pp">*</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">## Result (2018-08-06) in Megabytes per folder</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 11701   data/genomes/Homo_sapiens_GRCh38/genome</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 18      data/genomes/Homo_sapiens_GRCh38/oligo-frequencies</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 11544   data/genomes/Homo_sapiens_GRCh38/variations</span></span></code></pre></div>
+<p><strong>Beware:</strong> the following command will mobilize ~11.7 Gb
+of disk space for the genome + 11.5 Gb for the variations.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">## Install Human genome from Ensembl, including polymorphic variations</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="ex">install-ensembl-genome</span> <span class="at">-v</span> 2 <span class="at">-db</span> ensembl <span class="at">-org</span> Homo_sapiens <span class="at">-task</span> genome,features,config,install,variations</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">## Check the disk space occupied by the different folders</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sm</span> data/genomes/Homo_sapiens_GRCh38/<span class="pp">*</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">## Result (2018-08-06) in Megabytes per folder</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co"># 11701   data/genomes/Homo_sapiens_GRCh38/genome</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># 18      data/genomes/Homo_sapiens_GRCh38/oligo-frequencies</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co"># 11544   data/genomes/Homo_sapiens_GRCh38/variations</span></span></code></pre></div>
 </div>
-<div id="installing-a-genome-from-ensembl-genomes" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Installing a genome from Ensembl Genomes</h1>
-<p>For all non Vertebrate organisms (Protists, Fungi, Plants, Bacteria, Metazoa) please check <a href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_ensembl_genomes.html">Installing genomes from Ensembl Genomes</a>.</p>
+<div id="installing-a-genome-from-ensembl-genomes"
+class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Installing a genome
+from Ensembl Genomes</h1>
+<p>For all non Vertebrate organisms (Protists, Fungi, Plants, Bacteria,
+Metazoa) please check <a
+href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_ensembl_genomes.html">Installing
+genomes from Ensembl Genomes</a>.</p>
 </div>
 
 

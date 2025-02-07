@@ -11,11 +11,11 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2024-07-31" />
+<meta name="date" content="2025-02-07" />
 
 <title>Install organisms from NCBI</title>
 
-<script src="install_organisms_from_ncbi_files/header-attrs-2.27/header-attrs.js"></script>
+<script src="install_organisms_from_ncbi_files/header-attrs-2.29/header-attrs.js"></script>
 <script src="install_organisms_from_ncbi_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_from_ncbi_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -333,7 +333,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Install organisms from NCBI</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2024-07-31</h4>
+<h4 class="date">2025-02-07</h4>
 
 </div>
 
@@ -459,7 +459,7 @@ distinct species.</p>
 number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> Number of species
 per group</h3>
-<p>Here is the result on July 31, 2024</p>
+<p>Here is the result on JanFeb 2nd, 2025</p>
 <table>
 <colgroup>
 <col width="25%" />
@@ -473,43 +473,43 @@ per group</h3>
 </thead>
 <tbody>
 <tr class="odd">
-<td>367675</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/bacteria/assembly_summary.txt</td>
+<td>405360</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/bacteria/assembly_summary.txt</td>
 </tr>
 <tr class="even">
-<td>14975</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/viral/assembly_summary.txt</td>
+<td>14984</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/viral/assembly_summary.txt</td>
 </tr>
 <tr class="odd">
-<td>2171</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/archaea/assembly_summary.txt</td>
+<td>2438</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/archaea/assembly_summary.txt</td>
 </tr>
 <tr class="even">
-<td>588</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/fungi/assembly_summary.txt</td>
+<td>630</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/fungi/assembly_summary.txt</td>
 </tr>
 <tr class="odd">
-<td>404</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/invertebrate/assembly_summary.txt</td>
+<td>432</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/vertebrate_other/assembly_summary.txt</td>
 </tr>
 <tr class="even">
-<td>399</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/vertebrate_other/assembly_summary.txt</td>
+<td>428</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/invertebrate/assembly_summary.txt</td>
 </tr>
 <tr class="odd">
-<td>220</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/vertebrate_mammalian/assembly_summary.txt</td>
+<td>228</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/vertebrate_mammalian/assembly_summary.txt</td>
 </tr>
 <tr class="even">
-<td>171</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/plant/assembly_summary.txt</td>
+<td>173</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/plant/assembly_summary.txt</td>
 </tr>
 <tr class="odd">
-<td>83</td>
-<td>/Users/jvanheld/packages/rsat/downloads/refseq/protozoa/assembly_summary.txt</td>
+<td>108</td>
+<td>/opt/rsat-tools/rsat_bacteria/downloads/refseq/protozoa/assembly_summary.txt</td>
 </tr>
 <tr class="even">
-<td><strong>386806</strong></td>
+<td><strong>424901</strong></td>
 <td><strong>total</strong></td>
 </tr>
 </tbody>
@@ -564,8 +564,8 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="
 <span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">## Display the first rows of this file</span></span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 assemblies_Escherichia_coli.txt</span></code></pre></div>
-<p>For the species <em>Escherichia_coli</em>, we get 34510 assemblies
-(05/05/2024).</p>
+<p>For the species <em>Escherichia_coli</em>, we get 38518 assemblies
+(2024-02-02).</p>
 <p>We generally don’t need to install all these assemblies. We should
 thus use additional information in order to narrow down the number of
 genomes to install. To this purpose, the next sections explain how to
@@ -579,60 +579,183 @@ genomes</h3>
 <p>The assembly summary includes a field <code>refseq_category</code>,
 which is quite convenient</p>
 <div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">-list_format</span> org <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span></span></code></pre></div>
-<p>This will print out the list of assemblies labeled as “reference
-genome” in the column “refseq_category” of the bacterial genome assembly
-file.</p>
-<p>As of 05/05/2024, no more than 15 bacterial genomes are labeled
-“reference”, among the 350,729 available assemblies.</p>
-<p>The option -list_format enables to export the result in 3 alternative
-formats.</p>
-<ul>
-<li><p><em>org</em> a list of organism names (default output, as shown
-above)</p></li>
-<li><p><em>table</em> a table with the different names and identifiers
-of the selected assemblies</p></li>
-</ul>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">-list_format</span> table <span class="dt">\</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">-filter</span>  refseq_category <span class="st">&quot;reference genome&quot;</span>  <span class="dt">\</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">-o</span> reference_genomes.tsv</span></code></pre></div>
-<ul>
-<li><em>bash</em> a bash script with the commands to install each of the
-selected assemblies</li>
-</ul>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">-list_format</span> bash <span class="dt">\</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">-filter</span>  refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">-o</span> reference_genomes.bash</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">## Get the list of organisms</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">-list_format</span> org <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">-o</span> reference_genomes_organisms.txt</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">## Display the list of organisms</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">less</span> reference_genomes_organisms.txt</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">## Display the list of organisms</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> reference_genomes_organisms.txt</span></code></pre></div>
+<p>The commands above list the assemblies labeled “reference genome” in
+the column “refseq_category” of the assembly summary file. This
+collection was built by “<a
+href="https://ncbiinsights.ncbi.nlm.nih.gov/2025/01/14/updated-bacterial-and-archaeal-reference-genome-collection-2/">selecting
+the ‘best’ genome assembly for each species</a>”.</p>
+<p>On Feb 2, 2025, the reference collection contains 20,578 among the
+424,901 available bacterial genomes.</p>
 </div>
-<div
-id="listing-the-available-assemblies---representative-and-complete-genomes"
+<div id="selecting-reference-organisms-with-complete-genome"
 class="section level3" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> Listing the
-available assemblies - representative and complete genomes</h3>
-<p>We can combine several filtering criteria to select a more reasonable
-number of assemblies. For example, we could select the assemblies
-labeled as “representative genome” in the column refseq_category, and
-“Complete Genome” in the colum “”</p>
+<h3><span class="header-section-number">3.3.3</span> Selecting reference
+organisms with complete genome</h3>
+<p>The assembly summary file also contains a column indicating the
+sequencing status for each assembly.</p>
+<p>This table contains many columns with valuable information for genome
+management. The column contain is indicated in a separate file.</p>
+<ul>
+<li><a
+href="https://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt"
+class="uri">https://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt</a></li>
+</ul>
+<p>Genome assemblies are classified in four levels of chromosome
+assembly (<a
+href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4702866/">PMCID:
+PMC4702866</a>).</p>
+<ol style="list-style-type: decimal">
+<li><strong>Contig:</strong> Assemblies that include only contigs.</li>
+<li><strong>Scaffold:</strong> Includes both scaffolds and contigs.</li>
+<li><strong>Chromosome:</strong> Includes chromosome or linkage groups,
+plus scaffolds and contigs.</li>
+<li><strong>Complete genome:</strong> Assemblies for which all molecules
+are fully sequenced.</li>
+</ol>
+<p>We can use this assembly summary to select only those genomes with
+the a completion level that we consider appropriate. The commands below
+count the number of genomes per type of chromosome assembly.</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">## Choose a taxonomic group of interest</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">## Count the number of assemblies for each value of the refseq_category</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 12 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code></pre></div>
+<p>We can now compute the number of assemblies for each combination of
+annotations for the two criteria: <strong>refseq_category</strong>
+(column 5 of <code>assembly_summary.txt</code>) and
+<strong>assembly_level</strong> (column 12).</p>
+<p>For the RSAT prokaryote server (<a href="http://prokaryote.rsat.eu"
+class="uri">http://prokaryote.rsat.eu</a>), we restrict the installation
+to genomes</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">## Choose a taxonomic group of interest</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">## Count the number of assemblies for each value of the refseq_category</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 5,12 <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span> <span class="dt">\</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">perl</span> <span class="at">-pe</span> <span class="st">&#39;s/(\d+) /$1\t/&#39;</span> <span class="dt">\</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span><span class="st">&#39;\t&#39;</span> <span class="st">&#39;{print &quot;| &quot;$1&quot;\t| &quot;$3&quot;\t| &quot;$2&quot; |&quot;}&#39;</span></span></code></pre></div>
+<p>As of Feb 2, 2025, the number of assemblies in these categories is
+the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right"><strong>Nb</strong></th>
+<th align="left"><strong>assembly_level</strong></th>
+<th align="left"><strong>refseq_category</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">424</td>
+<td align="left">Chromosome</td>
+<td align="left">reference genome</td>
+</tr>
+<tr class="even">
+<td align="right">5511</td>
+<td align="left">Chromosome</td>
+<td align="left">na</td>
+</tr>
+<tr class="odd">
+<td align="right">5734</td>
+<td align="left">Complete Genome</td>
+<td align="left">reference genome</td>
+</tr>
+<tr class="even">
+<td align="right">5952</td>
+<td align="left">Scaffold</td>
+<td align="left">reference genome</td>
+</tr>
+<tr class="odd">
+<td align="right">8468</td>
+<td align="left">Contig</td>
+<td align="left">reference genome</td>
+</tr>
+<tr class="even">
+<td align="right">41143</td>
+<td align="left">Complete Genome</td>
+<td align="left">na</td>
+</tr>
+<tr class="odd">
+<td align="right">125680</td>
+<td align="left">Scaffold</td>
+<td align="left">na</td>
+</tr>
+<tr class="even">
+<td align="right">212461</td>
+<td align="left">Contig</td>
+<td align="left">na</td>
+</tr>
+</tbody>
+</table>
+<p>For the RSAT bacterial server, we select the assemblies that fit both
+of the following criteria :</p>
+<ul>
+<li>The field <strong>refseq_category</strong> (column 5) is
+<em>reference genome</em>.</li>
+<li>The field <strong>assembly_level</strong> (column 12) is
+<em>Complete genome</em>.</li>
+</ul>
+<p>We will list the selected organisms in order to make sure that the
+filter works properly, with 3 alternative options for the output
+format:</p>
+<ul>
+<li><code>-list_format org</code> exports the organism name. These are
+built by concatenating the genus, species and assembly, separated by
+underscore characters.</li>
+<li><code>-list_format table</code> exports a subset of the table
+<code>assembly_summary.txt</code>, restricted to the assemblies passing
+the filters</li>
+<li><code>-list_format bash</code> exports a bash script with all the
+commands for installing the selected genomes. <strong>Beware:</strong>
+depending on the group of interest, the number of reference genomes can
+amount to a few tens, or several thousands. In the latter case, you
+should better see the section <strong><em>Managing installation tasks
+with a task scheduler</em></strong>.</li>
+</ul>
 <div class="sourceCode" id="cb10"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="at">-list_format</span> table <span class="dt">\</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;representative genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">-o</span> representative_complete.tsv</span></code></pre></div>
-<p>This returns 5014 assemblies (24/04/2024), with only one assembly per
-species, and belonging to 1555 distinct genus. The number of assemblies
-per genus can be displayed with the following command;</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> representative_complete.tsv <span class="dt">\</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>   <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="dt">\</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>   <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 6 <span class="kw">|</span> <span class="fu">sort</span>  <span class="dt">\</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>   <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-nr</span> <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">REFERENCE_COMPLETE</span><span class="op">=</span><span class="va">${GROUP}</span>_reference_complete</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">## Select the reference genomes with complete genome</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> org <span class="dt">\</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">-o</span> <span class="va">${REFERENCE_COMPLETE}</span>.txt</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">## Count the number of complete reference genomes</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${REFERENCE_COMPLETE}</span>.txt <span class="dt">\</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="dt">\</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">## Export the metadata table for the reference genomes with complete genome</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> table <span class="dt">\</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>  <span class="at">-o</span> <span class="va">${REFERENCE_COMPLETE}</span>.tsv</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">## Export a bash file with the installation tasks</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span>  <span class="at">-task</span> list <span class="dt">\</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>  <span class="at">-list_format</span> bash <span class="dt">\</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>  <span class="at">-o</span> <span class="va">${REFERENCE_COMPLETE}</span>.bash</span></code></pre></div>
 </div>
 </div>
 <div
@@ -647,26 +770,26 @@ selected assembly</h3>
 <p>We will now download the genome of a selected assembly, and install
 it on the RSAT server. As an illustration, we will install the reference
 strain K-12 of <em>Escherichia coli</em>.</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co">## Select a species and assembly of interest </span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">## (can be adapted to your needs)</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">grep</span> Escherichia reference_genomes.tsv <span class="kw">|</span> <span class="fu">grep</span> K-12</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">grep</span> Escherichia reference_genomes.tsv <span class="kw">|</span> <span class="fu">grep</span> K-12 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 8</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY</span><span class="op">=</span>GCF_000005845.2</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">## List the selected assemblies for a given species </span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">## (e.g. Escherichia_coli)  </span></span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  <span class="at">-task</span> list</span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">## Download the selected assemblies </span></span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  <span class="at">-task</span> download</span>
-<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>  </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">## Select a species and assembly of interest </span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">## (can be adapted to your needs)</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">grep</span> Escherichia reference_genomes.tsv <span class="kw">|</span> <span class="fu">grep</span> K-12</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">grep</span> Escherichia reference_genomes.tsv <span class="kw">|</span> <span class="fu">grep</span> K-12 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 8</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY</span><span class="op">=</span>GCF_000005845.2</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">## List the selected assemblies for a given species </span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">## (e.g. Escherichia_coli)  </span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  <span class="at">-task</span> list</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">## Download the selected assemblies </span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>  <span class="at">-task</span> download</span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>  </span></code></pre></div>
 <p><strong>Note</strong>: downloaded genomes will be installed in a
 folder <code>$RSAT/downloads/refseq</code> on your computer. Each strain
 is stored in a specific subfolder built from the group, genus, species,
@@ -674,7 +797,7 @@ and assembly.</p>
 <p>For example, the reference assembly for <em>Escherichia coli</em> is
 stored in</p>
 <p><code>downloads/refseq/bacteria//Escherichia/Escherichia_coli_str._K-12_substr._MG1655/GCF_000005845.2_ASM584v2/</code></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>ls <span class="sc">-</span><span class="dv">1</span> downloads<span class="sc">/</span>refseq<span class="sc">/</span>bacteria<span class="sc">/</span>Escherichia<span class="sc">/</span>Escherichia_coli_str._K<span class="dv">-12</span>_substr._MG1655<span class="sc">/</span>GCF_000005845<span class="fl">.2</span>_ASM584v2</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>ls <span class="sc">-</span><span class="dv">1</span> downloads<span class="sc">/</span>refseq<span class="sc">/</span>bacteria<span class="sc">/</span>Escherichia<span class="sc">/</span>Escherichia_coli_str._K<span class="dv">-12</span>_substr._MG1655<span class="sc">/</span>GCF_000005845<span class="fl">.2</span>_ASM584v2</span></code></pre></div>
 </div>
 <div id="parsing-a-selected-genome-from-ncbi" class="section level3"
 number="3.4.2">
@@ -682,12 +805,12 @@ number="3.4.2">
 genome from NCBI</h3>
 <p>Parsing consists in extracting the information from a text-formatted
 file, in order to organise it in a computable structure.</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">## Parse a given strain of a given genome </span></span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) </span></span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="at">-task</span> parse</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">## Parse a given strain of a given genome </span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">## (e.g. strain GCF_000016185.1_ASM1618v1 of Rhodospirillum centenum) </span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_accession <span class="va">${ASSEMBLY}</span> <span class="dt">\</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="at">-task</span> parse</span></code></pre></div>
 </div>
 <div id="organism-names" class="section level3" number="3.4.3">
 <h3><span class="header-section-number">3.4.3</span> Organism names</h3>
@@ -700,15 +823,15 @@ name, separated by undescore characters.</p>
 <p>From now on we will directly refer to this concatenated name as the
 <strong><em>Organism name</em></strong> (generally denoted by the option
 <code>-org</code> in RSAT commands.</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ORG</span><span class="op">=</span>Escherichia_coli_str._K-12_substr._MG1655_GCF_000005845.2_ASM584v2</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">## Check the parsing result</span></span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="va">${RSAT}</span>/public_html/data/genomes/<span class="va">${ORG}</span>/genome/</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)</span></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sm</span> <span class="va">${RSAT}</span>/public_html/data/genomes/<span class="va">${ORG}</span>/genome/</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ORG</span><span class="op">=</span>Escherichia_coli_str._K-12_substr._MG1655_GCF_000005845.2_ASM584v2</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">## Check the parsing result</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="va">${RSAT}</span>/public_html/data/genomes/<span class="va">${ORG}</span>/genome/</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">## Measure the disk space occupied by this genome (note: this will be increased in the subsequent steps)</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sm</span> <span class="va">${RSAT}</span>/public_html/data/genomes/<span class="va">${ORG}</span>/genome/</span></code></pre></div>
 <p>This gives the number of megabases occupied by the genome folder.</p>
 </div>
 <div id="adding-the-parsed-genome-to-the-list-of-supported-genomes"
@@ -717,13 +840,13 @@ class="section level3" number="3.4.4">
 genome to the list of supported genomes</h3>
 <p>In order to make the parsed genome available for RSAT, you need to
 run the configuration task.</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">## Configure the organism for RSAT</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-source</span> NCBI <span class="at">-task</span> config</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">## Check that the organism has wel been declared</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="ex">supported-organisms</span> <span class="at">-return</span> ID,source,last_update <span class="kw">|</span> <span class="fu">grep</span> <span class="va">${ORG}</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">## Configure the organism for RSAT</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-source</span> NCBI <span class="at">-task</span> config</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">## Check that the organism has wel been declared</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="ex">supported-organisms</span> <span class="at">-return</span> ID,source,last_update <span class="kw">|</span> <span class="fu">grep</span> <span class="va">${ORG}</span></span></code></pre></div>
 </div>
 <div id="finalizing-the-installation" class="section level3"
 number="3.4.5">
@@ -732,9 +855,9 @@ installation</h3>
 <p>Several more tasks need to be performed before we can consider this
 organism as “installed”.</p>
 <p>The simplest way to run it is to select the “default” tasks.</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co">## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-task</span> default</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">## Run the installation task (retrieve upstream sequences compute background oligo and dyad frequencies, index fasta genome for bedtols, ...)</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-task</span> default</span></code></pre></div>
 </div>
 <div
 id="detailed-list-of-supported-installation-tasks-default-and-others"
@@ -837,9 +960,9 @@ this does not erase the genome folder, for this you can use the option
 class="section level3" number="3.4.7">
 <h3><span class="header-section-number">3.4.7</span> Checking that the
 organism is well supported</h3>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co">## Get all the supported organisms</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="ex">supported-organisms</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="va">${ORG}</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co">## Get all the supported organisms</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="ex">supported-organisms</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="va">${ORG}</span></span></code></pre></div>
 </div>
 <div
 id="checking-the-correctness-of-gene-annotations-by-computing-startstop-codon-frequencies"
@@ -847,30 +970,30 @@ class="section level3" number="3.4.8">
 <h3><span class="header-section-number">3.4.8</span> Checking the
 correctness of gene annotations by computing start/stop codon
 frequencies</h3>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co">## Retrieve all the start codon sequences</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="ex">retrieve-seq</span> <span class="at">-all</span> <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-from</span> 0 <span class="at">-to</span> 2 <span class="at">-o</span> start_seq.fasta</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co">## Check the result</span></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 start_seq.fasta</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">## Check that most genes have ATG as start codon</span></span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="ex">oligo-analysis</span> <span class="at">-v</span> 1 <span class="at">-i</span> start_seq.fasta  <span class="at">-l</span> 3 <span class="at">-1str</span> <span class="at">-return</span> occ,freq <span class="at">-sort</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co">## Retrieve all the start codon sequences</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="ex">retrieve-seq</span> <span class="at">-all</span> <span class="at">-org</span> <span class="va">${ORG}</span> <span class="at">-from</span> 0 <span class="at">-to</span> 2 <span class="at">-o</span> start_seq.fasta</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">## Check the result</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 20 start_seq.fasta</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">## Check that most genes have ATG as start codon</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="ex">oligo-analysis</span> <span class="at">-v</span> 1 <span class="at">-i</span> start_seq.fasta  <span class="at">-l</span> 3 <span class="at">-1str</span> <span class="at">-return</span> occ,freq <span class="at">-sort</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
 <p>You can do the similar test with the stop codon frequencies. Note
 that nothing forces you to store the stop codong sequences in a local
 file, you can use the pipe symbol <code>|</code> to concatenate two
 commands.</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co">## Compute all trinucleotide frequencies in the stop codons</span></span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="ex">retrieve-seq</span> <span class="at">-all</span> <span class="at">-org</span> <span class="va">${ORG}</span> <span class="dt">\</span></span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>   <span class="at">-type</span> downstream <span class="at">-from</span> <span class="at">-1</span> <span class="at">-to</span> <span class="at">-3</span> <span class="at">-o</span> stop_seq.fasta</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">## Check the beginning of the result file</span></span>
-<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="fu">head</span> <span class="at">-20</span> stop_seq.fasta</span>
-<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">## Check that most genes have ATG as start codon</span></span>
-<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="ex">oligo-analysis</span> <span class="at">-v</span> 1 <span class="at">-i</span> stop_seq.fasta  <span class="at">-l</span> 3 <span class="at">-1str</span> <span class="dt">\</span></span>
-<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>   <span class="at">-return</span> occ,freq <span class="at">-sort</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co">## Compute all trinucleotide frequencies in the stop codons</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="ex">retrieve-seq</span> <span class="at">-all</span> <span class="at">-org</span> <span class="va">${ORG}</span> <span class="dt">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>   <span class="at">-type</span> downstream <span class="at">-from</span> <span class="at">-1</span> <span class="at">-to</span> <span class="at">-3</span> <span class="at">-o</span> stop_seq.fasta</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">## Check the beginning of the result file</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="fu">head</span> <span class="at">-20</span> stop_seq.fasta</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">## Check that most genes have ATG as start codon</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="ex">oligo-analysis</span> <span class="at">-v</span> 1 <span class="at">-i</span> stop_seq.fasta  <span class="at">-l</span> 3 <span class="at">-1str</span> <span class="dt">\</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>   <span class="at">-return</span> occ,freq <span class="at">-sort</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -878,121 +1001,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href=
 number="3.5">
 <h2><span class="header-section-number">3.5</span> Installing multiple
 genomes</h2>
-<div id="selecting-reference-organisms-with-complete-genome"
-class="section level3" number="3.5.1">
-<h3><span class="header-section-number">3.5.1</span> Selecting reference
-organisms with complete genome</h3>
-<p>The assembly summary file provided by NCBI for each taxonomic group
-gives detailed indications of the sequencing status for each
-assembly.</p>
-<p>This table contains many columns with valuable information for genome
-management. The column contain is indicated in a separate file.</p>
-<ul>
-<li><a
-href="https://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt"
-class="uri">https://ftp.ncbi.nlm.nih.gov/genomes/README_assembly_summary.txt</a></li>
-</ul>
-<p>Genome assemblies are classigied in four levels (<a
-href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4702866/">PMCID:
-PMC4702866</a>).</p>
-<ol style="list-style-type: decimal">
-<li><strong>Contig:</strong> Assemblies that include only contigs.</li>
-<li><strong>Scaffold:</strong> Includes both scaffolds and contigs.</li>
-<li><strong>Chromosome:</strong> Includes chromosome or linkage groups,
-plus scaffolds and contigs.</li>
-<li><strong>Complete genome:</strong> Assemblies for which all molecules
-are fully sequenced.</li>
-</ol>
-<p>We can use this assembly summary to select only those genomes with
-the a completion level that we consider appropriate.</p>
-<p>For example, for the RSAT prokaryote server (<a
-href="http://prokaryote.rsat.eu"
-class="uri">http://prokaryote.rsat.eu</a>), we restrict the installation
-to genomes by combining the following criteria :</p>
-<ul>
-<li><p>The field <strong>refseq_category</strong> (column 5) is either
-<em>reference genome</em> or <em>representative genome</em>.</p></li>
-<li><p>The field <strong>assembly_level</strong> (column 12) is
-<em>Complete genome</em></p></li>
-</ul>
-<p>Since ewe downloaded the assembly summary file above, we can count
-the number of genomes of different types in these columns.</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co">## Choose a taxonomic group of interest</span></span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
-<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
-<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="co">## Count the number of assemblies for each value of the refseq_category</span></span>
-<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 5,12 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code></pre></div>
-<p>As of May 5, 2024, the number of assemblies in these categories is
-the following:</p>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>     <span class="ex">15</span> reference genome        Complete Genome</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>    <span class="ex">470</span> representative genome   Chromosome</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>   <span class="ex">4818</span> na                      Chromosome</span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>   <span class="ex">5027</span> representative genome   Complete Genome</span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>   <span class="ex">5195</span> representative genome   Scaffold</span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>   <span class="ex">7940</span> representative genome   Contig</span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  <span class="ex">35394</span> na                      Complete Genome</span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a> <span class="ex">105250</span> na                      Scaffold</span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a> <span class="ex">186618</span> na                      Contig</span></code></pre></div>
-</div>
-<div id="installing-the-reference-genomes-with-complete-genome"
-class="section level3" number="3.5.2">
-<h3><span class="header-section-number">3.5.2</span> Installing the
-reference genomes with complete genome</h3>
-<p>We saw above that we can apply two filters to select the 15 genomes
-labeled as <em>reference genome</em> in the field
-<code>refseq_category</code> and <em>Complete Genome</em> in
-<code>assembly_level</code>.</p>
-<p>We will first list the selected organisms in order to make sure that
-the filter works properly (and avoid the risk of unwillingly installing
-350,000 assemblies).</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">## Select the reference genomes with complete genome</span></span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> org</span></code></pre></div>
-<p>This should give a list of 15 genomes. We will then specity the tasks
-required to install each of these genomes. Note that this can take some
-time, since each genome has to be downloaded, parsed, and processed in
-order to be ready for use on the RSAT server. In particular, the
-computation of oligonucleotide and dyads in all the non-coding upstream
-sequences can take some time.</p>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co">## Install the reference genomes with complete genome</span></span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="at">-task</span> download,parse,config,default</span></code></pre></div>
-</div>
-<div id="installing-the-representative-genomes-with-complete-genome"
-class="section level3" number="3.5.3">
-<h3><span class="header-section-number">3.5.3</span> Installing the
-representative genomes with complete genome</h3>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">## Select the representative genomes with complete genome</span></span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 1 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;representative genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>  <span class="at">-task</span> list <span class="at">-list_format</span> org <span class="dt">\</span></span>
-<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>  <span class="at">-o</span> <span class="va">${GROUP}</span>_representative_complete.txt</span>
-<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a><span class="co">## Count the number of representative genomes</span></span>
-<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${GROUP}</span>_representative_complete.txt <span class="dt">\</span></span>
-<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="dt">\</span></span>
-<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
-<p>Depending on the group of interest, the number of representative
-genomes can amount to a few tens, or several thousands. In the lattre
-case, yous should better see the next section (Managing installation
-tasks with a task scheduler).</p>
 <hr />
-</div>
 </div>
 <div id="installing-many-genomes" class="section level2" number="3.6">
 <h2><span class="header-section-number">3.6</span> Installing many
@@ -1004,7 +1013,9 @@ file containing a list of species names (one species name per row).</p>
 <p><strong>Beware</strong>:</p>
 <ul>
 <li><p>This command will download thousands of genomes on your hard
-drive, which will undoubtedly occupy some disj space.</p></li>
+drive. Before processing, we recommend to estimate the required size by
+installing a few genomes and extrapolating for the number of genomes to
+be installed.</p></li>
 <li><p>The download can take a considerable time depending on the number
 of selected species and bandwidth of your computer.</p></li>
 </ul>
@@ -1013,35 +1024,29 @@ of selected species and bandwidth of your computer.</p></li>
 number="3.6.2">
 <h3><span class="header-section-number">3.6.2</span> Downloading genome
 files from NCBI</h3>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co">## File with the list of species to install</span></span>
-<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="va">SPECIES_TO_INSTALL</span><span class="op">=</span><span class="va">${GROUP}</span>_species_to_install.txt</span>
-<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="co">## Get the two first words of the 8th column as Genus and species names</span></span>
-<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 8 <span class="va">${REPRESENTATIVE_COMPLETE}</span> <span class="dt">\</span></span>
-<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/ /_/g&#39;</span> <span class="dt">\</span></span>
-<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>   <span class="op">&gt;</span> <span class="va">${SPECIES_TO_INSTALL}</span></span>
-<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">## Count the number of species to instal</span></span>
-<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">${SPECIES_TO_INSTALL}</span></span>
-<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">## Download all the selected species</span></span>
-<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> download</span>
-<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a>   </span>
-<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a></span>
-<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a><span class="co">## Check the list of downloaded organisms </span></span>
-<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a><span class="co">## Note: organism = Genus + species + strain</span></span>
-<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> list</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co">## File with the list of species to install</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ORG_TO_INSTALL</span><span class="op">=</span><span class="va">${REFERENCE_COMPLETE}</span>.txt</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">## Count the number of species to instal</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">${ORG_TO_INSTALL}</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">## Download all the selected species</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>   <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> download</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">## Check the list of downloaded organisms </span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">## Note: organism = Genus + species + strain</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list</span></code></pre></div>
 </div>
 <div id="parsing" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> Parsing</h3>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> list,parse</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list,parse</span></code></pre></div>
 </div>
 <div id="parsing-genomes-from-ncbi-files" class="section level3"
 number="3.6.4">
@@ -1052,22 +1057,22 @@ from NCBI files</h3>
 order to parallelise the installation steps via a job scheduler. This
 job scheduler must have been previously defined in RSAT configuration
 files.</p>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> parse <span class="at">-batch</span></span>
-<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> <span class="va">${RSAT}</span>/makefiles/server.mk  watch_jobs</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> parse <span class="at">-batch</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> <span class="va">${RSAT}</span>/makefiles/server.mk  watch_jobs</span></code></pre></div>
 </div>
 <div id="default-installation-tasks" class="section level3"
 number="3.6.5">
 <h3><span class="header-section-number">3.6.5</span> Default
 installation tasks</h3>
-<div class="sourceCode" id="cb29"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a></span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="co">## Run default installation tasks</span></span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)</span></span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> config,list,default</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="co">## Run default installation tasks</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)</span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> config,list,default</span></code></pre></div>
 </div>
 <div id="managing-installation-tasks-with-a-job-scheduler"
 class="section level3" number="3.6.6">
@@ -1076,31 +1081,31 @@ installation tasks with a job scheduler</h3>
 <p>If your RSAT server has been configured adequately, you can add the
 option <code>-batch</code> to the commands above in order to send the
 installation tasks to a job scheduler.</p>
-<div class="sourceCode" id="cb30"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="va">ORG_TO_INSTALL</span><span class="op">=</span><span class="va">${GROUP}</span>_organisms_to_install.txt</span>
-<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
-<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> list,parse <span class="dt">\</span></span>
-<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>  <span class="at">-batch</span></span>
-<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a></span>
-<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a><span class="co">## Get the list of organisms from the list of parsed species</span></span>
-<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb30-11"><a href="#cb30-11" tabindex="-1"></a>  <span class="at">-species_file</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb30-12"><a href="#cb30-12" tabindex="-1"></a>  <span class="op">&gt;</span> <span class="va">${ORG_TO_INSTALL}</span></span>
-<span id="cb30-13"><a href="#cb30-13" tabindex="-1"></a></span>
-<span id="cb30-14"><a href="#cb30-14" tabindex="-1"></a><span class="co">## Count the number of species and organisms to install</span></span>
-<span id="cb30-15"><a href="#cb30-15" tabindex="-1"></a><span class="va">SPECIES_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${SPECIES_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
-<span id="cb30-16"><a href="#cb30-16" tabindex="-1"></a><span class="va">ORG_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
-<span id="cb30-17"><a href="#cb30-17" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;To install: </span><span class="va">${ORG_DO_INSTALL_NB}</span><span class="st"> organisms,  </span><span class="va">${SPECIES_DO_INSTALL_NB}</span><span class="st"> distinct species&quot;</span></span>
-<span id="cb30-18"><a href="#cb30-18" tabindex="-1"></a></span>
-<span id="cb30-19"><a href="#cb30-19" tabindex="-1"></a><span class="co">## First retrieve all upstream sequences (cannot be done in batch mode)</span></span>
-<span id="cb30-20"><a href="#cb30-20" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2  <span class="dt">\</span></span>
-<span id="cb30-21"><a href="#cb30-21" tabindex="-1"></a>   <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> config,allup<span class="kw">;</span> </span>
-<span id="cb30-22"><a href="#cb30-22" tabindex="-1"></a>   </span>
-<span id="cb30-23"><a href="#cb30-23" tabindex="-1"></a><span class="co">## Send the other installation tasks to the job scheduler</span></span>
-<span id="cb30-24"><a href="#cb30-24" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span>  <span class="at">-task</span>  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools <span class="at">-batch</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="va">ORG_TO_INSTALL</span><span class="op">=</span><span class="va">${GROUP}</span>_organisms_to_install.txt</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list,parse <span class="dt">\</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="at">-batch</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="co">## Get the list of organisms from the list of parsed species</span></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>  <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list <span class="dt">\</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>  <span class="op">&gt;</span> <span class="va">${ORG_TO_INSTALL}</span></span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a><span class="co">## Count the number of species and organisms to install</span></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="va">SPECIES_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="va">ORG_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;To install: </span><span class="va">${ORG_DO_INSTALL_NB}</span><span class="st"> organisms,  </span><span class="va">${SPECIES_DO_INSTALL_NB}</span><span class="st"> distinct species&quot;</span></span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a><span class="co">## First retrieve all upstream sequences (cannot be done in batch mode)</span></span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2  <span class="dt">\</span></span>
+<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>   <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> config,allup<span class="kw">;</span> </span>
+<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>   </span>
+<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a><span class="co">## Send the other installation tasks to the job scheduler</span></span>
+<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span>  <span class="at">-task</span>  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools <span class="at">-batch</span></span></code></pre></div>
 </div>
 </div>
 <div id="check-the-installation" class="section level2" number="3.7">

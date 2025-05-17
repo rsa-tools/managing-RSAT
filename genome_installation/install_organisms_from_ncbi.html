@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jacques van Helden" />
 
-<meta name="date" content="2025-02-07" />
+<meta name="date" content="2025-05-17" />
 
 <title>Install organisms from NCBI</title>
 
@@ -333,7 +333,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Install organisms from NCBI</h1>
 <h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2025-02-07</h4>
+<h4 class="date">2025-05-17</h4>
 
 </div>
 
@@ -1029,50 +1029,75 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href=
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">ORG_TO_INSTALL</span><span class="op">=</span><span class="va">${REFERENCE_COMPLETE}</span>.txt</span>
 <span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">## Count the number of species to instal</span></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">${ORG_TO_INSTALL}</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;;&#39;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
 <span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
 <span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">## Download all the selected species</span></span>
 <span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>   <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> download</span>
 <span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a></span>
 <span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">## Check the list of downloaded organisms </span></span>
-<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">## Note: organism = Genus + species + strain</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">## Note: organism = Genus + species + assembly + version</span></span>
 <span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list</span></code></pre></div>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>  <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>  <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a>  <span class="at">-task</span> list</span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="co">## Before installing, count the number of organisms that would be installed</span></span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">## MAKE SURE THIS NUMBER IS REASONABLE</span></span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 0 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a>   <span class="at">-task</span> list <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> </span></code></pre></div>
 </div>
 <div id="parsing" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> Parsing</h3>
 <div class="sourceCode" id="cb21"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a></span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
-<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list,parse</span></code></pre></div>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">## Parse all the selected organisms</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 0 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>   <span class="at">-task</span> list,parse</span></code></pre></div>
 </div>
 <div id="parsing-genomes-from-ncbi-files" class="section level3"
 number="3.6.4">
 <h3><span class="header-section-number">3.6.4</span> Parsing genomes
 from NCBI files</h3>
-<p>Since the number of genomes to install can be important, we will run
-<code>install-organism</code> with the option <code>-batch</code>, in
-order to parallelise the installation steps via a job scheduler. This
-job scheduler must have been previously defined in RSAT configuration
-files.</p>
+<p>Since the number of genomes to install can be important, we recommand
+to run <code>install-organism</code> with the option
+<code>-batch</code>, in order to parallelise the installation steps via
+a job scheduler. This job scheduler must have been previously defined in
+RSAT configuration files. This will be explained in the next
+section.</p>
+<p>However, if you don’t dispose of a job scheduler, and if the number
+of genomes is not too high, you can still run the parsing and
+installation in sequential mode with the following command.</p>
 <div class="sourceCode" id="cb22"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> parse <span class="at">-batch</span></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> <span class="va">${RSAT}</span>/makefiles/server.mk  watch_jobs</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co">## Parallelize the parsing of all the selected organisms on a cluster</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="co">## BEWARE: this requires to have a job scheduler running on the server, </span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="co">## and to configure properly its parameters in RSAT configuration (script configure_rsat.pl)</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 0 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>   <span class="at">-task</span> list,parse</span></code></pre></div>
 </div>
 <div id="default-installation-tasks" class="section level3"
 number="3.6.5">
 <h3><span class="header-section-number">3.6.5</span> Default
 installation tasks</h3>
+<p>Same comment as before: we recommend to run the following command
+with the <code>-batch</code> option, which requires a properly
+configured job scheduler. <strong>Run the following command only
+if</strong> you don’t dispose of a job scheduler <em>and</em> the number
+of genomes is not too high.</p>
 <div class="sourceCode" id="cb23"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a></span>
 <span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="co">## Run default installation tasks</span></span>
 <span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">## </span><span class="al">NOTE</span><span class="co">: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)</span></span>
 <span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> config,list,default</span></code></pre></div>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>   <span class="at">-task</span> config,list,default</span></code></pre></div>
 </div>
 <div id="managing-installation-tasks-with-a-job-scheduler"
 class="section level3" number="3.6.6">
@@ -1082,30 +1107,50 @@ installation tasks with a job scheduler</h3>
 option <code>-batch</code> to the commands above in order to send the
 installation tasks to a job scheduler.</p>
 <div class="sourceCode" id="cb24"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="va">ORG_TO_INSTALL</span><span class="op">=</span><span class="va">${GROUP}</span>_organisms_to_install.txt</span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="co">## Parse all organisms</span></span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>   <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list,parse <span class="dt">\</span></span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="at">-batch</span></span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="co">## Get the list of organisms from the list of parsed species</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>    <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>    <span class="at">-task</span> list <span class="dt">\</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>    <span class="op">&gt;</span> <span class="va">${ORG_TO_INSTALL}</span></span>
 <span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="co">## Get the list of organisms from the list of parsed species</span></span>
-<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
-<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>  <span class="at">-species_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> list <span class="dt">\</span></span>
-<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>  <span class="op">&gt;</span> <span class="va">${ORG_TO_INSTALL}</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="co">## Count the number of species and organisms to install</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a></span>
 <span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a></span>
-<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a><span class="co">## Count the number of species and organisms to install</span></span>
-<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="va">SPECIES_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
-<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="va">ORG_DO_INSTALL_NB</span><span class="op">=</span><span class="kw">`</span><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">`</span></span>
-<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;To install: </span><span class="va">${ORG_DO_INSTALL_NB}</span><span class="st"> organisms,  </span><span class="va">${SPECIES_DO_INSTALL_NB}</span><span class="st"> distinct species&quot;</span></span>
-<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a></span>
-<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a><span class="co">## First retrieve all upstream sequences (cannot be done in batch mode)</span></span>
-<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2  <span class="dt">\</span></span>
-<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>   <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span> <span class="at">-task</span> config,allup<span class="kw">;</span> </span>
-<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>   </span>
-<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a><span class="co">## Send the other installation tasks to the job scheduler</span></span>
-<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-org_file</span> <span class="va">${ORG_TO_INSTALL}</span>  <span class="at">-task</span>  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools <span class="at">-batch</span></span></code></pre></div>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a><span class="co">## Parallelize the parsing of all the selected organisms on a cluster</span></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co">## BEWARE: this requires to have a job scheduler running on the server, </span></span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="co">## and to configure properly its parameters in RSAT configuration (script configure_rsat.pl)</span></span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>   <span class="at">-task</span> list,parse <span class="at">-batch</span></span>
+<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a></span>
+<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a><span class="co">## Check the job scheduler, for example with the command qstat</span></span>
+<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a><span class="co"># make -f ${RSAT}/makefiles/server.mk  watch_jobs</span></span>
+<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a><span class="co">## Update RSAT configuration so that the newly parsed organisms can be used </span></span>
+<span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a><span class="co">## Note: this cannot be done in batch mode, but the configuration is fast</span></span>
+<span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-28"><a href="#cb24-28" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-29"><a href="#cb24-29" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-30"><a href="#cb24-30" tabindex="-1"></a>   <span class="at">-task</span> config</span>
+<span id="cb24-31"><a href="#cb24-31" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" tabindex="-1"></a><span class="co">## Retrieve all upstream sequences (cannot be done in batch mode)</span></span>
+<span id="cb24-33"><a href="#cb24-33" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-34"><a href="#cb24-34" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-35"><a href="#cb24-35" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-36"><a href="#cb24-36" tabindex="-1"></a>   <span class="at">-task</span> allup <span class="at">-batch</span></span>
+<span id="cb24-37"><a href="#cb24-37" tabindex="-1"></a></span>
+<span id="cb24-38"><a href="#cb24-38" tabindex="-1"></a>   </span>
+<span id="cb24-39"><a href="#cb24-39" tabindex="-1"></a><span class="co">## Send the other installation tasks to the job scheduler</span></span>
+<span id="cb24-40"><a href="#cb24-40" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 2 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
+<span id="cb24-41"><a href="#cb24-41" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-42"><a href="#cb24-42" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
+<span id="cb24-43"><a href="#cb24-43" tabindex="-1"></a>   <span class="at">-task</span>  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools <span class="dt">\</span></span>
+<span id="cb24-44"><a href="#cb24-44" tabindex="-1"></a>   <span class="at">-batch</span></span></code></pre></div>
 </div>
 </div>
 <div id="check-the-installation" class="section level2" number="3.7">

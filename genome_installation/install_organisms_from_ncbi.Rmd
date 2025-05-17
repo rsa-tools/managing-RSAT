@@ -492,7 +492,7 @@ We can install multiple species in a single command by specifying a file contain
 export ORG_TO_INSTALL=${REFERENCE_COMPLETE}.txt
 
 ## Count the number of species to instal
-wc -l ${ORG_TO_INSTALL}
+grep -v '^#' ${ORG_TO_INSTALL} | grep -v ';' | wc -l
 
 ## Download all the selected species
 install-organism -v 2 -group ${GROUP} \

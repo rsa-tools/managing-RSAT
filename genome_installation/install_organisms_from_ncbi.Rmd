@@ -596,19 +596,19 @@ install-organism -v 2 -group ${GROUP} \
    -filter assembly_level "Complete Genome" \
    -task config
 
+## Retrieve all upstream sequences (cannot be done in batch mode)
 install-organism -v 2 -group ${GROUP} \
    -filter refseq_category "reference genome" \
    -filter assembly_level "Complete Genome" \
    -task allup -batch
 
-## First retrieve all upstream sequences (cannot be done in batch mode)
+   
+## Send the other installation tasks to the job scheduler
 install-organism -v 2 -group ${GROUP} \
    -filter refseq_category "reference genome" \
    -filter assembly_level "Complete Genome" \
-   -task config,allup; 
-   
-## Send the other installation tasks to the job scheduler
-install-organism -v 2 -org_file ${ORG_TO_INSTALL}  -task  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools -batch
+   -task  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools \
+   -batch
 
 ```
 

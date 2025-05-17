@@ -499,9 +499,18 @@ install-organism -v 2 -group ${GROUP} \
    -org_file ${ORG_TO_INSTALL} -task download
 
 ## Check the list of downloaded organisms 
-## Note: organism = Genus + species + strain
+## Note: organism = Genus + species + assembly + version
 install-organism -v 2 -group ${GROUP} \
-   -species_file ${ORG_TO_INSTALL} -task list
+  -filter refseq_category "reference genome" \
+  -filter assembly_level "Complete Genome" \
+  -task list
+
+## Before installing, count the number of organisms that would be installed
+## MAKE SURE THIS NUMBER IS REASONABLE
+install-organism -v 0 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task list | grep -v '^#' | wc -l 
 
 ```
 
@@ -509,33 +518,45 @@ install-organism -v 2 -group ${GROUP} \
 
 ```{bash parsing_many_genomes, eval=FALSE}
 
-## Parse all organisms
-install-organism -v 2 -group ${GROUP} \
-   -species_file ${ORG_TO_INSTALL} -task list,parse
+## Parse all the selected organisms
+install-organism -v 0 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task list,parse
 
 
 ```
 
 ### Parsing genomes from NCBI files
 
-Since the number of genomes to install can be important, we will run `install-organism` with the option `-batch`, in order to parallelise the installation steps via a job scheduler. This job scheduler must have been previously defined in RSAT configuration files. 
+Since the number of genomes to install can be important, we recommand to run `install-organism` with the option `-batch`, in order to parallelise the installation steps via a job scheduler. This job scheduler must have been previously defined in RSAT configuration files. 
+This will be explained in the next section. 
+
+However, if you don't dispose of a job scheduler, and if the number of genomes is not too high, you can still run the parsing and installation in sequential mode with the following command. 
 
 ```{bash eval=FALSE}
-install-organism -v 2 -group ${GROUP} \
-   -species_file ${ORG_TO_INSTALL} -task parse -batch
-
-make -f ${RSAT}/makefiles/server.mk  watch_jobs
+## Parallelize the parsing of all the selected organisms on a cluster
+## BEWARE: this requires to have a job scheduler running on the server, 
+## and to configure properly its parameters in RSAT configuration (script configure_rsat.pl)
+install-organism -v 0 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task list,parse
 ```
 
 
 ### Default installation tasks
+
+Same comment as before: we recommend to run the following command with the `-batch` option, which requires a properly configured job scheduler. **Run the following command only if** you don't dispose of a job scheduler *and* the number of genomes is not too high. 
 
 ```{bash installing_many_genomes, eval=FALSE}
 
 ## Run default installation tasks
 ## NOTE: if you need to install hundreds of genomes, this can take a while. ## In such case, it is worth testing the option -batch (see below)
 install-organism -v 2 -group ${GROUP} \
-   -species_file ${ORG_TO_INSTALL} -task config,list,default
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task config,list,default
 
 ```
 
@@ -544,27 +565,47 @@ install-organism -v 2 -group ${GROUP} \
 If your RSAT server has been configured adequately, you can add the option `-batch` to the commands above in order to send the installation tasks to a job scheduler. 
 
 ```{bash installing_many_geonmes_batch, eval=FALSE}
-ORG_TO_INSTALL=${GROUP}_organisms_to_install.txt
-
-## Parse all organisms
-install-organism -v 2 -group ${GROUP} \
-   -species_file ${ORG_TO_INSTALL} -task list,parse \
-  -batch
-
 
 ## Get the list of organisms from the list of parsed species
 install-organism -v 2 -group ${GROUP} \
-  -species_file ${ORG_TO_INSTALL} -task list \
-  > ${ORG_TO_INSTALL}
+    -filter refseq_category "reference genome" \
+    -filter assembly_level "Complete Genome" \
+    -task list \
+    > ${ORG_TO_INSTALL}
+
 
 ## Count the number of species and organisms to install
-SPECIES_DO_INSTALL_NB=`grep -v '^;' ${ORG_TO_INSTALL} | wc -l  | awk '{print $1}'`
-ORG_DO_INSTALL_NB=`grep -v '^;' ${ORG_TO_INSTALL} | wc -l | awk '{print $1}'`
-echo "To install: ${ORG_DO_INSTALL_NB} organisms,  ${SPECIES_DO_INSTALL_NB} distinct species"
+grep -v '^;' ${ORG_TO_INSTALL} | grep -v '^#' | wc -l  | awk '{print $1}'
+
+
+## Parallelize the parsing of all the selected organisms on a cluster
+## BEWARE: this requires to have a job scheduler running on the server, 
+## and to configure properly its parameters in RSAT configuration (script configure_rsat.pl)
+install-organism -v 2 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task list,parse -batch
+
+## Check the job scheduler, for example with the command qstat
+# make -f ${RSAT}/makefiles/server.mk  watch_jobs
+
+## Update RSAT configuration so that the newly parsed organisms can be used 
+## Note: this cannot be done in batch mode, but the configuration is fast
+install-organism -v 2 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task config
+
+install-organism -v 2 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task allup -batch
 
 ## First retrieve all upstream sequences (cannot be done in batch mode)
-install-organism -v 2  \
-   -org_file ${ORG_TO_INSTALL} -task config,allup; 
+install-organism -v 2 -group ${GROUP} \
+   -filter refseq_category "reference genome" \
+   -filter assembly_level "Complete Genome" \
+   -task config,allup; 
    
 ## Send the other installation tasks to the job scheduler
 install-organism -v 2 -org_file ${ORG_TO_INSTALL}  -task  start_stop,seq_len_distrib,genome_segments,upstream_freq,genome_freq,protein_freq,protein_len,oligos,dyads,fasta_genome,fasta_genome_rm,chrom_sizes,index_bedtools -batch

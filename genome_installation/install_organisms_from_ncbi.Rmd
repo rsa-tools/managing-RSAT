@@ -510,7 +510,7 @@ install-organism -v 2 -group ${GROUP} \
 install-organism -v 0 -group ${GROUP} \
    -filter refseq_category "reference genome" \
    -filter assembly_level "Complete Genome" \
-   -task list | grep -v '^#' | wc -l 
+   -task list | grep -v '^#' | grep -v '^;' | wc -l 
 
 ```
 

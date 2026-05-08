@@ -1,6 +1,6 @@
 ---
 title: "Install organisms from NCBI"
-author: "Jacques van Helden"
+author: "Jacques van Helden, Najla Ksouri"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -86,7 +86,7 @@ The output of *install-organisms* indicates the local path of the assembly summa
 ```{bash eval=FALSE}
 ## Count the number of species.
 ## Note: grep is used to filter out the comment lines.
-export ASSEMBLY_SUMMARY=downloads/refseq/${GROUP}/assembly_summary.txt
+export ASSEMBLY_SUMMARY=${RSAT}/downloads/refseq/${GROUP}/assembly_summary.txt
 grep -v '^#' ${ASSEMBLY_SUMMARY} | wc -l
 ```
 
@@ -222,7 +222,7 @@ We can use this assembly summary  to select only those genomes with the a comple
 ```{bash eval=FALSE}
 ## Choose a taxonomic group of interest
 export GROUP=bacteria
-export ASSEMBLY_SUMMARY=downloads/refseq/${GROUP}/assembly_summary.txt
+export ASSEMBLY_SUMMARY=${RSAT}/downloads/refseq/${GROUP}/assembly_summary.txt
 
 ## Count the number of assemblies for each value of the refseq_category
 grep -v '^#' ${ASSEMBLY_SUMMARY} | cut -f 12 | sort | uniq -c | sort -n
@@ -235,7 +235,7 @@ For the RSAT prokaryote server (<http://prokaryote.rsat.eu>), we restrict the in
 ```{bash eval=FALSE}
 ## Choose a taxonomic group of interest
 export GROUP=bacteria
-export ASSEMBLY_SUMMARY=downloads/refseq/${GROUP}/assembly_summary.txt
+export ASSEMBLY_SUMMARY=${RSAT}/downloads/refseq/${GROUP}/assembly_summary.txt
 
 ## Count the number of assemblies for each value of the refseq_category
 cut -f 5,12 ${ASSEMBLY_SUMMARY} | sort | uniq -c | sort -n \

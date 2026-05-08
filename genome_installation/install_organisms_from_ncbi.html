@@ -9,13 +9,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Jacques van Helden" />
+<meta name="author" content="Jacques van Helden, Najla Ksouri" />
 
-<meta name="date" content="2025-05-17" />
+<meta name="date" content="2026-05-08" />
 
 <title>Install organisms from NCBI</title>
 
-<script src="install_organisms_from_ncbi_files/header-attrs-2.29/header-attrs.js"></script>
+<script src="install_organisms_from_ncbi_files/header-attrs-2.21/header-attrs.js"></script>
 <script src="install_organisms_from_ncbi_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_from_ncbi_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="install_organisms_from_ncbi_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="install_organisms_from_ncbi_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="install_organisms_from_ncbi_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="install_organisms_from_ncbi_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="install_organisms_from_ncbi_files/navigation-1.1/tabsets.js"></script>
@@ -332,8 +332,8 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Install organisms from NCBI</h1>
-<h4 class="author">Jacques van Helden</h4>
-<h4 class="date">2025-05-17</h4>
+<h4 class="author">Jacques van Helden, Najla Ksouri</h4>
+<h4 class="date">2026-05-08</h4>
 
 </div>
 
@@ -428,7 +428,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">## Count the number of species.</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">## Note: grep is used to filter out the comment lines.</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span><span class="va">${RSAT}</span>/downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div>
 <div id="getting-lists-of-available-species-for-other-groups"
 class="section level3" number="3.2.1">
@@ -629,7 +629,7 @@ count the number of genomes per type of chromosome assembly.</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">## Choose a taxonomic group of interest</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span><span class="va">${RSAT}</span>/downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
 <span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">## Count the number of assemblies for each value of the refseq_category</span></span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 12 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span></span></code></pre></div>
@@ -643,7 +643,7 @@ to genomes</p>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">## Choose a taxonomic group of interest</span></span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">GROUP</span><span class="op">=</span>bacteria</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span>downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">ASSEMBLY_SUMMARY</span><span class="op">=</span><span class="va">${RSAT}</span>/downloads/refseq/<span class="va">${GROUP}</span>/assembly_summary.txt</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">## Count the number of assemblies for each value of the refseq_category</span></span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 5,12 <span class="va">${ASSEMBLY_SUMMARY}</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-n</span> <span class="dt">\</span></span>
@@ -1047,7 +1047,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href=
 <span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="ex">install-organism</span> <span class="at">-v</span> 0 <span class="at">-group</span> <span class="va">${GROUP}</span> <span class="dt">\</span></span>
 <span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a>   <span class="at">-filter</span> refseq_category <span class="st">&quot;reference genome&quot;</span> <span class="dt">\</span></span>
 <span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a>   <span class="at">-filter</span> assembly_level <span class="st">&quot;Complete Genome&quot;</span> <span class="dt">\</span></span>
-<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a>   <span class="at">-task</span> list <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> </span></code></pre></div>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a>   <span class="at">-task</span> list <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^#&#39;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&#39;^;&#39;</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> </span></code></pre></div>
 </div>
 <div id="parsing" class="section level3" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> Parsing</h3>

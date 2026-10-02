@@ -1,5 +1,5 @@
 ---
-title: "Installing genomes from Ensembl Genomes"
+title: "Installing genomes from Ensembl Genomes (deprecated)"
 author: "Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
@@ -19,8 +19,10 @@ output:
     toc_depth: 5
 ---
 
-# Introduction
+**NOTE**: please use [Installing genomes from Ensembl](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_from_ensembl.html) **instead**.
 
+
+# Introduction
 This document explains how to install genomes and annotations from Ensembl Genomes using mostly the [FTP](ftp://ftp.ensemblgenomes.org/pub) site.
 Gene Ontology terms are optional and are obtained from [BioMart](http://plants.ensembl.org/biomart/martview) instead.
 

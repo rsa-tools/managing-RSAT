@@ -11,11 +11,11 @@
 
 <meta name="author" content="Bruno Contreras Moreira" />
 
-<meta name="date" content="2022-04-07" />
+<meta name="date" content="2026-10-02" />
 
 <title>Installing genomes from FASTA and GTF files</title>
 
-<script src="install_organisms_FASTA_GTF_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="install_organisms_FASTA_GTF_files/header-attrs-2.31/header-attrs.js"></script>
 <script src="install_organisms_FASTA_GTF_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_FASTA_GTF_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="install_organisms_FASTA_GTF_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="install_organisms_FASTA_GTF_files/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="install_organisms_FASTA_GTF_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="install_organisms_FASTA_GTF_files/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="install_organisms_FASTA_GTF_files/navigation-1.1/tabsets.js"></script>
@@ -46,6 +46,7 @@
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -56,7 +57,7 @@
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -67,7 +68,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -130,13 +131,20 @@ code span.wa { color: #bf0303; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -172,6 +180,9 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
 pre code {
   padding: 0;
 }
@@ -191,8 +202,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -200,16 +211,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -327,38 +331,56 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Installing genomes from FASTA and GTF files</h1>
+<h1 class="title toc-ignore">Installing genomes from FASTA and GTF
+files</h1>
 <h4 class="author">Bruno Contreras Moreira</h4>
-<h4 class="date">2022-04-07</h4>
+<h4 class="date">2026-10-02</h4>
 
 </div>
 
 
-<p>This protocol uses the Makefile <a href="https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk">ensemblgenomes_FTP_client.mk</a>, which can also be used to install organisms from Ensembl Genomes, as explained in <a href="https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_ensembl_genomes.html">Installing genomes from Ensembl Genomes</a>.</p>
-<p>This procedure supports the installation of arbitrary genomes from any sources, provided that 4 input files are obtained with the following extensions:</p>
+<p>This protocol uses the Makefile <a
+href="https://github.com/rsa-tools/rsat-code/blob/master/makefiles/install-genome-flat-files.mk">install-genome-flat-files.mk</a>.
+This procedure supports the installation of arbitrary genomes from any
+source, provided that 4 input files are obtained with the following
+extensions:</p>
 <ul>
 <li>$SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence</li>
-<li>$SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence</li>
+<li>$SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic
+sequence</li>
 <li>$SPECIES_RSAT_ID.gtf : annotation file</li>
 <li>$SPECIES_RSAT_ID.pep.all.fa : peptide sequences of CDS features</li>
 </ul>
-<p>where SPECIES_RSAT_ID is a string identifying this organism and its annotation.</p>
-<p>Note: parse-gtf takes also GFF3 files, but the script expects the .gtf extension</p>
-<p>For instance, to install assembly Wm82.a2.v1 of <em>Glycine max</em> from <a href="https://phytozome.jgi.doe.gov">JGI Phytozome</a>, we could do:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">SPECIES_RSAT_ID</span><span class="op">=</span>Glycine_max.Wm82.a2.v1.JGI</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$RSAT</span>/data/genomes/<span class="va">${SPECIES_RSAT_ID}</span>/genome</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max <span class="dt">\</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    SPECIES_DIR=/var/www/html/rsat/data/genomes/<span class="va">$SPECIES_RSAT_ID</span> <span class="dt">\</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    SPECIES_RSAT_ID=<span class="va">$SPECIES_RSAT_ID</span> TAXON_ID=3847 GTF_SOURCE=JGI <span class="dt">\</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    install_from_gtf</span></code></pre></div>
-<p>Note that TAXON_ID can be obtained at <a href="https://www.ncbi.nlm.nih.gov/taxonomy" class="uri">https://www.ncbi.nlm.nih.gov/taxonomy</a></p>
-<p>The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following command-line:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
+<p>where SPECIES_RSAT_ID is a string identifying this organism and its
+annotation.</p>
+<p>Note: parse-gtf takes also GFF3 files, but the script expects the
+.gtf extension</p>
+<p>For instance, to install assembly Wm82.a2.v1 of <em>Glycine max</em>
+from <a href="https://phytozome.jgi.doe.gov">JGI Phytozome</a>, we could
+do:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="bu">cd</span> <span class="va">$RSAT</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="va">SPECIES_RSAT_ID</span><span class="op">=</span>Glycine_max.Wm82.a2.v1.JGI</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="va">$RSAT</span>/data/genomes/<span class="va">${SPECIES_RSAT_ID}</span>/genome</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># put there those 4 files (dna.toplevel.fa,dna_rm.genome.fa,.gtf,.pep.all.fa)</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">make</span> <span class="at">-f</span> makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max <span class="dt">\</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    SPECIES_DIR=/var/www/html/rsat/data/genomes/<span class="va">$SPECIES_RSAT_ID</span> <span class="dt">\</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    SPECIES_RSAT_ID=<span class="va">$SPECIES_RSAT_ID</span> TAXON_ID=3847 GTF_SOURCE=JGI <span class="dt">\</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    install_from_gtf</span></code></pre></div>
+<p>Note that TAXON_ID can be obtained at <a
+href="https://www.ncbi.nlm.nih.gov/taxonomy"
+class="uri">https://www.ncbi.nlm.nih.gov/taxonomy</a> or with the
+following RSAT tool:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">ncbi-taxonomy</span> <span class="st">&#39;Glycine max&#39;</span></span></code></pre></div>
+<p>The newly installed species will be added to
+$RSAT/data/supported_organisms.tab and should be listed with the
+following command-line:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
 <hr />
 
 

@@ -20,13 +20,7 @@ output:
 ---
 
 This protocol uses the Makefile 
-[ensemblgenomes_FTP_client.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/ensemblgenomes_FTP_client.mk),
-which can also be used to install organisms from Ensembl Genomes,
-as explained in 
-[Installing genomes from Ensembl Genomes](https://rsa-tools.github.io/managing-RSAT/genome_installation/install_organisms_ensembl_genomes.html).
-
-This procedure supports the installation of arbitrary genomes from any sources,
-provided that 4 input files are obtained with the following extensions: 
+[install-genome-flat-files.mk](https://github.com/rsa-tools/rsat-code/blob/master/makefiles/install-genome-flat-files.mk). This procedure supports the installation of arbitrary genomes from any source, provided that 4 input files are obtained with the following extensions: 
 
 * $SPECIES_RSAT_ID.dna.toplevel.fa : raw genomic sequence
 * $SPECIES_RSAT_ID.dna_rm.genome.fa : repeat-hard-masked genomic sequence 
@@ -54,7 +48,11 @@ make -f makefiles/ensemblgenomes_FTP_client.mk SPECIES=Glycine_max \
     install_from_gtf
 ```
 
-Note that TAXON_ID can be obtained at <https://www.ncbi.nlm.nih.gov/taxonomy>
+Note that TAXON_ID can be obtained at <https://www.ncbi.nlm.nih.gov/taxonomy> or 
+with the following RSAT tool:
+```{r, engine='bash', eval=FALSE}
+ncbi-taxonomy 'Glycine max'
+```
 
 The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following 
 command-line:

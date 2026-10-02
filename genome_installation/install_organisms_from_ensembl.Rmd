@@ -21,7 +21,7 @@ output:
 
 The Ensembl browser (<https://www.ensembl.org>) contains a large number of annotated and curated genome sequences. Originally it contained mostly genomes of Vertebrate organisms, but since the release of the new Web browser in the summer of 2026 it now contains genome data for all organisms, which can be also downloaded from the FTP site at <https://ftp.ebi.ac.uk/pub/ensemblorganisms>. 
 
-The program `install-organism-ensembl`manages all the required steps to download and install a genome (sequence and annotation) ) from Ensembl in *RSAT*. It performs the following tasks:
+The program `install-organism-ensembl`manages all the required steps to download and install a genome (sequences, annotation, variations if available) from Ensembl in *RSAT*.
 
 `install-organism-ensembl -task available` lists the genomes currently available at Ensembl. The first few lines of the output should be similar to these: 
 

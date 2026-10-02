@@ -237,13 +237,22 @@ div.tocify {
 class="uri">https://www.ensembl.org</a>) contains a large number of
 annotated and curated genome sequences. Originally it contained mostly
 genomes of Vertebrate organisms, but since the release of the new Web
-browser in the summer of 2026 it now contains genome data for all
-organisms, which can be also downloaded from the FTP site at <a
+browser in the <a
+href="https://www.ebi.ac.uk/about/news/updates-from-data-resources/ensembl-116-release/">summer
+of 2026</a> it now contains genome data for all organisms, including
+bacteria, fungi, plants and metazoa, which used to be under <em>Ensembl
+Genomes</em>.</p>
+<p>The program <code>install-organism-ensembl</code> manages all the
+required steps to download and install genomes (sequences, annotation,
+variations if available) from Ensembl. Files are retrieved from <a
 href="https://ftp.ebi.ac.uk/pub/ensemblorganisms"
-class="uri">https://ftp.ebi.ac.uk/pub/ensemblorganisms</a>.</p>
-<p>The program <code>install-organism-ensembl</code>manages all the
-required steps to download and install a genome (sequences, annotation,
-variations if available) from Ensembl in <em>RSAT</em>.</p>
+class="uri">https://ftp.ebi.ac.uk/pub/ensemblorganisms</a> and the
+metadata parsed from the <a
+href="https://ftp.ebi.ac.uk/pub/ensemblorganisms/species.json">species.json</a>,
+which is copied locally at <code>$RSAT/downloads</code> for
+efficiency.</p>
+<div id="examples" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Examples</h1>
 <p><code>install-organism-ensembl -task available</code> lists the
 genomes currently available at Ensembl. The first few lines of the
 output should be similar to these:</p>
@@ -280,11 +289,22 @@ install-organism-ensembl -task install \
   -org Abax_parallelepipedus.GCA_964197645.1.2025_03.ensembl</code></pre>
 <p>Check all the options of the program with:</p>
 <pre><code>install-organism-ensembl -h</code></pre>
+</div>
+<div id="local-checks" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Local checks</h1>
 <p>Upon completion of these tasks, all the genome files will be stored
 at the corresponding genome directories:</p>
 <pre><code>$RSAT/data/genomes/genomeID</code></pre>
 <p>and the organisms should be listed in the output of:</p>
-<pre><code>supported-organism    </code></pre>
+<pre><code>supported-organism</code></pre>
+</div>
+<div id="limitations" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Limitations</h1>
+<p><code>install-organism-ensembl</code> might change as the new Ensembl
+platform develops.</p>
+<p><code>install-organism-ensembl -task install</code> does not yet
+install variations.</p>
+</div>
 
 
 

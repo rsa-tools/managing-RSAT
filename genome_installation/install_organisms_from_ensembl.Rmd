@@ -19,9 +19,14 @@ output:
     toc_depth: 5
 ---
 
-The Ensembl browser (<https://www.ensembl.org>) contains a large number of annotated and curated genome sequences. Originally it contained mostly genomes of Vertebrate organisms, but since the release of the new Web browser in the summer of 2026 it now contains genome data for all organisms, which can be also downloaded from the FTP site at <https://ftp.ebi.ac.uk/pub/ensemblorganisms>. 
+The Ensembl browser (<https://www.ensembl.org>) contains a large number of annotated and curated genome sequences. Originally it contained mostly genomes of Vertebrate organisms, but since the release of the new Web browser in the 
+[summer of 2026](https://www.ebi.ac.uk/about/news/updates-from-data-resources/ensembl-116-release/)
+it now contains genome data for all organisms, including bacteria, fungi, plants and metazoa, which used to be under *Ensembl Genomes*. 
 
-The program `install-organism-ensembl`manages all the required steps to download and install a genome (sequences, annotation, variations if available) from Ensembl in *RSAT*.
+The program `install-organism-ensembl` manages all the required steps to download and install  genomes (sequences, annotation, variations if available) from Ensembl. Files are retrieved from <https://ftp.ebi.ac.uk/pub/ensemblorganisms> and the metadata parsed from the [species.json](https://ftp.ebi.ac.uk/pub/ensemblorganisms/species.json),
+which is copied locally at `$RSAT/downloads` for efficiency.
+
+# Examples
 
 `install-organism-ensembl -task available` lists the genomes currently available at Ensembl. The first few lines of the output should be similar to these: 
 
@@ -59,10 +64,18 @@ Check all the options of the program with:
 
     install-organism-ensembl -h
     
+# Local checks    
+    
 Upon completion of these tasks, all the genome files will be stored at the corresponding genome directories:
 
     $RSAT/data/genomes/genomeID
     
 and the organisms should be listed in the output of:
 
-    supported-organism    
+    supported-organism
+    
+# Limitations
+
+`install-organism-ensembl` might change as the new Ensembl platform develops. 
+
+`install-organism-ensembl -task install` does not yet install variations.

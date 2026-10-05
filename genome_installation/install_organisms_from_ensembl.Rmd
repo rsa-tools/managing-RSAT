@@ -76,6 +76,4 @@ and the organisms should be listed in the output of:
     
 # Limitations
 
-`install-organism-ensembl` might change as the new Ensembl platform develops. 
-
-`install-organism-ensembl -task install` does not yet install variations.
+`install-organism-ensembl` will change as the new Ensembl platform develops. 

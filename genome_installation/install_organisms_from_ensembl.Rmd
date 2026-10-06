@@ -74,6 +74,13 @@ and the organisms should be listed in the output of:
 
     supported-organism
     
+# Troubleshooting
+
+| error message | explanation | fix |
+|--------|------|-------------|-----|
+| download failed (chr number) | downloaded unmasked.fa.bgz & hardmasked.fa.bgz differ in chr number | double check, contact Ensembl |
+| download failed (checksum) | downloaded genome file checksum differs from declared one | remove, download again, contact Ensembl |
+
 # Limitations
 
 `install-organism-ensembl` will change as the new Ensembl platform develops. 

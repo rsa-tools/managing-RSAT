@@ -6,7 +6,7 @@ Management guide for Regulatory Sequence Analysis Tools (RSAT) servers: organism
 ## Installing genomes
 
 - [From FASTA and GTF files](genome_installation/install_organisms_FASTA_GTF.html)
-- [From a RSAT server](genome_installation/install_organisms_RSAT.html)
+<!--- [From a RSAT server](genome_installation/install_organisms_RSAT.html)-->
 - [From NCBI](genome_installation/install_organisms_from_ncbi.html)
 - [From Ensembl](genome_installation/install_organisms_from_ensembl.html)
 - [Uninstalling genomes from RSAT](genome_installation/uninstalling_organisms.html)

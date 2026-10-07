@@ -11,11 +11,11 @@
 
 <meta name="author" content="Bruno Contreras Moreira" />
 
-<meta name="date" content="2024-04-14" />
+<meta name="date" content="2026-10-07" />
 
-<title>Donwloading genomes from an RSAT server</title>
+<title>Donwloading genomes from an RSAT server or genome repository</title>
 
-<script src="install_organisms_RSAT_files/header-attrs-2.25/header-attrs.js"></script>
+<script src="install_organisms_RSAT_files/header-attrs-2.31/header-attrs.js"></script>
 <script src="install_organisms_RSAT_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="install_organisms_RSAT_files/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
@@ -331,32 +331,41 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Donwloading genomes from an RSAT
-server</h1>
+<h1 class="title toc-ignore">Donwloading genomes from an RSAT server or
+genome repository</h1>
 <h4 class="author">Bruno Contreras Moreira</h4>
-<h4 class="date">2024-04-14</h4>
+<h4 class="date">2026-10-07</h4>
 
 </div>
 
 
 <p>This procedure allows the installation of any genome available in a
-RSAT Web server. This is usually the fastest way of getting a genome
-installed, as this way oligo and dyad frequencies are not computed, they
-are copied over instead.</p>
-<p>To find out which genomes are available visit your favorite RSAT
-server and in the left menu click on ‘Genomes and genes: supported
-organisms’ to get an up-to-date table. The organism name you need for
-the command below is the one in column ID:</p>
+RSAT Web server or genome repository. This is usually the fastest way of
+getting a genome installed, as this way oligo and dyad frequencies are
+not computed, they are copied over instead.</p>
+<p>To check which servers and repos are available you can:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">download-organism</span> <span class="dt">\\</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>   <span class="ex">-server</span> http://rsat.eead.csic.es/plants <span class="dt">\\</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>   <span class="ex">-org</span> Arabidopsis_thaliana.TAIR10.29</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">supported-organisms-server</span> <span class="at">-servers</span></span></code></pre></div>
+<p>To find out which genomes are currently available please try:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">download-organism</span> <span class="at">-listall</span></span></code></pre></div>
+<p>You will get a tabular output where the 1st column is the URL of the
+RSAT server or genome repository, the 2nd column is the genomeID, the
+3rd column is the source of the genome, and the 4th column is the
+taxonomic classification of the organism:</p>
+<pre><code>https://rsat.eead.csic.es/plantsdata/   Actinidia_chinensis.Red5_PS1_1.69.0.60  ensemblgenomes  Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliopsida;eudicotyledons;Gunneridae;Pentapetalae;asterids;Ericales;Actinidiaceae;Actinidia;Actinidia chinensis
+https://rsat.eead.csic.es/plantsdata/   Aegilops_tauschii.Aetv4.0.60    ensemblgenomes  Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliophyta;Liliopsida;Poales;Poaceae;BOP clade;Pooideae;Triticodae;Triticeae;Triticinae;Aegilops;Aegilops tauschii
+https://rsat.eead.csic.es/plantsdata/   Amborella_trichopoda.AMTR1.0.60 ensemblgenomes  Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliopsida;Amborellales;Amborellaceae;Amborella;Amborella trichopoda</code></pre>
+<!--available visit your favorite RSAT server and in the left menu 
+click on 'Genomes and genes: supported organisms' to get an up-to-date table.-->
+<p>You can now install a selected organsm as follows:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">download-organism</span> <span class="at">-org</span> Actinidia_chinensis.Red5_PS1_1.69.0.60</span></code></pre></div>
 <p>The newly installed species will be added to
 $RSAT/data/supported_organisms.tab and should be listed with the
 following command-line:</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
-<hr />
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">supported-organisms</span></span></code></pre></div>
 
 
 

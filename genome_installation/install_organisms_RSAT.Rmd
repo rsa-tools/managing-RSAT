@@ -1,5 +1,5 @@
 ---
-title: "Donwloading genomes from an RSAT server"
+title: "Donwloading genomes from an RSAT server or genome repository"
 author: "Bruno Contreras Moreira"
 date: '`r Sys.Date()`'
 output:
@@ -19,19 +19,33 @@ output:
     toc_depth: 5
 ---
 
-This procedure allows the installation of any genome available in a RSAT Web server.
+This procedure allows the installation of any genome available in a RSAT Web server or genome repository.
 This is usually the fastest way of getting a genome installed, as this way oligo and dyad frequencies are not computed, they are copied over instead.
 
-To find out which genomes are available visit your favorite RSAT server and in the left menu 
-click on 'Genomes and genes: supported organisms' to get an up-to-date table. The organism
-name you need for the command below is the one in column ID:
-
+To check which servers and repos are available you can:
 ```{r, engine='bash', eval=FALSE}
-download-organism \\
-   -server http://rsat.eead.csic.es/plants \\
-   -org Arabidopsis_thaliana.TAIR10.29
+supported-organisms-server -servers
 ```
 
+To find out which genomes are currently available please try:
+```{r, engine='bash', eval=FALSE}
+download-organism -listall
+```
+
+You will get a tabular output where the 1st column is the URL of the RSAT server or genome repository, 
+the 2nd column is the genomeID, the 3rd column is the source of the genome, and the 4th column is the taxonomic classification of the organism:
+
+    https://rsat.eead.csic.es/plantsdata/	Actinidia_chinensis.Red5_PS1_1.69.0.60	ensemblgenomes	Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliopsida;eudicotyledons;Gunneridae;Pentapetalae;asterids;Ericales;Actinidiaceae;Actinidia;Actinidia chinensis
+    https://rsat.eead.csic.es/plantsdata/	Aegilops_tauschii.Aetv4.0.60	ensemblgenomes	Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliophyta;Liliopsida;Poales;Poaceae;BOP clade;Pooideae;Triticodae;Triticeae;Triticinae;Aegilops;Aegilops tauschii
+    https://rsat.eead.csic.es/plantsdata/	Amborella_trichopoda.AMTR1.0.60	ensemblgenomes	Eukaryota;Viridiplantae;Streptophyta;Embryophyta;Tracheophyta;Spermatophyta;Magnoliopsida;Amborellales;Amborellaceae;Amborella;Amborella trichopoda
+
+<!--available visit your favorite RSAT server and in the left menu 
+click on 'Genomes and genes: supported organisms' to get an up-to-date table.-->
+
+You can now install a selected organsm as follows:
+```{r, engine='bash', eval=FALSE}
+download-organism -org Actinidia_chinensis.Red5_PS1_1.69.0.60
+```
 
 The newly installed species will be added to $RSAT/data/supported_organisms.tab and should be listed with the following 
 command-line:
@@ -40,4 +54,4 @@ command-line:
 supported-organisms
 ```
 
-*********
+
